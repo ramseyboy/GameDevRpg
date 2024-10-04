@@ -20,7 +20,7 @@ namespace RolePlayingGameData
     /// An enemy NPC that fights you in combat.
     /// </summary>
     /// <remarks>
-    /// Any combat many have many of the same monster, and they don't exist beyond 
+    /// Any combat many have many of the same monster, and they don't exist beyond
     /// combat.  Therefore, current statistics are tracked in the runtime combat engine.
     /// </remarks>
     public class Monster : FightingCharacter
@@ -109,7 +109,9 @@ namespace RolePlayingGameData
         /// </summary>
         public class MonsterReader : ContentTypeReader<Monster>
         {
-            protected override Monster Read(ContentReader input, 
+            private readonly IContentTypeReaderDelegate<FightingCharacter> fightingCharacterReader = new FightingCharacterReader();
+
+            protected override Monster Read(ContentReader input,
                 Monster existingInstance)
             {
                 Monster monster = existingInstance;
@@ -118,8 +120,7 @@ namespace RolePlayingGameData
                     monster = new Monster();
                 }
 
-                input.ReadRawObject<FightingCharacter>(monster as FightingCharacter);
-
+                fightingCharacterReader.Read(input, monster);
                 monster.DefendPercentage = input.ReadInt32();
                 monster.GearDrops.AddRange(input.ReadObject<List<GearDrop>>());
 

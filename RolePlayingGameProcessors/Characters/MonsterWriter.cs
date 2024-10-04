@@ -30,24 +30,15 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class MonsterWriter : ContentTypeWriter<Monster>
     {
-        FightingCharacterWriter fightingCharacterWriter = null;
+        private readonly IContentTypeWriterDelegate<FightingCharacter> fightingCharacterWriter = new FightingCharacterWriter();
 
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(MonsterWriter).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            fightingCharacterWriter = compiler.GetTypeWriter(typeof(FightingCharacter))
-                as FightingCharacterWriter;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, Monster value)
         {
-            output.WriteRawObject<FightingCharacter>(value as FightingCharacter,
-                fightingCharacterWriter);
+            fightingCharacterWriter.Write(output, value);
             output.Write(value.DefendPercentage);
             output.WriteObject(value.GearDrops);
         }

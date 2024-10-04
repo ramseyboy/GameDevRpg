@@ -19,8 +19,8 @@ namespace RolePlayingGameData
     /// A member of the player's party, also represented in the world before joining.
     /// </summary>
     /// <remarks>
-    /// There is only one of a given Player in the game world at a time, and their 
-    /// current statistics persist after combat.  Thererefore, current statistics 
+    /// There is only one of a given Player in the game world at a time, and their
+    /// current statistics persist after combat.  Thererefore, current statistics
     /// are tracked here.
     /// </remarks>
     public class Player : FightingCharacter
@@ -227,6 +227,8 @@ namespace RolePlayingGameData
         /// </summary>
         public class PlayerReader : ContentTypeReader<Player>
         {
+            private readonly IContentTypeReaderDelegate<FightingCharacter> fightingCharacterReader = new FightingCharacterReader();
+
             protected override Player Read(ContentReader input, Player existingInstance)
             {
                 Player player = existingInstance;
@@ -235,24 +237,23 @@ namespace RolePlayingGameData
                     player = new Player();
                 }
 
-                input.ReadRawObject<FightingCharacter>(player as FightingCharacter);
-
+                fightingCharacterReader.Read(input, player);
                 player.Gold = input.ReadInt32();
                 player.IntroductionDialogue = input.ReadString();
                 player.JoinAcceptedDialogue = input.ReadString();
                 player.JoinRejectedDialogue = input.ReadString();
                 player.ActivePortraitTextureName = input.ReadString();
-                player.activePortraitTexture = 
+                player.activePortraitTexture =
                     input.ContentManager.Load<Texture2D>(
                         System.IO.Path.Combine(@"Textures\Characters\Portraits",
                         player.ActivePortraitTextureName));
                 player.InactivePortraitTextureName = input.ReadString();
-                player.inactivePortraitTexture = 
+                player.inactivePortraitTexture =
                     input.ContentManager.Load<Texture2D>(
                         System.IO.Path.Combine(@"Textures\Characters\Portraits",
                         player.InactivePortraitTextureName));
                 player.UnselectablePortraitTextureName = input.ReadString();
-                player.unselectablePortraitTexture = 
+                player.unselectablePortraitTexture =
                     input.ContentManager.Load<Texture2D>(
                         System.IO.Path.Combine(@"Textures\Characters\Portraits",
                         player.UnselectablePortraitTextureName));

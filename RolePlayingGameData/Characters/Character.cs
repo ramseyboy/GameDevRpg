@@ -323,10 +323,5 @@ namespace RolePlayingGameData
 
 
         #endregion
-
-
-        #region Content Type Reader
-
-        #endregion
     }
 }

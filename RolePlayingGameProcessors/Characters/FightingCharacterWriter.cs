@@ -21,22 +21,11 @@ using RolePlayingGameData;
 
 namespace RolePlayingGameProcessors
 {
-    /// <summary>
-    /// This class will be instantiated by the XNA Framework Content Pipeline
-    /// to write the specified data type into binary .xnb format.
-    ///
-    /// This should be part of a Content Pipeline Extension Library project.
-    /// </summary>
-    [ContentTypeWriter]
-    public class FightingCharacterWriter : ContentTypeWriter<FightingCharacter>
+    public class FightingCharacterWriter : IContentTypeWriterDelegate<FightingCharacter>
     {
-        IContentTypeWriterDelegate<Character> characterWriter = new CharacterWriter();
+        private readonly IContentTypeWriterDelegate<Character> characterWriter = new CharacterWriter();
 
-        /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform)
-            => typeof(FightingCharacterWriter).AssemblyQualifiedName ?? string.Empty;
-
-        protected override void Write(ContentWriter output, FightingCharacter value)
+        public void Write(ContentWriter output, FightingCharacter value)
         {
             characterWriter.Write(output, value);
             output.Write(value.CharacterClassContentName);

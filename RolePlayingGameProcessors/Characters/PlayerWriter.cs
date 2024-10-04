@@ -30,24 +30,15 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class PlayerWriter : ContentTypeWriter<Player>
     {
-        FightingCharacterWriter fightingCharacterWriter = null;
+        private readonly IContentTypeWriterDelegate<FightingCharacter> fightingCharacterWriter = new FightingCharacterWriter();
 
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Player.PlayerReader).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            fightingCharacterWriter = compiler.GetTypeWriter(typeof(FightingCharacter))
-                as FightingCharacterWriter;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, Player value)
         {
-            output.WriteRawObject<FightingCharacter>(value as FightingCharacter,
-                fightingCharacterWriter);
+            fightingCharacterWriter.Write(output, value);
             output.Write(value.Gold);
             output.Write(value.IntroductionDialogue);
             output.Write(value.JoinAcceptedDialogue);
