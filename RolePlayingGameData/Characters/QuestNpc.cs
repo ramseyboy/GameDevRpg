@@ -48,7 +48,9 @@ namespace RolePlayingGameData
         /// </summary>
         public class QuestNpcReader : ContentTypeReader<QuestNpc>
         {
-            protected override QuestNpc Read(ContentReader input, 
+            private IContentTypeReaderDelegate<Character> characterReader = new CharacterReader();
+
+            protected override QuestNpc Read(ContentReader input,
                 QuestNpc existingInstance)
             {
                 QuestNpc questNpc = existingInstance;
@@ -57,8 +59,7 @@ namespace RolePlayingGameData
                     questNpc = new QuestNpc();
                 }
 
-                input.ReadRawObject<Character>(questNpc as Character);
-
+                characterReader.Read(input, questNpc);
                 questNpc.IntroductionDialogue = input.ReadString();
 
                 return questNpc;

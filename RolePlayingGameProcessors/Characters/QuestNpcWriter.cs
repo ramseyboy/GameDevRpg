@@ -30,23 +30,15 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class QuestNpcWriter : ContentTypeWriter<QuestNpc>
     {
-        CharacterWriter characterWriter = null;
+        IContentTypeWriterDelegate<Character> characterWriter = new CharacterWriter();
 
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(QuestNpc.QuestNpcReader).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            characterWriter = compiler.GetTypeWriter(typeof(Character))
-                as CharacterWriter;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, QuestNpc value)
         {
-            output.WriteRawObject<Character>(value as Character, characterWriter);
+            characterWriter.Write(output, value);
             output.Write(value.IntroductionDialogue);
         }
     }

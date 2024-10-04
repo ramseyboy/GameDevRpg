@@ -50,7 +50,7 @@ namespace RolePlayingGameData
         public CharacterClass CharacterClass
         {
             get { return characterClass; }
-            set 
+            set
             {
                 characterClass = value;
                 ResetBaseStatistics();
@@ -69,8 +69,8 @@ namespace RolePlayingGameData
         public int CharacterLevel
         {
             get { return characterLevel; }
-            set 
-            { 
+            set
+            {
                 characterLevel = value;
                 ResetBaseStatistics();
                 spells = null;
@@ -88,7 +88,7 @@ namespace RolePlayingGameData
                 return characterLevel >= characterClass.LevelEntries.Count;
             }
         }
-        
+
 
         /// <summary>
         /// The cached list of spells for this level.
@@ -101,8 +101,8 @@ namespace RolePlayingGameData
         [ContentSerializerIgnore]
         public List<Spell> Spells
         {
-            get 
-            { 
+            get
+            {
                 if ((spells == null) && (characterClass != null))
                 {
                     spells = characterClass.GetAllSpellsForLevel(characterLevel);
@@ -131,8 +131,8 @@ namespace RolePlayingGameData
         public int Experience
         {
             get { return experience; }
-            set 
-            { 
+            set
+            {
                 experience = value;
                 while (experience >= ExperienceForNextLevel)
                 {
@@ -165,7 +165,7 @@ namespace RolePlayingGameData
 
 
         #region Statistics
-        
+
 
         /// <summary>
         /// The base statistics of this character, from the character class and level.
@@ -362,7 +362,7 @@ namespace RolePlayingGameData
             // recalculate the statistics buffs from equipment
             RecalculateEquipmentStatistics();
 
-            return true;        
+            return true;
         }
 
 
@@ -393,7 +393,7 @@ namespace RolePlayingGameData
             return Equip(equipment, out oldEquipment);
         }
 
-            
+
         /// <summary>
         /// Equip a new piece of equipment, specifying any equipment auto-unequipped.
         /// </summary>
@@ -649,21 +649,21 @@ namespace RolePlayingGameData
         {
             if (combatSprite != null)
             {
-                combatSprite.AddAnimation(new Animation("Idle", 37, 42, 
+                combatSprite.AddAnimation(new Animation("Idle", 37, 42,
                     CombatAnimationInterval, true));
                 combatSprite.AddAnimation(new Animation("Walk", 25, 30,
                     CombatAnimationInterval, true));
-                combatSprite.AddAnimation(new Animation("Attack", 1, 6, 
+                combatSprite.AddAnimation(new Animation("Attack", 1, 6,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("SpellCast", 31, 36, 
+                combatSprite.AddAnimation(new Animation("SpellCast", 31, 36,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Defend", 13, 18, 
+                combatSprite.AddAnimation(new Animation("Defend", 13, 18,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Dodge", 13, 18, 
+                combatSprite.AddAnimation(new Animation("Dodge", 13, 18,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Hit", 19, 24, 
+                combatSprite.AddAnimation(new Animation("Hit", 19, 24,
                     CombatAnimationInterval, false));
-                combatSprite.AddAnimation(new Animation("Die", 7, 12, 
+                combatSprite.AddAnimation(new Animation("Die", 7, 12,
                     CombatAnimationInterval, false));
             }
         }
@@ -680,10 +680,12 @@ namespace RolePlayingGameData
         /// </summary>
         public class FightingCharacterReader : ContentTypeReader<FightingCharacter>
         {
+            private IContentTypeReaderDelegate<Character> characterReader = new CharacterReader();
+
             /// <summary>
             /// Reads a FightingCharacter object from the content pipeline.
             /// </summary>
-            protected override FightingCharacter Read(ContentReader input, 
+            protected override FightingCharacter Read(ContentReader input,
                 FightingCharacter existingInstance)
             {
                 FightingCharacter fightingCharacter = existingInstance;
@@ -692,8 +694,7 @@ namespace RolePlayingGameData
                     throw new ArgumentNullException("existingInstance");
                 }
 
-                input.ReadRawObject<Character>(fightingCharacter as Character);
-
+                characterReader.Read(input, fightingCharacter);
                 fightingCharacter.CharacterClassContentName = input.ReadString();
                 fightingCharacter.CharacterLevel = input.ReadInt32();
                 fightingCharacter.InitialEquipmentContentNames.AddRange(
@@ -712,7 +713,7 @@ namespace RolePlayingGameData
                             fightingCharacter.CharacterClassContentName));
 
                 // populate the equipment list
-                foreach (string gearName in 
+                foreach (string gearName in
                     fightingCharacter.InitialEquipmentContentNames)
                 {
                     fightingCharacter.Equip(input.ContentManager.Load<Equipment>(
@@ -723,7 +724,7 @@ namespace RolePlayingGameData
                 fightingCharacter.RecalculateTotalDefenseRanges();
 
                 // populate the inventory based on the content names
-                foreach (ContentEntry<Gear> inventoryEntry in 
+                foreach (ContentEntry<Gear> inventoryEntry in
                     fightingCharacter.Inventory)
                 {
                     inventoryEntry.Content = input.ContentManager.Load<Gear>(

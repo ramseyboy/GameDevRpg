@@ -8,7 +8,7 @@
 #endregion
 
 #region Using Statements
-using System;
+
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -254,7 +254,7 @@ namespace RolePlayingGameData
         /// <summary>
         /// Add the standard character idle animations to this character.
         /// </summary>
-        private void AddStandardCharacterIdleAnimations()
+        public void AddStandardCharacterIdleAnimations()
         {
             if (mapSprite != null)
             {
@@ -297,7 +297,7 @@ namespace RolePlayingGameData
         /// <summary>
         /// Add the standard character walk animations to this character.
         /// </summary>
-        private void AddStandardCharacterWalkingAnimations()
+        public void AddStandardCharacterWalkingAnimations()
         {
             AnimatingSprite sprite = (walkingSprite == null ? mapSprite : walkingSprite);
             if (sprite != null)
@@ -326,57 +326,6 @@ namespace RolePlayingGameData
 
 
         #region Content Type Reader
-
-
-        /// <summary>
-        /// Reads a Character object from the content pipeline.
-        /// </summary>
-        public class CharacterReader : ContentTypeReader<Character>
-        {
-            /// <summary>
-            /// Reads a Character object from the content pipeline.
-            /// </summary>
-            protected override Character Read(ContentReader input,
-                Character existingInstance)
-            {
-                Character character = existingInstance;
-                if (character == null)
-                {
-                    throw new ArgumentNullException("existingInstance");
-                }
-
-                character.Name = input.ReadString();
-                character.MapIdleAnimationInterval = input.ReadInt32();
-                character.MapSprite = input.ReadObject<AnimatingSprite>();
-                if (character.MapSprite != null)
-                {
-                    character.MapSprite.SourceOffset =
-                        new Vector2(
-                        character.MapSprite.SourceOffset.X - 32,
-                        character.MapSprite.SourceOffset.Y - 32);
-                }
-                character.AddStandardCharacterIdleAnimations();
-
-                character.MapWalkingAnimationInterval = input.ReadInt32();
-                character.WalkingSprite = input.ReadObject<AnimatingSprite>();
-                if (character.WalkingSprite != null)
-                {
-                    character.WalkingSprite.SourceOffset =
-                        new Vector2(
-                        character.WalkingSprite.SourceOffset.X - 32,
-                        character.WalkingSprite.SourceOffset.Y - 32);
-                }
-                character.AddStandardCharacterWalkingAnimations();
-
-                character.ResetAnimation(false);
-
-                character.shadowTexture = input.ContentManager.Load<Texture2D>(
-                    @"Textures\Characters\CharacterShadow");
-
-                return character;
-            }
-        }
-
 
         #endregion
     }
