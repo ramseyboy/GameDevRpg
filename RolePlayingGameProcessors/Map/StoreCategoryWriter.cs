@@ -28,13 +28,13 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class StoreCategoryWriter : RolePlayingGameWriter<StoreCategory>
+    public class StoreCategoryWriter : ContentTypeWriter<StoreCategory>
     {
-        
+
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(StoreCategory.StoreCategoryReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, StoreCategory value)
         {
             output.Write(value.Name);

@@ -28,12 +28,12 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class StatisticsValueWriter : RolePlayingGameWriter<StatisticsValue>
+    public class StatisticsValueWriter : ContentTypeWriter<StatisticsValue>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(StatisticsValue.StatisticsValueReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, StatisticsValue value)
         {
             output.Write(value.HealthPoints);

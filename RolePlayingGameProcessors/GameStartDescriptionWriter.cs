@@ -28,12 +28,12 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class GameStartDescriptionWriter : RolePlayingGameWriter<GameStartDescription>
+    public class GameStartDescriptionWriter : ContentTypeWriter<GameStartDescription>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(GameStartDescription.GameStartDescriptionReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, GameStartDescription value)
         {
             if (value.PlayerContentNames.Count <= 0)

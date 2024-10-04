@@ -64,7 +64,7 @@ namespace RolePlayingGameData
         /// Tests for equality between reference objects.
         /// </summary>
         /// <remarks>
-        /// Implemented so that player-removed map entries from save games can be 
+        /// Implemented so that player-removed map entries from save games can be
         /// compared to the data-driven map entries.
         /// </remarks>
         /// <returns>True if "equal".</returns>
@@ -98,7 +98,7 @@ namespace RolePlayingGameData
         /// The animating sprite for the map view.
         /// </summary>
         /// <remarks>
-        /// Only used when there might be several of the same WorldObject 
+        /// Only used when there might be several of the same WorldObject
         /// in the scene at once.
         /// </remarks>
         private AnimatingSprite mapSprite;
@@ -107,7 +107,7 @@ namespace RolePlayingGameData
         /// The animating sprite for the map view.
         /// </summary>
         /// <remarks>
-        /// Only used when there might be several of the same WorldObject 
+        /// Only used when there might be several of the same WorldObject
         /// in the scene at once.
         /// </remarks>
         [ContentSerializer(Optional = true)]
@@ -129,6 +129,8 @@ namespace RolePlayingGameData
         /// </summary>
         public class MapEntryReader : ContentTypeReader<MapEntry<T>>
         {
+            private readonly IContentTypeReaderDelegate<ContentEntry<T>> reader = new ContentEntryReader<T>();
+
             /// <summary>
             /// Read a MapEntry object from the content pipeline.
             /// </summary>
@@ -141,7 +143,7 @@ namespace RolePlayingGameData
                     desc = new MapEntry<T>();
                 }
 
-                // input.ReadRawObject(desc as ContentEntry<T>);
+                reader.Read(input, desc);
                 desc.MapPosition = input.ReadObject<Point>();
                 desc.Direction = (Direction)input.ReadInt32();
 

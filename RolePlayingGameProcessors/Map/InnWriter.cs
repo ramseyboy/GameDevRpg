@@ -28,14 +28,14 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class InnWriter : RolePlayingGameWriter<Inn>
+    public class InnWriter : ContentTypeWriter<Inn>
     {
         WorldObjectWriter worldObjectWriter = null;
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Inn.InnReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Initialize(ContentCompiler compiler)
         {
             worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject))

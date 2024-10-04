@@ -28,12 +28,12 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class PortalWriter : RolePlayingGameWriter<Portal>
+    public class PortalWriter : ContentTypeWriter<Portal>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Portal.PortalReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, Portal value)
         {
             output.Write(value.Name);

@@ -18,7 +18,7 @@ namespace RolePlayingGameData
     /// <summary>
     /// A description of a piece of content and quantity for various purposes.
     /// </summary>
-    public class ContentEntry<T> where T : ContentObject 
+    public class ContentEntry<T> where T : ContentObject
     {
         /// <summary>
         /// The content name for the content involved.
@@ -57,8 +57,8 @@ namespace RolePlayingGameData
             get { return content; }
             set { content = value; }
         }
-        
-        
+
+
         /// <summary>
         /// The quantity of this content.
         /// </summary>
@@ -73,36 +73,5 @@ namespace RolePlayingGameData
             get { return count; }
             set { count = value; }
         }
-
-
-        #region Content Type Reader
-
-
-        /// <summary>
-        /// Reads a ContentEntry object from the content pipeline.
-        /// </summary>
-        public class ContentEntryReader : ContentTypeReader<ContentEntry<T>>
-        {
-            /// <summary>
-            /// Reads a ContentEntry object from the content pipeline.
-            /// </summary>
-            protected override ContentEntry<T> Read(ContentReader input,
-                ContentEntry<T> existingInstance)
-            {
-                ContentEntry<T> member = existingInstance;
-                if (member == null)
-                {
-                    member = new ContentEntry<T>();
-                }
-
-                member.ContentName = input.ReadString();
-                member.Count = input.ReadInt32();
-
-                return member;
-            }
-        }
-
-
-        #endregion
     }
 }

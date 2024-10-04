@@ -28,12 +28,12 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class Int32RangeWriter : RolePlayingGameWriter<Int32Range>
+    public class Int32RangeWriter : ContentTypeWriter<Int32Range>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Int32Range.Int32RangeReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, Int32Range value)
         {
             output.Write(value.Minimum);

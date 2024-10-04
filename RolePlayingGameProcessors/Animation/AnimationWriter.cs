@@ -28,12 +28,12 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class AnimationWriter : RolePlayingGameWriter<Animation>
+    public class AnimationWriter : ContentTypeWriter<Animation>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Animation.AnimationReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, Animation value)
         {
             output.Write(String.IsNullOrEmpty(value.Name) ? String.Empty : value.Name);

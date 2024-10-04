@@ -28,17 +28,17 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class ChestWriter : RolePlayingGameWriter<Chest>
+    public class ChestWriter : ContentTypeWriter<Chest>
     {
         WorldObjectWriter worldObjectWriter = null;
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Chest.ChestReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Initialize(ContentCompiler compiler)
         {
-            worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject)) 
+            worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject))
                 as WorldObjectWriter;
 
             base.Initialize(compiler);
@@ -51,7 +51,7 @@ namespace RolePlayingGameProcessors
             {
                 return (contentEntry.Count <= 0);
             });
-          
+
             // write out the base type
             output.WriteRawObject<WorldObject>(value as WorldObject, worldObjectWriter);
 

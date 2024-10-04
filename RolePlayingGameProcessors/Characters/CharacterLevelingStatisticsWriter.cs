@@ -29,13 +29,13 @@ namespace RolePlayingGameProcessors
     /// </summary>
     [ContentTypeWriter]
     public class CharacterLevelingStatisticsWriter :
-        RolePlayingGameWriter<CharacterLevelingStatistics>
+        ContentTypeWriter<CharacterLevelingStatistics>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(CharacterLevelingStatistics.CharacterLevelingStatisticsReader).AssemblyQualifiedName ?? string.Empty;
-        
-        protected override void Write(ContentWriter output, 
+
+        protected override void Write(ContentWriter output,
             CharacterLevelingStatistics value)
         {
             output.Write(value.HealthPointsIncrease);

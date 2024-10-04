@@ -28,17 +28,17 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class MonsterWriter : RolePlayingGameWriter<Monster>
+    public class MonsterWriter : ContentTypeWriter<Monster>
     {
         FightingCharacterWriter fightingCharacterWriter = null;
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(MonsterWriter).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Initialize(ContentCompiler compiler)
         {
-            fightingCharacterWriter = compiler.GetTypeWriter(typeof(FightingCharacter)) 
+            fightingCharacterWriter = compiler.GetTypeWriter(typeof(FightingCharacter))
                 as FightingCharacterWriter;
 
             base.Initialize(compiler);
@@ -46,7 +46,7 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, Monster value)
         {
-            output.WriteRawObject<FightingCharacter>(value as FightingCharacter, 
+            output.WriteRawObject<FightingCharacter>(value as FightingCharacter,
                 fightingCharacterWriter);
             output.Write(value.DefendPercentage);
             output.WriteObject(value.GearDrops);

@@ -29,29 +29,19 @@ namespace RolePlayingGameProcessors
     /// </summary>
     [ContentTypeWriter]
     public class WeightedContentEntryWriter<T> :
-        RolePlayingGameWriter<WeightedContentEntry<T>>
+        ContentTypeWriter<WeightedContentEntry<T>>
         where T : ContentObject
     {
-        ContentEntryWriter<T> contentEntryWriter = null;
+        private readonly IContentTypeWriterDelegate<ContentEntry<T>> contentEntryWriter = new ContentEntryWriter<T>();
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(WeightedContentEntry<T>.WeightedContentEntryReader).AssemblyQualifiedName ?? string.Empty;
-        
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            contentEntryWriter = compiler.GetTypeWriter(typeof(ContentEntry<T>))
-                as ContentEntryWriter<T>;
-
-            base.Initialize(compiler);
-        }
 
         protected override void Write(ContentWriter output,
             WeightedContentEntry<T> value)
         {
-            output.WriteRawObject<ContentEntry<T>>(value as ContentEntry<T>,
-                contentEntryWriter);
-
+            contentEntryWriter.Write(output, value);
             output.Write(value.Weight);
         }
     }

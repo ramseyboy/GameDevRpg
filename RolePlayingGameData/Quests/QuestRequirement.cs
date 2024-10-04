@@ -44,6 +44,8 @@ namespace RolePlayingGameData
         /// </summary>
         public class QuestRequirementReader : ContentTypeReader<QuestRequirement<T>>
         {
+            private readonly IContentTypeReaderDelegate<ContentEntry<T>> reader = new ContentEntryReader<T>();
+
             /// <summary>
             /// Reads a QuestRequirement object from the content pipeline.
             /// </summary>
@@ -56,7 +58,7 @@ namespace RolePlayingGameData
                     requirement = new QuestRequirement<T>();
                 }
 
-                input.ReadRawObject<ContentEntry<T>>(requirement as ContentEntry<T>);
+                reader.Read(input, requirement);
                 if (typeof(T) == typeof(Gear))
                 {
                     requirement.Content = input.ContentManager.Load<T>(
@@ -65,7 +67,7 @@ namespace RolePlayingGameData
                 else if (typeof(T) == typeof(Monster))
                 {
                     requirement.Content = input.ContentManager.Load<T>(
-                        System.IO.Path.Combine(@"Characters\Monsters", 
+                        System.IO.Path.Combine(@"Characters\Monsters",
                         requirement.ContentName));
                 }
 

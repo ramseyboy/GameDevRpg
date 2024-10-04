@@ -28,17 +28,17 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class QuestNpcWriter : RolePlayingGameWriter<QuestNpc>
+    public class QuestNpcWriter : ContentTypeWriter<QuestNpc>
     {
         CharacterWriter characterWriter = null;
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(QuestNpc.QuestNpcReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Initialize(ContentCompiler compiler)
         {
-            characterWriter = compiler.GetTypeWriter(typeof(Character)) 
+            characterWriter = compiler.GetTypeWriter(typeof(Character))
                 as CharacterWriter;
 
             base.Initialize(compiler);

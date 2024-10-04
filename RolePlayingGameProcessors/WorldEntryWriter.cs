@@ -28,15 +28,15 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class WorldEntryWriter<T> : RolePlayingGameWriter<WorldEntry<T>>
+    public class WorldEntryWriter<T> : ContentTypeWriter<WorldEntry<T>>
         where T : ContentObject
     {
         MapEntryWriter<T> mapEntryWriter = null;
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(WorldEntry<T>.WorldEntryReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Initialize(ContentCompiler compiler)
         {
             mapEntryWriter = compiler.GetTypeWriter(typeof(MapEntry<T>))
@@ -47,9 +47,9 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, WorldEntry<T> value)
         {
-            output.WriteRawObject<MapEntry<T>>(value as MapEntry<T>, 
+            output.WriteRawObject<MapEntry<T>>(value as MapEntry<T>,
                 mapEntryWriter);
-            
+
             output.Write(value.MapContentName);
         }
     }

@@ -28,17 +28,17 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class FixedCombatWriter : RolePlayingGameWriter<FixedCombat>
+    public class FixedCombatWriter : ContentTypeWriter<FixedCombat>
     {
         WorldObjectWriter worldObjectWriter = null;
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(FixedCombat.FixedCombatReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Initialize(ContentCompiler compiler)
         {
-            worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject)) 
+            worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject))
                 as WorldObjectWriter;
 
             base.Initialize(compiler);

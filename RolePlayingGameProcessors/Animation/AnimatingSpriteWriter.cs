@@ -28,12 +28,12 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class AnimatingSpriteWriter : RolePlayingGameWriter<AnimatingSprite>
+    public class AnimatingSpriteWriter : ContentTypeWriter<AnimatingSprite>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(AnimatingSprite.AnimatingSpriteReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, AnimatingSprite value)
         {
             output.Write(value.TextureName);

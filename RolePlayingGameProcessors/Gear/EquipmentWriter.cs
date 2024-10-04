@@ -28,14 +28,14 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class EquipmentWriter : RolePlayingGameWriter<Equipment>
+    public class EquipmentWriter : ContentTypeWriter<Equipment>
     {
         GearWriter gearWriter = null;
 
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Equipment.EquipmentReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Initialize(ContentCompiler compiler)
         {
             gearWriter = compiler.GetTypeWriter(typeof(Gear)) as GearWriter;

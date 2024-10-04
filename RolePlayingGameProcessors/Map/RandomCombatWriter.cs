@@ -28,12 +28,12 @@ namespace RolePlayingGameProcessors
     /// This should be part of a Content Pipeline Extension Library project.
     /// </summary>
     [ContentTypeWriter]
-    public class RandomCombatWriter : RolePlayingGameWriter<RandomCombat>
+    public class RandomCombatWriter : ContentTypeWriter<RandomCombat>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(RandomCombat.RandomCombatReader).AssemblyQualifiedName ?? string.Empty;
-        
+
         protected override void Write(ContentWriter output, RandomCombat value)
         {
             output.Write(value.CombatProbability);

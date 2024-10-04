@@ -29,13 +29,13 @@ namespace RolePlayingGameProcessors
     /// </summary>
     [ContentTypeWriter]
     public class CharacterLevelDescriptionWriter :
-        RolePlayingGameWriter<CharacterLevelDescription>
+        ContentTypeWriter<CharacterLevelDescription>
     {
         /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform) 
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(CharacterLevelDescription.CharacterLevelDescriptionReader).AssemblyQualifiedName ?? string.Empty;
-        
-        protected override void Write(ContentWriter output, 
+
+        protected override void Write(ContentWriter output,
             CharacterLevelDescription value)
         {
             output.Write(value.ExperiencePoints);
