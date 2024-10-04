@@ -33,8 +33,8 @@ namespace RolePlayingGameData
             Combat = 1,
             NonCombat = 2,
         };
-        
-        
+
+
         /// <summary>
         /// Description of when the item may be used.
         /// </summary>
@@ -273,7 +273,7 @@ namespace RolePlayingGameData
             set { overlay = value; }
         }
 
-    
+
         #endregion
 
 
@@ -285,6 +285,8 @@ namespace RolePlayingGameData
         /// </summary>
         public class ItemReader : ContentTypeReader<Item>
         {
+            private readonly IContentTypeReaderDelegate<Gear> gearReader = new GearReader();
+
             protected override Item Read(ContentReader input, Item existingInstance)
             {
                 Item item = existingInstance;
@@ -294,7 +296,7 @@ namespace RolePlayingGameData
                 }
 
                 // read gear settings
-                input.ReadRawObject<Gear>(item as Gear);
+                gearReader.Read(input, item);
 
                 // read item settings
                 item.Usage = (ItemUsage)input.ReadInt32();

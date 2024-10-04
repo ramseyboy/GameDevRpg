@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace RolePlayingGameData
 {
     /// <summary>
-    /// Equipment that can be equipped on a FightingCharacter 
+    /// Equipment that can be equipped on a FightingCharacter
     /// to improve their physical damage.
     /// </summary>
     public class Weapon : Equipment
@@ -106,7 +106,7 @@ namespace RolePlayingGameData
             get { return blockCueName; }
             set { blockCueName = value; }
         }
-        
+
 
         #endregion
 
@@ -140,6 +140,8 @@ namespace RolePlayingGameData
         /// </summary>
         public class WeaponReader : ContentTypeReader<Weapon>
         {
+            private readonly IContentTypeReaderDelegate<Equipment> equipmentReader = new EquipmentReader();
+
             /// <summary>
             /// Read the Weapon type from the content pipeline.
             /// </summary>
@@ -153,7 +155,7 @@ namespace RolePlayingGameData
                 }
 
                 // read the gear settings
-                input.ReadRawObject<Equipment>(weapon as Equipment);
+                equipmentReader.Read(input, weapon);
 
                 // read the weapon settings
                 weapon.TargetDamageRange = input.ReadObject<Int32Range>();
@@ -162,7 +164,7 @@ namespace RolePlayingGameData
                 weapon.BlockCueName = input.ReadString();
                 weapon.Overlay = input.ReadObject<AnimatingSprite>();
                 weapon.Overlay.SourceOffset = new Vector2(
-                    weapon.Overlay.FrameDimensions.X / 2, 
+                    weapon.Overlay.FrameDimensions.X / 2,
                     weapon.Overlay.FrameDimensions.Y);
 
                 return weapon;

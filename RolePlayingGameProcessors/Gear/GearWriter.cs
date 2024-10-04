@@ -21,20 +21,9 @@ using RolePlayingGameData;
 
 namespace RolePlayingGameProcessors
 {
-    /// <summary>
-    /// This class will be instantiated by the XNA Framework Content Pipeline
-    /// to write the specified data type into binary .xnb format.
-    ///
-    /// This should be part of a Content Pipeline Extension Library project.
-    /// </summary>
-    [ContentTypeWriter]
-    public class GearWriter : ContentTypeWriter<Gear>
+    public class GearWriter : IContentTypeWriterDelegate<Gear>
     {
-        /// <inheritdoc />
-        public override string GetRuntimeReader(TargetPlatform targetPlatform)
-            => typeof(Gear.GearReader).AssemblyQualifiedName ?? string.Empty;
-
-        protected override void Write(ContentWriter output, Gear value)
+        public void Write(ContentWriter output, Gear value)
         {
             output.Write(value.Name);
             output.Write(value.Description);

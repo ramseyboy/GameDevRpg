@@ -30,24 +30,16 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class ArmorWriter : ContentTypeWriter<Armor>
     {
-        EquipmentWriter equipmentWriter = null;
+        private readonly IContentTypeWriterDelegate<Equipment> equipmentWriter = new EquipmentWriter();
 
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Armor.ArmorReader).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            equipmentWriter = compiler.GetTypeWriter(typeof(Equipment))
-                as EquipmentWriter;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, Armor value)
         {
             // write out equipment values
-            output.WriteRawObject<Equipment>(value as Equipment, equipmentWriter);
+            equipmentWriter.Write(output, value);
 
             // write out armor values
             output.Write((Int32)value.Slot);

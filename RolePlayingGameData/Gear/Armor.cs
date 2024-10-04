@@ -115,6 +115,8 @@ namespace RolePlayingGameData
         /// </summary>
         public class ArmorReader : ContentTypeReader<Armor>
         {
+            private readonly IContentTypeReaderDelegate<Equipment> equipmentReader = new EquipmentReader();
+
             protected override Armor Read(ContentReader input, Armor existingInstance)
             {
                 Armor armor = existingInstance;
@@ -125,7 +127,7 @@ namespace RolePlayingGameData
                 }
 
                 // read the gear settings
-                input.ReadRawObject<Equipment>(armor as Equipment);
+                equipmentReader.Read(input, armor);
 
                 // read armor settings
                 armor.Slot = (ArmorSlot)input.ReadInt32();

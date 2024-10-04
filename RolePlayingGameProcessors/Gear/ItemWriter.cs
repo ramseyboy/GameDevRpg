@@ -30,25 +30,15 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class ItemWriter : ContentTypeWriter<Item>
     {
-        GearWriter gearWriter = null;
+        private readonly IContentTypeWriterDelegate<Gear> gearWriter = new GearWriter();
 
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Item.ItemReader).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            gearWriter = compiler.GetTypeWriter(typeof(Gear)) as GearWriter;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, Item value)
         {
-            // write out gear values
-            output.WriteRawObject<Gear>(value as Gear, gearWriter);
-
-            // write out item values
+            gearWriter.Write(output, value);
             output.Write((Int32)value.Usage);
             output.Write(value.IsOffensive);
             output.Write(value.TargetDuration);

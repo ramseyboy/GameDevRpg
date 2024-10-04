@@ -232,8 +232,8 @@ namespace RolePlayingGameData
         public Texture2D IconTexture
         {
             get { return iconTexture; }
+            set => iconTexture = value;
         }
-
 
         #endregion
 
@@ -274,7 +274,7 @@ namespace RolePlayingGameData
         /// </param>
         /// <param name="maximumLines">The maximum number of lines to draw.</param>
         public virtual void DrawDescription(SpriteBatch spriteBatch,
-            SpriteFont spriteFont, Color color, Vector2 position, 
+            SpriteFont spriteFont, Color color, Vector2 position,
             int maximumCharactersPerLine, int maximumLines)
         {
             // check the parameters
@@ -327,48 +327,8 @@ namespace RolePlayingGameData
             }
 
             // draw the string
-            spriteBatch.DrawString(spriteFont, stringBuilder.ToString(), 
+            spriteBatch.DrawString(spriteFont, stringBuilder.ToString(),
                 position, color);
-        }
-
-
-        #endregion
-
-
-        #region Content Type Reader
-
-
-        /// <summary>
-        /// Reads a Gear object from the content pipeline.
-        /// </summary>
-        public class GearReader : ContentTypeReader<Gear>
-        {
-            /// <summary>
-            /// Reads a Gear object from the content pipeline.
-            /// </summary>
-            protected override Gear Read(ContentReader input, Gear existingInstance)
-            {
-                Gear gear = existingInstance;
-                if (gear == null)
-                {
-                    throw new ArgumentException("Unable to create new Gear objects.");
-                }
-
-                gear.AssetName = input.AssetName;
-
-                // read gear settings
-                gear.Name = input.ReadString();
-                gear.Description = input.ReadString();
-                gear.GoldValue = input.ReadInt32();
-                gear.IsDroppable = input.ReadBoolean();
-                gear.MinimumCharacterLevel = input.ReadInt32();
-                gear.SupportedClasses.AddRange(input.ReadObject<List<string>>());
-                gear.IconTextureName = input.ReadString();
-                gear.iconTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Gear", gear.IconTextureName));
-
-                return gear;
-            }
         }
 
 
