@@ -56,14 +56,13 @@ namespace RolePlayingGameData
                     fixedCombat = new FixedCombat();
                 }
 
-                input.ReadRawObject<WorldObject>(fixedCombat as WorldObject);
-
+                fixedCombat.Name = input.ReadString();
                 fixedCombat.Entries.AddRange(
                     input.ReadObject<List<ContentEntry<Monster>>>());
                 foreach (ContentEntry<Monster> fixedCombatEntry in fixedCombat.Entries)
                 {
                     fixedCombatEntry.Content = input.ContentManager.Load<Monster>(
-                        Path.Combine(@"Characters\Monsters", 
+                        Path.Combine(@"Characters\Monsters",
                             fixedCombatEntry.ContentName));
                 }
 

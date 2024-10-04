@@ -144,15 +144,14 @@ namespace RolePlayingGameData
                     inn = new Inn();
                 }
 
-                input.ReadRawObject<WorldObject>(inn as WorldObject);
-
+                inn.Name = input.ReadString();
                 inn.ChargePerPlayer = input.ReadInt32();
                 inn.WelcomeMessage = input.ReadString();
                 inn.PaidMessage = input.ReadString();
                 inn.NotEnoughGoldMessage = input.ReadString();
                 inn.ShopkeeperTextureName = input.ReadString();
                 inn.shopkeeperTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Characters\Portraits", 
+                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
                     inn.ShopkeeperTextureName));
 
                 return inn;

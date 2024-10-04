@@ -110,12 +110,12 @@ namespace RolePlayingGameData
 
 
         /// <summary>
-        /// A valid spawn position for this map. 
+        /// A valid spawn position for this map.
         /// </summary>
         private Point spawnMapPosition;
 
         /// <summary>
-        /// A valid spawn position for this map. 
+        /// A valid spawn position for this map.
         /// </summary>
         public Point SpawnMapPosition
         {
@@ -161,13 +161,13 @@ namespace RolePlayingGameData
 
 
         /// <summary>
-        /// The content name of the texture that contains the background for combats 
+        /// The content name of the texture that contains the background for combats
         /// that occur while traveling on this map.
         /// </summary>
         private string combatTextureName;
 
         /// <summary>
-        /// The content name of the texture that contains the background for combats 
+        /// The content name of the texture that contains the background for combats
         /// that occur while traveling on this map.
         /// </summary>
         public string CombatTextureName
@@ -178,13 +178,13 @@ namespace RolePlayingGameData
 
 
         /// <summary>
-        /// The texture that contains the background for combats 
+        /// The texture that contains the background for combats
         /// that occur while traveling on this map.
         /// </summary>
         private Texture2D combatTexture;
 
         /// <summary>
-        /// The texture that contains the background for combats 
+        /// The texture that contains the background for combats
         /// that occur while traveling on this map.
         /// </summary>
         [ContentSerializerIgnore]
@@ -268,7 +268,7 @@ namespace RolePlayingGameData
 
             return baseLayer[mapPosition.Y * mapDimensions.X + mapPosition.X];
         }
-        
+
 
         /// <summary>
         /// Retrieves the source rectangle for the tile in the given position
@@ -409,8 +409,8 @@ namespace RolePlayingGameData
                 (mapPosition.Y < 0) || (mapPosition.Y >= mapDimensions.Y))
             {
                 return Rectangle.Empty;
-            } 
-            
+            }
+
             int objectLayerValue = GetObjectLayerValue(mapPosition);
             if (objectLayerValue < 0)
             {
@@ -418,7 +418,7 @@ namespace RolePlayingGameData
             }
 
             return new Rectangle(
-                (objectLayerValue % tilesPerRow) * tileSize.X, 
+                (objectLayerValue % tilesPerRow) * tileSize.X,
                 (objectLayerValue / tilesPerRow) * tileSize.Y,
                 tileSize.X, tileSize.Y);
         }
@@ -506,7 +506,7 @@ namespace RolePlayingGameData
 
 
         #region Map Contents
-        
+
 
         /// <summary>
         /// The content names and positions of the portals on this map.
@@ -539,7 +539,7 @@ namespace RolePlayingGameData
                 return (portalEntry.ContentName == name);
             });
         }
-        
+
 
         /// <summary>
         /// The content names and positions of the treasure chests on this map.
@@ -558,14 +558,14 @@ namespace RolePlayingGameData
 
 
         /// <summary>
-        /// The content name, positions, and orientations of the 
+        /// The content name, positions, and orientations of the
         /// fixed combat encounters on this map.
         /// </summary>
         private List<MapEntry<FixedCombat>> fixedCombatEntries =
             new List<MapEntry<FixedCombat>>();
 
         /// <summary>
-        /// The content name, positions, and orientations of the 
+        /// The content name, positions, and orientations of the
         /// fixed combat encounters on this map.
         /// </summary>
         public List<MapEntry<FixedCombat>> FixedCombatEntries
@@ -593,7 +593,7 @@ namespace RolePlayingGameData
         /// <summary>
         /// The content names, positions, and orientations of quest Npcs on this map.
         /// </summary>
-        private List<MapEntry<QuestNpc>> questNpcEntries = 
+        private List<MapEntry<QuestNpc>> questNpcEntries =
             new List<MapEntry<QuestNpc>>();
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace RolePlayingGameData
         /// <summary>
         /// The content names, positions, and orientations of player Npcs on this map.
         /// </summary>
-        private List<MapEntry<Player>> playerNpcEntries = 
+        private List<MapEntry<Player>> playerNpcEntries =
             new List<MapEntry<Player>>();
 
         /// <summary>
@@ -756,14 +756,14 @@ namespace RolePlayingGameData
 
                 map.PortalEntries.AddRange(
                     input.ReadObject<List<MapEntry<Portal>>>() ?? []);
-                foreach (MapEntry<Portal> portalEntry in map.PortalEntries.Where(x => x is not null))
+                foreach (MapEntry<Portal> portalEntry in map.PortalEntries)
                 {
                     portalEntry.Content = map.Portals.Find(delegate(Portal portal)
                         {
                             return (portal.Name == portalEntry.ContentName);
                         });
                 }
-                
+
                 map.ChestEntries.AddRange(
                     input.ReadObject<List<MapEntry<Chest>>>() ?? []);
                 foreach (MapEntry<Chest> chestEntry in map.chestEntries)
@@ -777,12 +777,12 @@ namespace RolePlayingGameData
                 Random random = new Random();
                 map.FixedCombatEntries.AddRange(
                     input.ReadObject<List<MapEntry<FixedCombat>>>() ?? []);
-                foreach (MapEntry<FixedCombat> fixedCombatEntry in 
+                foreach (MapEntry<FixedCombat> fixedCombatEntry in
                     map.fixedCombatEntries)
                 {
-                    fixedCombatEntry.Content = 
+                    fixedCombatEntry.Content =
                         input.ContentManager.Load<FixedCombat>(
-                        System.IO.Path.Combine(@"Maps\FixedCombats", 
+                        System.IO.Path.Combine(@"Maps\FixedCombats",
                         fixedCombatEntry.ContentName));
                     // clone the map sprite in the entry, as there may be many entries
                     // per FixedCombat
@@ -790,7 +790,7 @@ namespace RolePlayingGameData
                         fixedCombatEntry.Content.Entries[0].Content.MapSprite.Clone()
                         as AnimatingSprite;
                     // play the idle animation
-                    fixedCombatEntry.MapSprite.PlayAnimation("Idle", 
+                    fixedCombatEntry.MapSprite.PlayAnimation("Idle",
                         fixedCombatEntry.Direction);
                     // advance in a random amount so the animations aren't synchronized
                     fixedCombatEntry.MapSprite.UpdateAnimation(
@@ -801,7 +801,7 @@ namespace RolePlayingGameData
 
                 map.QuestNpcEntries.AddRange(
                     input.ReadObject<List<MapEntry<QuestNpc>>>() ?? []);
-                foreach (MapEntry<QuestNpc> questNpcEntry in 
+                foreach (MapEntry<QuestNpc> questNpcEntry in
                     map.questNpcEntries)
                 {
                     questNpcEntry.Content = input.ContentManager.Load<QuestNpc>(
@@ -813,7 +813,7 @@ namespace RolePlayingGameData
 
                 map.PlayerNpcEntries.AddRange(
                     input.ReadObject<List<MapEntry<Player>>>() ?? []);
-                foreach (MapEntry<Player> playerNpcEntry in 
+                foreach (MapEntry<Player> playerNpcEntry in
                     map.playerNpcEntries)
                 {
                     playerNpcEntry.Content = input.ContentManager.Load<Player>(
@@ -825,21 +825,21 @@ namespace RolePlayingGameData
 
                 map.InnEntries.AddRange(
                     input.ReadObject<List<MapEntry<Inn>>>() ?? []);
-                foreach (MapEntry<Inn> innEntry in 
+                foreach (MapEntry<Inn> innEntry in
                     map.innEntries)
                 {
                     innEntry.Content = input.ContentManager.Load<Inn>(
-                        System.IO.Path.Combine(@"Maps\Inns", 
+                        System.IO.Path.Combine(@"Maps\Inns",
                         innEntry.ContentName));
                 }
 
                 map.StoreEntries.AddRange(
                     input.ReadObject<List<MapEntry<Store>>>() ?? []);
-                foreach (MapEntry<Store> storeEntry in 
+                foreach (MapEntry<Store> storeEntry in
                     map.storeEntries)
                 {
                     storeEntry.Content = input.ContentManager.Load<Store>(
-                        System.IO.Path.Combine(@"Maps\Stores", 
+                        System.IO.Path.Combine(@"Maps\Stores",
                         storeEntry.ContentName));
                 }
 

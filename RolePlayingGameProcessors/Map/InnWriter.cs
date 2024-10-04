@@ -30,24 +30,13 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class InnWriter : ContentTypeWriter<Inn>
     {
-        WorldObjectWriter worldObjectWriter = null;
-
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Inn.InnReader).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject))
-                as WorldObjectWriter;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, Inn value)
         {
-            output.WriteRawObject<WorldObject>(value as WorldObject, worldObjectWriter);
-
+            output.Write(value.Name);
             output.Write(value.ChargePerPlayer);
             output.Write(value.WelcomeMessage);
             output.Write(value.PaidMessage);

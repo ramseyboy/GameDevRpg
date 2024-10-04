@@ -30,19 +30,9 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class ChestWriter : ContentTypeWriter<Chest>
     {
-        WorldObjectWriter worldObjectWriter = null;
-
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Chest.ChestReader).AssemblyQualifiedName ?? string.Empty;
-
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject))
-                as WorldObjectWriter;
-
-            base.Initialize(compiler);
-        }
 
         protected override void Write(ContentWriter output, Chest value)
         {
@@ -52,10 +42,7 @@ namespace RolePlayingGameProcessors
                 return (contentEntry.Count <= 0);
             });
 
-            // write out the base type
-            output.WriteRawObject<WorldObject>(value as WorldObject, worldObjectWriter);
-
-            // write out the chest data
+            output.Write(value.Name);
             output.Write(value.Gold);
             output.WriteObject(value.Entries);
             output.Write(value.TextureName);

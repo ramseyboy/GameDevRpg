@@ -93,7 +93,7 @@ namespace RolePlayingGameData
         {
             get
             {
-                return ((State == CharacterState.Dying) || 
+                return ((State == CharacterState.Dying) ||
                     (State == CharacterState.Dead));
             }
         }
@@ -258,21 +258,21 @@ namespace RolePlayingGameData
         {
             if (mapSprite != null)
             {
-                mapSprite.AddAnimation(new Animation("IdleSouth", 1, 6, 
+                mapSprite.AddAnimation(new Animation("IdleSouth", 1, 6,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleSouthwest", 7, 12, 
+                mapSprite.AddAnimation(new Animation("IdleSouthwest", 7, 12,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleWest", 13, 18, 
+                mapSprite.AddAnimation(new Animation("IdleWest", 13, 18,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleNorthwest", 19, 24, 
+                mapSprite.AddAnimation(new Animation("IdleNorthwest", 19, 24,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleNorth", 25, 30, 
+                mapSprite.AddAnimation(new Animation("IdleNorth", 25, 30,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleNortheast", 31, 36, 
+                mapSprite.AddAnimation(new Animation("IdleNortheast", 31, 36,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleEast", 37, 42, 
+                mapSprite.AddAnimation(new Animation("IdleEast", 37, 42,
                     MapIdleAnimationInterval, true));
-                mapSprite.AddAnimation(new Animation("IdleSoutheast", 43, 48, 
+                mapSprite.AddAnimation(new Animation("IdleSoutheast", 43, 48,
                     MapIdleAnimationInterval, true));
             }
         }
@@ -302,21 +302,21 @@ namespace RolePlayingGameData
             AnimatingSprite sprite = (walkingSprite == null ? mapSprite : walkingSprite);
             if (sprite != null)
             {
-                sprite.AddAnimation(new Animation("WalkSouth", 1, 6, 
+                sprite.AddAnimation(new Animation("WalkSouth", 1, 6,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkSouthwest", 7, 12, 
+                sprite.AddAnimation(new Animation("WalkSouthwest", 7, 12,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkWest", 13, 18, 
+                sprite.AddAnimation(new Animation("WalkWest", 13, 18,
                     MapWalkingAnimationInterval, true));
                 sprite.AddAnimation(new Animation("WalkNorthwest", 19, 24,
                     MapWalkingAnimationInterval, true));
                 sprite.AddAnimation(new Animation("WalkNorth", 25, 30,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkNortheast", 31, 36, 
+                sprite.AddAnimation(new Animation("WalkNortheast", 31, 36,
                     MapWalkingAnimationInterval, true));
                 sprite.AddAnimation(new Animation("WalkEast", 37, 42,
                     MapWalkingAnimationInterval, true));
-                sprite.AddAnimation(new Animation("WalkSoutheast", 43, 48, 
+                sprite.AddAnimation(new Animation("WalkSoutheast", 43, 48,
                     MapWalkingAnimationInterval, true));
             }
         }
@@ -336,7 +336,7 @@ namespace RolePlayingGameData
             /// <summary>
             /// Reads a Character object from the content pipeline.
             /// </summary>
-            protected override Character Read(ContentReader input, 
+            protected override Character Read(ContentReader input,
                 Character existingInstance)
             {
                 Character character = existingInstance;
@@ -345,8 +345,7 @@ namespace RolePlayingGameData
                     throw new ArgumentNullException("existingInstance");
                 }
 
-                input.ReadRawObject<WorldObject>(character as WorldObject);
-
+                character.Name = input.ReadString();
                 character.MapIdleAnimationInterval = input.ReadInt32();
                 character.MapSprite = input.ReadObject<AnimatingSprite>();
                 if (character.MapSprite != null)

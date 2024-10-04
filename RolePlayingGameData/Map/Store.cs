@@ -145,15 +145,14 @@ namespace RolePlayingGameData
                     store = new Store();
                 }
 
-                input.ReadRawObject<WorldObject>(store as WorldObject);
-
+                store.Name = input.ReadString();
                 store.BuyMultiplier = input.ReadSingle();
                 store.SellMultiplier = input.ReadSingle();
                 store.StoreCategories.AddRange(input.ReadObject<List<StoreCategory>>());
                 store.WelcomeMessage = input.ReadString();
                 store.ShopkeeperTextureName = input.ReadString();
                 store.shopkeeperTexture = input.ContentManager.Load<Texture2D>(
-                    System.IO.Path.Combine(@"Textures\Characters\Portraits", 
+                    System.IO.Path.Combine(@"Textures\Characters\Portraits",
                     store.ShopkeeperTextureName));
 
                 return store;

@@ -133,8 +133,7 @@ namespace RolePlayingGameData
                     chest = new Chest();
                 }
 
-                input.ReadRawObject<WorldObject>(chest as WorldObject);
-
+                chest.Name = input.ReadString();
                 chest.Gold = input.ReadInt32();
 
                 chest.Entries.AddRange(
@@ -145,7 +144,7 @@ namespace RolePlayingGameData
                         System.IO.Path.Combine(@"Gear",
                         contentEntry.ContentName));
                 }
-                
+
                 chest.TextureName = input.ReadString();
                 chest.Texture = input.ContentManager.Load<Texture2D>(
                     System.IO.Path.Combine(@"Textures\Chests", chest.TextureName));

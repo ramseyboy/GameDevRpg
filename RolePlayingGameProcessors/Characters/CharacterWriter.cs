@@ -30,24 +30,13 @@ namespace RolePlayingGameProcessors
     [ContentTypeWriter]
     public class CharacterWriter : ContentTypeWriter<Character>
     {
-        WorldObjectWriter worldObjectWriter = null;
-
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(Character.CharacterReader).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            worldObjectWriter = compiler.GetTypeWriter(typeof(WorldObject))
-                as WorldObjectWriter;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, Character value)
         {
-            output.WriteRawObject<WorldObject>(value as WorldObject, worldObjectWriter);
-
+            output.Write(value.Name);
             output.Write(value.MapIdleAnimationInterval);
             output.WriteObject(value.MapSprite);
             output.Write(value.MapWalkingAnimationInterval);
