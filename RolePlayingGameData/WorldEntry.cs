@@ -57,7 +57,7 @@ namespace RolePlayingGameData
                     desc = new WorldEntry<T>();
                 }
 
-                mapEntryReader.ReadContent(input, existingInstance);
+                mapEntryReader.ReadContent(input, desc);
                 desc.MapContentName = input.ReadString();
 
                 return desc;

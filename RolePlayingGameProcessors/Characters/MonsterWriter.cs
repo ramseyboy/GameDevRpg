@@ -34,7 +34,7 @@ namespace RolePlayingGameProcessors
 
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
-            => typeof(MonsterWriter).AssemblyQualifiedName ?? string.Empty;
+            => typeof(Monster.MonsterReader).AssemblyQualifiedName ?? string.Empty;
 
         protected override void Write(ContentWriter output, Monster value)
         {
