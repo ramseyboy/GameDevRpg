@@ -14,11 +14,12 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Draws the options available in a store - typically to buy or sell gear.
@@ -371,7 +372,7 @@ internal class StoreScreen : GameScreen
 
         // Draw Gold Text
         spriteBatch.DrawString(Fonts.MainFont,
-            Fonts.GetGoldString(Session.Party.PartyGold),
+            Fonts.GetGoldString(Session.Session.Party.PartyGold),
             partyGoldPosition,
             Color.White);
 

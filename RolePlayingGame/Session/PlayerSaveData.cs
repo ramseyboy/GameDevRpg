@@ -13,11 +13,12 @@
 
 using System;
 using System.Collections.Generic;
-using RolePlayingGameData;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Session;
 
 /// <summary>
 ///     Serializable data for the state of a player.

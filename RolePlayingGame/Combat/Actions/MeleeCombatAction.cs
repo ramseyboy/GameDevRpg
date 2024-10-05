@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat.Actions;
 
 /// <summary>
 ///     A melee-attack combat action, including related data and calculations.
@@ -206,8 +206,8 @@ internal class MeleeCombatAction : CombatAction
                 var defenseRange = Target.Character.HealthDefenseRange +
                                    Target.Statistics.PhysicalDefense;
                 var damage = Math.Max(0,
-                    damageRange.GenerateValue(Session.Random) -
-                    defenseRange.GenerateValue(Session.Random));
+                    damageRange.GenerateValue(Session.Session.Random) -
+                    defenseRange.GenerateValue(Session.Session.Random));
                 // apply the damage
                 if (damage > 0)
                 {

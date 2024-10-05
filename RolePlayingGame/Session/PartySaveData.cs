@@ -14,10 +14,11 @@
 using System;
 using System.Collections.Generic;
 using RolePlayingGameData;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Session;
 
 /// <summary>
 ///     Serializable data for the state of the party.

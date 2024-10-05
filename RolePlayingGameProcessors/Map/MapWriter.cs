@@ -13,11 +13,10 @@
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using RolePlayingGameData;
 
 #endregion
 
-namespace RolePlayingGameProcessors;
+namespace RolePlayingGameProcessors.Map;
 
 /// <summary>
 ///     This class will be instantiated by the XNA Framework Content Pipeline
@@ -25,15 +24,15 @@ namespace RolePlayingGameProcessors;
 ///     This should be part of a Content Pipeline Extension Library project.
 /// </summary>
 [ContentTypeWriter]
-public class MapWriter : ContentTypeWriter<Map>
+public class MapWriter : ContentTypeWriter<RolePlayingGameData.Map.Map>
 {
     /// <inheritdoc />
     public override string GetRuntimeReader(TargetPlatform targetPlatform)
     {
-        return typeof(Map.MapReader).AssemblyQualifiedName ?? string.Empty;
+        return typeof(RolePlayingGameData.Map.Map.MapReader).AssemblyQualifiedName ?? string.Empty;
     }
 
-    protected override void Write(ContentWriter output, Map value)
+    protected override void Write(ContentWriter output, RolePlayingGameData.Map.Map value)
     {
         // validate the map first
         if (value.MapDimensions.X <= 0 ||

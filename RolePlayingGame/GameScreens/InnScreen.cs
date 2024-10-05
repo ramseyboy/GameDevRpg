@@ -15,11 +15,14 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGame.Session;
+using RolePlayingGameData.Data;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays the options for an inn that the party can stay at.
@@ -90,7 +93,7 @@ internal class InnScreen : GameScreen
 
         // Draw the amount of gold
         spriteBatch.DrawString(Fonts.MainFont,
-            Fonts.GetGoldString(Session.Party.PartyGold),
+            Fonts.GetGoldString(Session.Session.Party.PartyGold),
             goldStringPosition,
             Color.White);
         // Draw the select button text
@@ -113,7 +116,7 @@ internal class InnScreen : GameScreen
         // Draw Shop Keeper
         spriteBatch.Draw(inn.ShopkeeperTexture, innKeeperPosition, Color.White);
         // Draw the cost to stay
-        costString = "Cost: " + GetChargeForParty(Session.Party) + " Gold";
+        costString = "Cost: " + GetChargeForParty(Session.Session.Party) + " Gold";
         spriteBatch.DrawString(Fonts.MainFont,
             costString,
             costPosition,
@@ -326,14 +329,14 @@ internal class InnScreen : GameScreen
         {
             if (selectionMark == 1)
             {
-                var partyCharge = GetChargeForParty(Session.Party);
-                if (Session.Party.PartyGold >= partyCharge)
+                var partyCharge = GetChargeForParty(Session.Session.Party);
+                if (Session.Session.Party.PartyGold >= partyCharge)
                 {
                     AudioManager.PlayCue("Money");
-                    Session.Party.PartyGold -= partyCharge;
+                    Session.Session.Party.PartyGold -= partyCharge;
                     selectionMark = 2;
                     ChangeDialogue(serviceRenderedMessage);
-                    HealParty(Session.Party);
+                    HealParty(Session.Session.Party);
                 }
                 else
                 {
@@ -368,7 +371,7 @@ internal class InnScreen : GameScreen
     /// </summary>
     private int GetChargeForParty(Party party)
     {
-        // check the parameter 
+        // check the parameter
         if (party == null)
         {
             throw new ArgumentNullException("party");
@@ -383,7 +386,7 @@ internal class InnScreen : GameScreen
     /// </summary>
     private void HealParty(Party party)
     {
-        // check the parameter 
+        // check the parameter
         if (party == null)
         {
             throw new ArgumentNullException("party");

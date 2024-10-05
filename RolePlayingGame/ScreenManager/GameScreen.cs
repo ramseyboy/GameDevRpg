@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.ScreenManager;
 
 /// <summary>
 ///     Enum describes the screen transition state.

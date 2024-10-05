@@ -13,11 +13,15 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.Combat.Actions;
 using RolePlayingGameData;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat;
 
 /// <summary>
 ///     Base class for all combatants.
@@ -48,11 +52,11 @@ internal abstract class Combatant
     /// </summary>
     public virtual void Draw(GameTime gameTime)
     {
-        CombatSprite.Draw(Session.ScreenManager.SpriteBatch,
+        CombatSprite.Draw(Session.Session.ScreenManager.SpriteBatch,
             Position,
             1f - Position.Y / 720f);
 
-        Session.ScreenManager.SpriteBatch.Draw(Character.ShadowTexture,
+        Session.Session.ScreenManager.SpriteBatch.Draw(Character.ShadowTexture,
             Position,
             null,
             Color.White,
@@ -67,7 +71,7 @@ internal abstract class Combatant
         if (combatAction != null)
         {
             // update the combat action
-            combatAction.Draw(gameTime, Session.ScreenManager.SpriteBatch);
+            combatAction.Draw(gameTime, Session.Session.ScreenManager.SpriteBatch);
         }
     }
 
@@ -86,8 +90,8 @@ internal abstract class Combatant
     ///     Returns true if the character is dead or dying.
     /// </summary>
     public bool IsDeadOrDying =>
-        State == RolePlayingGameData.Character.CharacterState.Dying ||
-        State == RolePlayingGameData.Character.CharacterState.Dead;
+        State == RolePlayingGameData.Characters.Character.CharacterState.Dying ||
+        State == RolePlayingGameData.Characters.Character.CharacterState.Dead;
 
 
     /// <summary>
@@ -187,7 +191,7 @@ internal abstract class Combatant
     /// </summary>
     public virtual void Damage(StatisticsValue damageStatistics, int duration)
     {
-        State = RolePlayingGameData.Character.CharacterState.Hit;
+        State = RolePlayingGameData.Characters.Character.CharacterState.Hit;
         CombatEngine.AddNewDamageEffects(OriginalPosition, damageStatistics);
     }
 
@@ -268,22 +272,22 @@ internal abstract class Combatant
         if (!IsDeadOrDying && Statistics.HealthPoints <= 0)
         {
             AudioManager.PlayCue("Death");
-            State = RolePlayingGameData.Character.CharacterState.Dying;
+            State = RolePlayingGameData.Characters.Character.CharacterState.Dying;
         }
         // check for waking up
         else if (IsDeadOrDying && Statistics.HealthPoints > 0)
         {
-            State = RolePlayingGameData.Character.CharacterState.Idle;
+            State = RolePlayingGameData.Characters.Character.CharacterState.Idle;
         }
         else if (CombatSprite.IsPlaybackComplete)
         {
-            if (State == RolePlayingGameData.Character.CharacterState.Hit)
+            if (State == RolePlayingGameData.Characters.Character.CharacterState.Hit)
             {
-                State = RolePlayingGameData.Character.CharacterState.Idle;
+                State = RolePlayingGameData.Characters.Character.CharacterState.Idle;
             }
-            else if (State == RolePlayingGameData.Character.CharacterState.Dying)
+            else if (State == RolePlayingGameData.Characters.Character.CharacterState.Dying)
             {
-                State = RolePlayingGameData.Character.CharacterState.Dead;
+                State = RolePlayingGameData.Characters.Character.CharacterState.Dead;
             }
         }
     }

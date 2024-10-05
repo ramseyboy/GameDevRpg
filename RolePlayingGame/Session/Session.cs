@@ -18,12 +18,19 @@ using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.Combat;
+using RolePlayingGame.GameScreens;
+using RolePlayingGame.TileEngine;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Gear;
+using RolePlayingGameData.Map;
+using RolePlayingGameData.Quests;
 using StorageReplacement;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Session;
 
 internal class Session
 {
@@ -45,7 +52,7 @@ internal class Session
     /// <remarks>
     ///     The lack of public constructors forces the singleton model.
     /// </remarks>
-    private Session(ScreenManager screenManager, GameplayScreen gameplayScreen)
+    private Session(ScreenManager.ScreenManager screenManager, GameplayScreen gameplayScreen)
     {
         // check the parameter
         if (screenManager == null)
@@ -101,7 +108,7 @@ internal class Session
         else
         {
             singleton.UpdateQuest();
-            TileEngine.Update(gameTime);
+            TileEngine.TileEngine.Update(gameTime);
         }
     }
 
@@ -114,7 +121,7 @@ internal class Session
     ///     Start a new session based on the data provided.
     /// </summary>
     public static void StartNewSession(GameStartDescription gameStartDescription,
-        ScreenManager screenManager,
+        ScreenManager.ScreenManager screenManager,
         GameplayScreen gameplayScreen)
     {
         // check the parameters
@@ -217,9 +224,9 @@ internal class Session
         }
 
         // check for trivial movement - typically intra-map portals
-        if (TileEngine.Map != null && TileEngine.Map.AssetName == mapContentName)
+        if (TileEngine.TileEngine.Map != null && TileEngine.TileEngine.Map.AssetName == mapContentName)
         {
-            TileEngine.SetMap(TileEngine.Map, originalPortal == null ? null : TileEngine.Map.FindPortal(originalPortal.DestinationMapPortalName));
+            TileEngine.TileEngine.SetMap(TileEngine.TileEngine.Map, originalPortal == null ? null : TileEngine.TileEngine.Map.FindPortal(originalPortal.DestinationMapPortalName));
         }
 
         // load the map
@@ -233,7 +240,7 @@ internal class Session
         AudioManager.PlayMusic(map.MusicCueName);
 
         // set the new map into the tile engine
-        TileEngine.SetMap(map, originalPortal == null ? null : map.FindPortal(originalPortal.DestinationMapPortalName));
+        TileEngine.TileEngine.SetMap(map, originalPortal == null ? null : map.FindPortal(originalPortal.DestinationMapPortalName));
     }
 
 
@@ -254,7 +261,7 @@ internal class Session
                     delegate(WorldEntry<FixedCombat> worldEntry)
                     {
                         return
-                            TileEngine.Map.AssetName.EndsWith(
+                            TileEngine.TileEngine.Map.AssetName.EndsWith(
                                 worldEntry.MapContentName) &&
                             worldEntry.MapPosition == mapPosition;
                     });
@@ -267,7 +274,7 @@ internal class Session
 
         // look for fixed-combats from the map
         var fixedCombatMapEntry =
-            TileEngine.Map.FixedCombatEntries.Find(
+            TileEngine.TileEngine.Map.FixedCombatEntries.Find(
                 delegate(MapEntry<FixedCombat> mapEntry) { return mapEntry.MapPosition == mapPosition; });
         if (fixedCombatMapEntry != null)
         {
@@ -282,7 +289,7 @@ internal class Session
                 delegate(WorldEntry<Chest> worldEntry)
                 {
                     return
-                        TileEngine.Map.AssetName.EndsWith(
+                        TileEngine.TileEngine.Map.AssetName.EndsWith(
                             worldEntry.MapContentName) &&
                         worldEntry.MapPosition == mapPosition;
                 });
@@ -295,7 +302,7 @@ internal class Session
 
         // look for chests from the map
         var chestMapEntry =
-            TileEngine.Map.ChestEntries.Find(delegate(MapEntry<Chest> mapEntry) { return mapEntry.MapPosition == mapPosition; });
+            TileEngine.TileEngine.Map.ChestEntries.Find(delegate(MapEntry<Chest> mapEntry) { return mapEntry.MapPosition == mapPosition; });
         if (chestMapEntry != null)
         {
             EncounterChest(chestMapEntry);
@@ -304,7 +311,7 @@ internal class Session
 
         // look for player NPCs from the map
         var playerNpcEntry =
-            TileEngine.Map.PlayerNpcEntries.Find(delegate(MapEntry<Player> mapEntry) { return mapEntry.MapPosition == mapPosition; });
+            TileEngine.TileEngine.Map.PlayerNpcEntries.Find(delegate(MapEntry<Player> mapEntry) { return mapEntry.MapPosition == mapPosition; });
         if (playerNpcEntry != null)
         {
             EncounterPlayerNpc(playerNpcEntry);
@@ -313,7 +320,7 @@ internal class Session
 
         // look for quest NPCs from the map
         var questNpcEntry =
-            TileEngine.Map.QuestNpcEntries.Find(delegate(MapEntry<QuestNpc> mapEntry) { return mapEntry.MapPosition == mapPosition; });
+            TileEngine.TileEngine.Map.QuestNpcEntries.Find(delegate(MapEntry<QuestNpc> mapEntry) { return mapEntry.MapPosition == mapPosition; });
         if (questNpcEntry != null)
         {
             EncounterQuestNpc(questNpcEntry);
@@ -322,7 +329,7 @@ internal class Session
 
         // look for portals from the map
         var portalEntry =
-            TileEngine.Map.PortalEntries.Find(delegate(MapEntry<Portal> mapEntry) { return mapEntry.MapPosition == mapPosition; });
+            TileEngine.TileEngine.Map.PortalEntries.Find(delegate(MapEntry<Portal> mapEntry) { return mapEntry.MapPosition == mapPosition; });
         if (portalEntry != null)
         {
             EncounterPortal(portalEntry);
@@ -331,7 +338,7 @@ internal class Session
 
         // look for inns from the map
         var innEntry =
-            TileEngine.Map.InnEntries.Find(delegate(MapEntry<Inn> mapEntry) { return mapEntry.MapPosition == mapPosition; });
+            TileEngine.TileEngine.Map.InnEntries.Find(delegate(MapEntry<Inn> mapEntry) { return mapEntry.MapPosition == mapPosition; });
         if (innEntry != null)
         {
             EncounterInn(innEntry);
@@ -340,7 +347,7 @@ internal class Session
 
         // look for stores from the map
         var storeEntry =
-            TileEngine.Map.StoreEntries.Find(delegate(MapEntry<Store> mapEntry) { return mapEntry.MapPosition == mapPosition; });
+            TileEngine.TileEngine.Map.StoreEntries.Find(delegate(MapEntry<Store> mapEntry) { return mapEntry.MapPosition == mapPosition; });
         if (storeEntry != null)
         {
             EncounterStore(storeEntry);
@@ -710,9 +717,9 @@ internal class Session
         }
 
         // check the map for the item first
-        if (TileEngine.Map != null)
+        if (TileEngine.TileEngine.Map != null)
         {
-            var removedEntries = TileEngine.Map.ChestEntries.RemoveAll(
+            var removedEntries = TileEngine.TileEngine.Map.ChestEntries.RemoveAll(
                 delegate(MapEntry<Chest> entry)
                 {
                     return entry.ContentName == mapEntry.ContentName &&
@@ -725,7 +732,7 @@ internal class Session
                 worldEntry.ContentName = mapEntry.ContentName;
                 worldEntry.Count = mapEntry.Count;
                 worldEntry.Direction = mapEntry.Direction;
-                worldEntry.MapContentName = TileEngine.Map.AssetName;
+                worldEntry.MapContentName = TileEngine.TileEngine.Map.AssetName;
                 worldEntry.MapPosition = mapEntry.MapPosition;
                 singleton.removedMapChests.Add(worldEntry);
                 return;
@@ -740,7 +747,7 @@ internal class Session
                 {
                     return entry.ContentName == mapEntry.ContentName &&
                            entry.MapPosition == mapEntry.MapPosition &&
-                           TileEngine.Map.AssetName.EndsWith(entry.MapContentName);
+                           TileEngine.TileEngine.Map.AssetName.EndsWith(entry.MapContentName);
                 });
             if (removedEntries > 0)
             {
@@ -749,7 +756,7 @@ internal class Session
                 worldEntry.ContentName = mapEntry.ContentName;
                 worldEntry.Count = mapEntry.Count;
                 worldEntry.Direction = mapEntry.Direction;
-                worldEntry.MapContentName = TileEngine.Map.AssetName;
+                worldEntry.MapContentName = TileEngine.TileEngine.Map.AssetName;
                 worldEntry.MapPosition = mapEntry.MapPosition;
                 singleton.removedQuestChests.Add(worldEntry);
             }
@@ -779,9 +786,9 @@ internal class Session
         }
 
         // check the map for the item first
-        if (TileEngine.Map != null)
+        if (TileEngine.TileEngine.Map != null)
         {
-            var removedEntries = TileEngine.Map.FixedCombatEntries.RemoveAll(
+            var removedEntries = TileEngine.TileEngine.Map.FixedCombatEntries.RemoveAll(
                 delegate(MapEntry<FixedCombat> entry)
                 {
                     return entry.ContentName == mapEntry.ContentName &&
@@ -794,7 +801,7 @@ internal class Session
                 worldEntry.ContentName = mapEntry.ContentName;
                 worldEntry.Count = mapEntry.Count;
                 worldEntry.Direction = mapEntry.Direction;
-                worldEntry.MapContentName = TileEngine.Map.AssetName;
+                worldEntry.MapContentName = TileEngine.TileEngine.Map.AssetName;
                 worldEntry.MapPosition = mapEntry.MapPosition;
                 singleton.removedMapFixedCombats.Add(worldEntry);
                 return;
@@ -809,7 +816,7 @@ internal class Session
                 {
                     return entry.ContentName == mapEntry.ContentName &&
                            entry.MapPosition == mapEntry.MapPosition &&
-                           TileEngine.Map.AssetName.EndsWith(entry.MapContentName);
+                           TileEngine.TileEngine.Map.AssetName.EndsWith(entry.MapContentName);
                 });
             if (removedEntries > 0)
             {
@@ -818,7 +825,7 @@ internal class Session
                 worldEntry.ContentName = mapEntry.ContentName;
                 worldEntry.Count = mapEntry.Count;
                 worldEntry.Direction = mapEntry.Direction;
-                worldEntry.MapContentName = TileEngine.Map.AssetName;
+                worldEntry.MapContentName = TileEngine.TileEngine.Map.AssetName;
                 worldEntry.MapPosition = mapEntry.MapPosition;
                 singleton.removedQuestFixedCombats.Add(worldEntry);
             }
@@ -843,9 +850,9 @@ internal class Session
         }
 
         // check the map for the item
-        if (TileEngine.Map != null)
+        if (TileEngine.TileEngine.Map != null)
         {
-            var removedEntries = TileEngine.Map.PlayerNpcEntries.RemoveAll(
+            var removedEntries = TileEngine.TileEngine.Map.PlayerNpcEntries.RemoveAll(
                 delegate(MapEntry<Player> entry)
                 {
                     return entry.ContentName == mapEntry.ContentName &&
@@ -858,7 +865,7 @@ internal class Session
                 worldEntry.ContentName = mapEntry.ContentName;
                 worldEntry.Count = mapEntry.Count;
                 worldEntry.Direction = mapEntry.Direction;
-                worldEntry.MapContentName = TileEngine.Map.AssetName;
+                worldEntry.MapContentName = TileEngine.TileEngine.Map.AssetName;
                 worldEntry.MapPosition = mapEntry.MapPosition;
                 singleton.removedMapPlayerNpcs.Add(worldEntry);
             }
@@ -897,14 +904,14 @@ internal class Session
             delegate(ModifiedChestEntry entry)
             {
                 return
-                    TileEngine.Map.AssetName.EndsWith(
+                    TileEngine.TileEngine.Map.AssetName.EndsWith(
                         entry.WorldEntry.MapContentName) &&
                     entry.WorldEntry.ContentName == mapEntry.ContentName &&
                     entry.WorldEntry.MapPosition == mapEntry.MapPosition;
             };
 
         // check the map for the item first
-        if (TileEngine.Map != null && TileEngine.Map.ChestEntries.Exists(
+        if (TileEngine.TileEngine.Map != null && TileEngine.TileEngine.Map.ChestEntries.Exists(
                 delegate(MapEntry<Chest> entry)
                 {
                     return entry.ContentName == mapEntry.ContentName &&
@@ -918,7 +925,7 @@ internal class Session
             modifiedChestEntry.WorldEntry.Count = mapEntry.Count;
             modifiedChestEntry.WorldEntry.Direction = mapEntry.Direction;
             modifiedChestEntry.WorldEntry.MapContentName =
-                TileEngine.Map.AssetName;
+                TileEngine.TileEngine.Map.AssetName;
             modifiedChestEntry.WorldEntry.MapPosition = mapEntry.MapPosition;
             var chest = mapEntry.Content;
             modifiedChestEntry.ChestEntries.AddRange(chest.Entries);
@@ -934,7 +941,7 @@ internal class Session
                 {
                     return entry.ContentName == mapEntry.ContentName &&
                            entry.MapPosition == mapEntry.MapPosition &&
-                           TileEngine.Map.AssetName.EndsWith(entry.MapContentName);
+                           TileEngine.TileEngine.Map.AssetName.EndsWith(entry.MapContentName);
                 }))
         {
             singleton.modifiedQuestChests.RemoveAll(checkModifiedChests);
@@ -943,7 +950,7 @@ internal class Session
             modifiedChestEntry.WorldEntry.ContentName = mapEntry.ContentName;
             modifiedChestEntry.WorldEntry.Count = mapEntry.Count;
             modifiedChestEntry.WorldEntry.Direction = mapEntry.Direction;
-            modifiedChestEntry.WorldEntry.MapContentName = TileEngine.Map.AssetName;
+            modifiedChestEntry.WorldEntry.MapContentName = TileEngine.TileEngine.Map.AssetName;
             modifiedChestEntry.WorldEntry.MapPosition = mapEntry.MapPosition;
             var chest = mapEntry.Content;
             modifiedChestEntry.ChestEntries.AddRange(chest.Entries);
@@ -1171,12 +1178,12 @@ internal class Session
     /// <summary>
     ///     The ScreenManager used to manage all UI in the game.
     /// </summary>
-    private readonly ScreenManager screenManager;
+    private readonly ScreenManager.ScreenManager screenManager;
 
     /// <summary>
     ///     The ScreenManager used to manage all UI in the game.
     /// </summary>
-    public static ScreenManager ScreenManager => singleton == null ? null : singleton.screenManager;
+    public static ScreenManager.ScreenManager ScreenManager => singleton == null ? null : singleton.screenManager;
 
 
     /// <summary>
@@ -1210,10 +1217,10 @@ internal class Session
         if (CombatEngine.IsActive)
         {
             // draw the combat background
-            if (TileEngine.Map.CombatTexture != null)
+            if (TileEngine.TileEngine.Map.CombatTexture != null)
             {
                 spriteBatch.Begin();
-                spriteBatch.Draw(TileEngine.Map.CombatTexture,
+                spriteBatch.Draw(TileEngine.TileEngine.Map.CombatTexture,
                     Vector2.Zero,
                     Color.White);
                 spriteBatch.End();
@@ -1243,10 +1250,10 @@ internal class Session
 
         // draw the background
         spriteBatch.Begin();
-        if (TileEngine.Map.Texture != null)
+        if (TileEngine.TileEngine.Map.Texture != null)
         {
             // draw the ground layer
-            TileEngine.DrawLayers(spriteBatch, true, true, false);
+            TileEngine.TileEngine.DrawLayers(spriteBatch, true, true, false);
             // draw the character shadows
             DrawShadows(spriteBatch);
         }
@@ -1261,9 +1268,9 @@ internal class Session
         // draw the party leader
         {
             var player = party.Players[0];
-            var position = TileEngine.PartyLeaderPosition.ScreenPosition;
-            player.Direction = TileEngine.PartyLeaderPosition.Direction;
-            player.ResetAnimation(TileEngine.PartyLeaderPosition.IsMoving);
+            var position = TileEngine.TileEngine.PartyLeaderPosition.ScreenPosition;
+            player.Direction = TileEngine.TileEngine.PartyLeaderPosition.Direction;
+            player.ResetAnimation(TileEngine.TileEngine.PartyLeaderPosition.IsMoving);
             switch (player.State)
             {
                 case Character.CharacterState.Idle:
@@ -1272,7 +1279,7 @@ internal class Session
                         player.MapSprite.UpdateAnimation(elapsedSeconds);
                         player.MapSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
 
                     break;
@@ -1283,14 +1290,14 @@ internal class Session
                         player.WalkingSprite.UpdateAnimation(elapsedSeconds);
                         player.WalkingSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
                     else if (player.MapSprite != null)
                     {
                         player.MapSprite.UpdateAnimation(elapsedSeconds);
                         player.MapSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
 
                     break;
@@ -1298,7 +1305,7 @@ internal class Session
         }
 
         // draw the player NPCs
-        foreach (var playerEntry in TileEngine.Map.PlayerNpcEntries)
+        foreach (var playerEntry in TileEngine.TileEngine.Map.PlayerNpcEntries)
         {
             if (playerEntry.Content == null)
             {
@@ -1306,7 +1313,7 @@ internal class Session
             }
 
             var position =
-                TileEngine.GetScreenPosition(playerEntry.MapPosition);
+                TileEngine.TileEngine.GetScreenPosition(playerEntry.MapPosition);
             playerEntry.Content.ResetAnimation(false);
             switch (playerEntry.Content.State)
             {
@@ -1317,7 +1324,7 @@ internal class Session
                             elapsedSeconds);
                         playerEntry.Content.MapSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
 
                     break;
@@ -1329,7 +1336,7 @@ internal class Session
                             elapsedSeconds);
                         playerEntry.Content.WalkingSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
                     else if (playerEntry.Content.MapSprite != null)
                     {
@@ -1337,7 +1344,7 @@ internal class Session
                             elapsedSeconds);
                         playerEntry.Content.MapSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
 
                     break;
@@ -1345,7 +1352,7 @@ internal class Session
         }
 
         // draw the quest NPCs
-        foreach (var questNpcEntry in TileEngine.Map.QuestNpcEntries)
+        foreach (var questNpcEntry in TileEngine.TileEngine.Map.QuestNpcEntries)
         {
             if (questNpcEntry.Content == null)
             {
@@ -1353,7 +1360,7 @@ internal class Session
             }
 
             var position =
-                TileEngine.GetScreenPosition(questNpcEntry.MapPosition);
+                TileEngine.TileEngine.GetScreenPosition(questNpcEntry.MapPosition);
             questNpcEntry.Content.ResetAnimation(false);
             switch (questNpcEntry.Content.State)
             {
@@ -1364,7 +1371,7 @@ internal class Session
                             elapsedSeconds);
                         questNpcEntry.Content.MapSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
 
                     break;
@@ -1376,7 +1383,7 @@ internal class Session
                             elapsedSeconds);
                         questNpcEntry.Content.WalkingSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
                     else if (questNpcEntry.Content.MapSprite != null)
                     {
@@ -1384,7 +1391,7 @@ internal class Session
                             elapsedSeconds);
                         questNpcEntry.Content.MapSprite.Draw(spriteBatch,
                             position,
-                            1f - position.Y / TileEngine.Viewport.Height);
+                            1f - position.Y / TileEngine.TileEngine.Viewport.Height);
                     }
 
                     break;
@@ -1395,7 +1402,7 @@ internal class Session
         // -- since there may be many of the same FixedCombat object
         //    on the TileEngine.Map, but their animations are handled differently
         foreach (var fixedCombatEntry in
-                 TileEngine.Map.FixedCombatEntries)
+                 TileEngine.TileEngine.Map.FixedCombatEntries)
         {
             if (fixedCombatEntry.Content == null ||
                 fixedCombatEntry.Content.Entries.Count <= 0)
@@ -1404,11 +1411,11 @@ internal class Session
             }
 
             var position =
-                TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
+                TileEngine.TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
             fixedCombatEntry.MapSprite.UpdateAnimation(elapsedSeconds);
             fixedCombatEntry.MapSprite.Draw(spriteBatch,
                 position,
-                1f - position.Y / TileEngine.Viewport.Height);
+                1f - position.Y / TileEngine.TileEngine.Viewport.Height);
         }
 
         // draw the fixed-combat monsters NPCs from the current quest
@@ -1422,30 +1429,30 @@ internal class Session
             {
                 if (fixedCombatEntry.Content == null ||
                     fixedCombatEntry.Content.Entries.Count <= 0 ||
-                    !TileEngine.Map.AssetName.EndsWith(
+                    !TileEngine.TileEngine.Map.AssetName.EndsWith(
                         fixedCombatEntry.MapContentName))
                 {
                     continue;
                 }
 
                 var position =
-                    TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
+                    TileEngine.TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
                 fixedCombatEntry.MapSprite.UpdateAnimation(elapsedSeconds);
                 fixedCombatEntry.MapSprite.Draw(spriteBatch,
                     position,
-                    1f - position.Y / TileEngine.Viewport.Height);
+                    1f - position.Y / TileEngine.TileEngine.Viewport.Height);
             }
         }
 
         // draw the chests from the TileEngine.Map
-        foreach (var chestEntry in TileEngine.Map.ChestEntries)
+        foreach (var chestEntry in TileEngine.TileEngine.Map.ChestEntries)
         {
             if (chestEntry.Content == null)
             {
                 continue;
             }
 
-            var position = TileEngine.GetScreenPosition(chestEntry.MapPosition);
+            var position = TileEngine.TileEngine.GetScreenPosition(chestEntry.MapPosition);
             spriteBatch.Draw(chestEntry.Content.Texture,
                 position,
                 null,
@@ -1455,7 +1462,7 @@ internal class Session
                 1f,
                 SpriteEffects.None,
                 MathHelper.Clamp(1f - position.Y /
-                    TileEngine.Viewport.Height,
+                    TileEngine.TileEngine.Viewport.Height,
                     0f,
                     1f));
         }
@@ -1467,13 +1474,13 @@ internal class Session
             foreach (var chestEntry in quest.ChestEntries)
             {
                 if (chestEntry.Content == null ||
-                    !TileEngine.Map.AssetName.EndsWith(chestEntry.MapContentName))
+                    !TileEngine.TileEngine.Map.AssetName.EndsWith(chestEntry.MapContentName))
                 {
                     continue;
                 }
 
                 var position =
-                    TileEngine.GetScreenPosition(chestEntry.MapPosition);
+                    TileEngine.TileEngine.GetScreenPosition(chestEntry.MapPosition);
                 spriteBatch.Draw(chestEntry.Content.Texture,
                     position,
                     null,
@@ -1483,7 +1490,7 @@ internal class Session
                     1f,
                     SpriteEffects.None,
                     MathHelper.Clamp(1f - position.Y /
-                        TileEngine.Viewport.Height,
+                        TileEngine.TileEngine.Viewport.Height,
                         0f,
                         1f));
             }
@@ -1493,9 +1500,9 @@ internal class Session
 
         // draw the foreground
         spriteBatch.Begin();
-        if (TileEngine.Map.Texture != null)
+        if (TileEngine.TileEngine.Map.Texture != null)
         {
-            TileEngine.DrawLayers(spriteBatch, false, false, true);
+            TileEngine.TileEngine.DrawLayers(spriteBatch, false, false, true);
         }
 
         spriteBatch.End();
@@ -1512,13 +1519,13 @@ internal class Session
         if (player.ShadowTexture != null)
         {
             spriteBatch.Draw(player.ShadowTexture,
-                TileEngine.PartyLeaderPosition.ScreenPosition,
+                TileEngine.TileEngine.PartyLeaderPosition.ScreenPosition,
                 null,
                 Color.White,
                 0f,
                 new Vector2(
-                    (player.ShadowTexture.Width - TileEngine.Map.TileSize.X) / 2,
-                    (player.ShadowTexture.Height - TileEngine.Map.TileSize.Y) / 2 -
+                    (player.ShadowTexture.Width - TileEngine.TileEngine.Map.TileSize.X) / 2,
+                    (player.ShadowTexture.Height - TileEngine.TileEngine.Map.TileSize.Y) / 2 -
                     player.ShadowTexture.Height / 6),
                 1f,
                 SpriteEffects.None,
@@ -1526,7 +1533,7 @@ internal class Session
         }
 
         // draw the player NPCs' shadows
-        foreach (var playerEntry in TileEngine.Map.PlayerNpcEntries)
+        foreach (var playerEntry in TileEngine.TileEngine.Map.PlayerNpcEntries)
         {
             if (playerEntry.Content == null)
             {
@@ -1536,7 +1543,7 @@ internal class Session
             if (playerEntry.Content.ShadowTexture != null)
             {
                 var position =
-                    TileEngine.GetScreenPosition(playerEntry.MapPosition);
+                    TileEngine.TileEngine.GetScreenPosition(playerEntry.MapPosition);
                 spriteBatch.Draw(playerEntry.Content.ShadowTexture,
                     position,
                     null,
@@ -1544,9 +1551,9 @@ internal class Session
                     0f,
                     new Vector2(
                         (playerEntry.Content.ShadowTexture.Width -
-                         TileEngine.Map.TileSize.X) / 2,
+                         TileEngine.TileEngine.Map.TileSize.X) / 2,
                         (playerEntry.Content.ShadowTexture.Height -
-                         TileEngine.Map.TileSize.Y) / 2 -
+                         TileEngine.TileEngine.Map.TileSize.Y) / 2 -
                         playerEntry.Content.ShadowTexture.Height / 6),
                     1f,
                     SpriteEffects.None,
@@ -1555,7 +1562,7 @@ internal class Session
         }
 
         // draw the quest NPCs' shadows
-        foreach (var questNpcEntry in TileEngine.Map.QuestNpcEntries)
+        foreach (var questNpcEntry in TileEngine.TileEngine.Map.QuestNpcEntries)
         {
             if (questNpcEntry.Content == null)
             {
@@ -1565,7 +1572,7 @@ internal class Session
             if (questNpcEntry.Content.ShadowTexture != null)
             {
                 var position =
-                    TileEngine.GetScreenPosition(questNpcEntry.MapPosition);
+                    TileEngine.TileEngine.GetScreenPosition(questNpcEntry.MapPosition);
                 spriteBatch.Draw(questNpcEntry.Content.ShadowTexture,
                     position,
                     null,
@@ -1573,9 +1580,9 @@ internal class Session
                     0f,
                     new Vector2(
                         (questNpcEntry.Content.ShadowTexture.Width -
-                         TileEngine.Map.TileSize.X) / 2,
+                         TileEngine.TileEngine.Map.TileSize.X) / 2,
                         (questNpcEntry.Content.ShadowTexture.Height -
-                         TileEngine.Map.TileSize.Y) / 2 -
+                         TileEngine.TileEngine.Map.TileSize.Y) / 2 -
                         questNpcEntry.Content.ShadowTexture.Height / 6),
                     1f,
                     SpriteEffects.None,
@@ -1585,7 +1592,7 @@ internal class Session
 
         // draw the fixed-combat monsters NPCs' shadows
         foreach (var fixedCombatEntry in
-                 TileEngine.Map.FixedCombatEntries)
+                 TileEngine.TileEngine.Map.FixedCombatEntries)
         {
             if (fixedCombatEntry.Content == null ||
                 fixedCombatEntry.Content.Entries.Count <= 0)
@@ -1597,15 +1604,15 @@ internal class Session
             if (monster.ShadowTexture != null)
             {
                 var position =
-                    TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
+                    TileEngine.TileEngine.GetScreenPosition(fixedCombatEntry.MapPosition);
                 spriteBatch.Draw(monster.ShadowTexture,
                     position,
                     null,
                     Color.White,
                     0f,
                     new Vector2(
-                        (monster.ShadowTexture.Width - TileEngine.Map.TileSize.X) / 2,
-                        (monster.ShadowTexture.Height - TileEngine.Map.TileSize.Y) / 2 -
+                        (monster.ShadowTexture.Width - TileEngine.TileEngine.Map.TileSize.X) / 2,
+                        (monster.ShadowTexture.Height - TileEngine.TileEngine.Map.TileSize.Y) / 2 -
                         monster.ShadowTexture.Height / 6),
                     1f,
                     SpriteEffects.None,
@@ -1625,7 +1632,7 @@ internal class Session
     /// <param name="saveGameDescription">The description of the save game.</param>
     /// <param name="screenManager">The ScreenManager for the new session.</param>
     public static void LoadSession(SaveGameDescription saveGameDescription,
-        ScreenManager screenManager,
+        ScreenManager.ScreenManager screenManager,
         GameplayScreen gameplayScreen)
     {
         // check the parameters
@@ -1709,7 +1716,7 @@ internal class Session
                             typeof(List<ModifiedChestEntry>)).Deserialize(xmlReader)
                         as List<ModifiedChestEntry>;
                     ChangeMap(mapAssetName, null);
-                    TileEngine.PartyLeaderPosition = playerPosition;
+                    TileEngine.TileEngine.PartyLeaderPosition = playerPosition;
                     xmlReader.ReadEndElement();
 
                     // read the quest information
@@ -1835,10 +1842,10 @@ internal class Session
                     // write the map information
                     xmlWriter.WriteStartElement("mapData");
                     xmlWriter.WriteElementString("mapContentName",
-                        TileEngine.Map.AssetName);
+                        TileEngine.TileEngine.Map.AssetName);
                     new XmlSerializer(typeof(PlayerPosition)).Serialize(
                         xmlWriter,
-                        TileEngine.PartyLeaderPosition);
+                        TileEngine.TileEngine.PartyLeaderPosition);
                     new XmlSerializer(typeof(List<WorldEntry<Chest>>)).Serialize(
                         xmlWriter,
                         singleton.removedMapChests);

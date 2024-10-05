@@ -14,11 +14,14 @@
 using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
+using RolePlayingGame.Combat;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Lists the spells available to the character.

@@ -14,10 +14,12 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGame.Session;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.MenuScreens;
 
 /// <summary>
 ///     Displays a list of existing save games,
@@ -68,9 +70,9 @@ internal class SaveLoadScreen : GameScreen
             titleTextPosition,
             Fonts.TitleColor);
 
-        if (Session.SaveGameDescriptions != null)
+        if (Session.Session.SaveGameDescriptions != null)
         {
-            for (var i = 0; i < Session.SaveGameDescriptions.Count; i++)
+            for (var i = 0; i < Session.Session.SaveGameDescriptions.Count; i++)
             {
                 var descriptionTextPosition = new Vector2(295f,
                     200f + i * (Fonts.GearInfoFont.LineSpacing + 40f));
@@ -103,22 +105,22 @@ internal class SaveLoadScreen : GameScreen
                 }
 
                 spriteBatch.DrawString(Fonts.GearInfoFont,
-                    Session.SaveGameDescriptions[i].ChapterName,
+                    Session.Session.SaveGameDescriptions[i].ChapterName,
                     descriptionTextPosition,
                     descriptionTextColor);
                 descriptionTextPosition.X = 650;
                 spriteBatch.DrawString(Fonts.GearInfoFont,
-                    Session.SaveGameDescriptions[i].Description,
+                    Session.Session.SaveGameDescriptions[i].Description,
                     descriptionTextPosition,
                     descriptionTextColor);
             }
 
             // if there is space for one, add an empty entry
             if (mode == SaveLoadScreenMode.Save &&
-                Session.SaveGameDescriptions.Count <
-                Session.MaximumSaveGameDescriptions)
+                Session.Session.SaveGameDescriptions.Count <
+                Session.Session.MaximumSaveGameDescriptions)
             {
-                var i = Session.SaveGameDescriptions.Count;
+                var i = Session.Session.SaveGameDescriptions.Count;
                 var descriptionTextPosition = new Vector2(
                     295f,
                     200f + i * (Fonts.GearInfoFont.LineSpacing + 40f));
@@ -154,7 +156,7 @@ internal class SaveLoadScreen : GameScreen
         }
 
         // if there are no slots to load, report that
-        if (Session.SaveGameDescriptions == null)
+        if (Session.Session.SaveGameDescriptions == null)
         {
             spriteBatch.DrawString(Fonts.GearInfoFont,
                 "No Storage Device Available",
@@ -162,7 +164,7 @@ internal class SaveLoadScreen : GameScreen
                 Color.Black);
         }
         else if (mode == SaveLoadScreenMode.Load &&
-                 Session.SaveGameDescriptions.Count <= 0)
+                 Session.Session.SaveGameDescriptions.Count <= 0)
         {
             spriteBatch.DrawString(Fonts.GearInfoFont,
                 "No Save Games Available",
@@ -217,7 +219,7 @@ internal class SaveLoadScreen : GameScreen
         this.mode = mode;
 
         // refresh the save game descriptions
-        Session.RefreshSaveGameDescriptions();
+        Session.Session.RefreshSaveGameDescriptions();
     }
 
 
@@ -291,16 +293,16 @@ internal class SaveLoadScreen : GameScreen
 
         // handle selecting a save game
         if (InputManager.IsActionTriggered(InputManager.Action.Ok) &&
-            Session.SaveGameDescriptions != null)
+            Session.Session.SaveGameDescriptions != null)
         {
             switch (mode)
             {
                 case SaveLoadScreenMode.Load:
                     if (currentSlot >= 0 &&
-                        currentSlot < Session.SaveGameDescriptions.Count &&
-                        Session.SaveGameDescriptions[currentSlot] != null)
+                        currentSlot < Session.Session.SaveGameDescriptions.Count &&
+                        Session.Session.SaveGameDescriptions[currentSlot] != null)
                     {
-                        if (Session.IsActive)
+                        if (Session.Session.IsActive)
                         {
                             var messageBoxScreen = new MessageBoxScreen(
                                 "Are you sure you want to load this game?");
@@ -318,9 +320,9 @@ internal class SaveLoadScreen : GameScreen
 
                 case SaveLoadScreenMode.Save:
                     if (currentSlot >= 0 &&
-                        currentSlot <= Session.SaveGameDescriptions.Count)
+                        currentSlot <= Session.Session.SaveGameDescriptions.Count)
                     {
-                        if (currentSlot == Session.SaveGameDescriptions.Count)
+                        if (currentSlot == Session.Session.SaveGameDescriptions.Count)
                         {
                             ConfirmSaveMessageBoxAccepted(null, EventArgs.Empty);
                         }
@@ -339,11 +341,11 @@ internal class SaveLoadScreen : GameScreen
         }
         // handle deletion
         else if (InputManager.IsActionTriggered(InputManager.Action.DropUnEquip) &&
-                 Session.SaveGameDescriptions != null)
+                 Session.Session.SaveGameDescriptions != null)
         {
             if (currentSlot >= 0 &&
-                currentSlot < Session.SaveGameDescriptions.Count &&
-                Session.SaveGameDescriptions[currentSlot] != null)
+                currentSlot < Session.Session.SaveGameDescriptions.Count &&
+                Session.Session.SaveGameDescriptions[currentSlot] != null)
             {
                 var messageBoxScreen = new MessageBoxScreen(
                     "Are you sure you want to delete this save game?");
@@ -353,13 +355,13 @@ internal class SaveLoadScreen : GameScreen
         }
         // handle cursor-down
         else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown) &&
-                 Session.SaveGameDescriptions != null)
+                 Session.Session.SaveGameDescriptions != null)
         {
-            var maximumSlot = Session.SaveGameDescriptions.Count;
+            var maximumSlot = Session.Session.SaveGameDescriptions.Count;
             if (mode == SaveLoadScreenMode.Save)
             {
                 maximumSlot = Math.Min(maximumSlot + 1,
-                    Session.MaximumSaveGameDescriptions);
+                    Session.Session.MaximumSaveGameDescriptions);
             }
 
             if (currentSlot < maximumSlot - 1)
@@ -369,7 +371,7 @@ internal class SaveLoadScreen : GameScreen
         }
         // handle cursor-up
         else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp) &&
-                 Session.SaveGameDescriptions != null)
+                 Session.Session.SaveGameDescriptions != null)
         {
             if (currentSlot >= 1)
             {
@@ -385,15 +387,15 @@ internal class SaveLoadScreen : GameScreen
     private void ConfirmSaveMessageBoxAccepted(object sender, EventArgs e)
     {
         if (currentSlot >= 0 &&
-            currentSlot <= Session.SaveGameDescriptions.Count)
+            currentSlot <= Session.Session.SaveGameDescriptions.Count)
         {
-            if (currentSlot == Session.SaveGameDescriptions.Count)
+            if (currentSlot == Session.Session.SaveGameDescriptions.Count)
             {
-                Session.SaveSession(null);
+                Session.Session.SaveSession(null);
             }
             else
             {
-                Session.SaveSession(Session.SaveGameDescriptions[currentSlot]);
+                Session.Session.SaveSession(Session.Session.SaveGameDescriptions[currentSlot]);
             }
 
             ExitScreen();
@@ -425,14 +427,14 @@ internal class SaveLoadScreen : GameScreen
     /// </summary>
     private void ConfirmLoadMessageBoxAccepted(object sender, EventArgs e)
     {
-        if (Session.SaveGameDescriptions != null && currentSlot >= 0 &&
-            currentSlot < Session.SaveGameDescriptions.Count &&
-            Session.SaveGameDescriptions[currentSlot] != null)
+        if (Session.Session.SaveGameDescriptions != null && currentSlot >= 0 &&
+            currentSlot < Session.Session.SaveGameDescriptions.Count &&
+            Session.Session.SaveGameDescriptions[currentSlot] != null)
         {
             ExitScreen();
             if (LoadingSaveGame != null)
             {
-                LoadingSaveGame(Session.SaveGameDescriptions[currentSlot]);
+                LoadingSaveGame(Session.Session.SaveGameDescriptions[currentSlot]);
             }
         }
     }
@@ -443,11 +445,11 @@ internal class SaveLoadScreen : GameScreen
     /// </summary>
     private void ConfirmDeleteMessageBoxAccepted(object sender, EventArgs e)
     {
-        if (Session.SaveGameDescriptions != null && currentSlot >= 0 &&
-            currentSlot < Session.SaveGameDescriptions.Count &&
-            Session.SaveGameDescriptions[currentSlot] != null)
+        if (Session.Session.SaveGameDescriptions != null && currentSlot >= 0 &&
+            currentSlot < Session.Session.SaveGameDescriptions.Count &&
+            Session.Session.SaveGameDescriptions[currentSlot] != null)
         {
-            Session.DeleteSaveGame(Session.SaveGameDescriptions[currentSlot]);
+            Session.Session.DeleteSaveGame(Session.Session.SaveGameDescriptions[currentSlot]);
         }
     }
 

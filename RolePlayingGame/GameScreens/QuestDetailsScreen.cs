@@ -15,11 +15,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGameData.Quests;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Display the details of a particular quest.

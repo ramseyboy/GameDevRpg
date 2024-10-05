@@ -15,11 +15,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
-using RolePlayingGameData;
+using RolePlayingGameData.Quests;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays all of the quests completed by the party
@@ -50,7 +50,7 @@ internal class QuestLogScreen : ListScreen<Quest>
         this.initialDetailQuest = initialDetailQuest;
 
         // configure the menu text
-        titleText = Session.QuestLine.Name;
+        titleText = Session.Session.QuestLine.Name;
         selectButtonText = "Select";
         backButtonText = "Back";
         xButtonText = string.Empty;
@@ -59,7 +59,7 @@ internal class QuestLogScreen : ListScreen<Quest>
         rightTriggerText = "Statistics";
 
         // select the current quest
-        SelectedIndex = Session.CurrentQuestIndex;
+        SelectedIndex = Session.Session.CurrentQuestIndex;
     }
 
     #endregion
@@ -73,11 +73,11 @@ internal class QuestLogScreen : ListScreen<Quest>
     public override ReadOnlyCollection<Quest> GetDataList()
     {
         var quests = new List<Quest>();
-        for (var i = 0; i <= Session.CurrentQuestIndex; i++)
+        for (var i = 0; i <= Session.Session.CurrentQuestIndex; i++)
         {
-            if (i < Session.QuestLine.Quests.Count)
+            if (i < Session.Session.QuestLine.Quests.Count)
             {
-                quests.Add(Session.QuestLine.Quests[i]);
+                quests.Add(Session.Session.QuestLine.Quests[i]);
             }
         }
 
@@ -111,7 +111,7 @@ internal class QuestLogScreen : ListScreen<Quest>
         {
             ScreenManager.AddScreen(new QuestDetailsScreen(initialDetailQuest));
             // if the selected quest is in the list, make sure it's visible
-            SelectedIndex = Session.QuestLine.Quests.IndexOf(initialDetailQuest);
+            SelectedIndex = Session.Session.QuestLine.Quests.IndexOf(initialDetailQuest);
             // only open the screen once
             initialDetailQuest = null;
         }
@@ -145,7 +145,7 @@ internal class QuestLogScreen : ListScreen<Quest>
     protected override void PageScreenRight()
     {
         ExitScreen();
-        ScreenManager.AddScreen(new StatisticsScreen(Session.Party.Players[0]));
+        ScreenManager.AddScreen(new StatisticsScreen(Session.Session.Party.Players[0]));
     }
 
     #endregion

@@ -13,7 +13,7 @@
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat;
 
 internal enum CombatEndingState
 {

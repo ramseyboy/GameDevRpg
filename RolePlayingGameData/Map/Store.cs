@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     A gear store, where the party can buy and sell gear, organized into categories.

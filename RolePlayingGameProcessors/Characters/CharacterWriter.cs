@@ -12,11 +12,11 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using RolePlayingGameData;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlayingGameProcessors;
+namespace RolePlayingGameProcessors.Characters;
 
 public class CharacterWriter : IContentTypeWriterDelegate<Character>
 {

@@ -15,11 +15,13 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RolePlayingGameData;
+using RolePlayingGameData.Gear;
+using RolePlayingGameData.Map;
 
 #endregion
 
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays the gear in the party inventory and allows the user to sell them.
@@ -206,11 +208,11 @@ internal class StoreSellScreen : InventoryScreen
         selectedQuantity = Math.Min(selectedQuantity, entry.Count);
 
         // add the gold to the party's inventory
-        Session.Party.PartyGold += selectedQuantity *
-                                   (int) Math.Ceiling(entry.Content.GoldValue * store.SellMultiplier);
+        Session.Session.Party.PartyGold += selectedQuantity *
+                                           (int) Math.Ceiling(entry.Content.GoldValue * store.SellMultiplier);
 
         // remove the items from the party's inventory
-        Session.Party.RemoveFromInventory(entry.Content, selectedQuantity);
+        Session.Session.Party.RemoveFromInventory(entry.Content, selectedQuantity);
 
         // reset the quantities - either gold has gone down or the total was bad
         ResetQuantities();

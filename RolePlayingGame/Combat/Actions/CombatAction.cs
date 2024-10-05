@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat.Actions;
 
 /// <summary>
 ///     An action taken by an individual character in combat.

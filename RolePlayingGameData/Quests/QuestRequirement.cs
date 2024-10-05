@@ -13,10 +13,11 @@
 
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Quests;
 
 /// <summary>
 ///     A requirement for a particular number of a piece of content.
@@ -62,7 +63,7 @@ public class QuestRequirement<T> : ContentEntry<T> where T : ContentObject
             }
 
             reader.ReadContent(input, requirement);
-            if (typeof(T) == typeof(Gear))
+            if (typeof(T) == typeof(Gear.Gear))
             {
                 requirement.Content = input.ContentManager.Load<T>(
                     Path.Combine("Gear", requirement.ContentName));

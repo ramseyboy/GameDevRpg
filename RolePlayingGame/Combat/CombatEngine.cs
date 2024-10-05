@@ -17,11 +17,18 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RolePlayingGame.Combat.Actions;
+using RolePlayingGame.GameScreens;
 using RolePlayingGameData;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
+using RolePlayingGameData.Gear;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat;
 
 /// <summary>
 ///     The runtime execution engine for the combat system.
@@ -152,7 +159,7 @@ internal class CombatEngine
         primaryTargetedCombatant = null;
         secondaryTargetedCombatants.Clear();
 
-        Session.Hud.ActionText = "Choose an Action";
+        Session.Session.Hud.ActionText = "Choose an Action";
     }
 
 
@@ -182,7 +189,7 @@ internal class CombatEngine
         }
 
         // set the action text on the HUD
-        Session.Hud.ActionText = "Your Party's Turn";
+        Session.Session.Hud.ActionText = "Your Party's Turn";
 
         // find the first player who is alive
         highlightedPlayer = 0;
@@ -293,7 +300,7 @@ internal class CombatEngine
             // pick random living monsters who haven't taken their turn
             do
             {
-                monster = monsters[Session.Random.Next(monsters.Count)];
+                monster = monsters[Session.Session.Random.Next(monsters.Count)];
             } while (monster.IsTurnTaken || monster.IsDeadOrDying);
         }
 
@@ -329,7 +336,7 @@ internal class CombatEngine
         }
 
         // set the action text on the HUD
-        Session.Hud.ActionText = "Enemy Party's Turn";
+        Session.Session.Hud.ActionText = "Enemy Party's Turn";
 
         // start a Session.Random monster's turn
         BeginMonsterTurn(null);
@@ -888,7 +895,7 @@ internal class CombatEngine
     /// </summary>
     private void CreateCombatEffectSprites()
     {
-        var content = Session.ScreenManager.Game.Content;
+        var content = Session.Session.ScreenManager.Game.Content;
 
         damageCombatEffectTexture =
             content.Load<Texture2D>(@"Textures\Combat\DamageIcon");
@@ -903,7 +910,7 @@ internal class CombatEngine
     private void DrawCombatEffects(GameTime gameTime)
     {
         var elapsedSeconds = (float) gameTime.ElapsedGameTime.TotalSeconds;
-        var spriteBatch = Session.ScreenManager.SpriteBatch;
+        var spriteBatch = Session.Session.ScreenManager.SpriteBatch;
 
         // update all effects
         foreach (var combatEffect in damageCombatEffects)
@@ -972,7 +979,7 @@ internal class CombatEngine
     /// </summary>
     private void CreateSelectionSprites()
     {
-        var content = Session.ScreenManager.Game.Content;
+        var content = Session.Session.ScreenManager.Game.Content;
 
         var frameDimensions = new Point(76, 58);
         highlightForegroundSprite.FramesPerRow = 6;
@@ -1023,8 +1030,8 @@ internal class CombatEngine
     /// </summary>
     private void DrawSelectionSprites(GameTime gameTime)
     {
-        var spriteBatch = Session.ScreenManager.SpriteBatch;
-        var viewport = Session.ScreenManager.GraphicsDevice.Viewport;
+        var spriteBatch = Session.Session.ScreenManager.SpriteBatch;
+        var viewport = Session.Session.ScreenManager.GraphicsDevice.Viewport;
 
         // update the animations
         var elapsedSeconds = (float) gameTime.ElapsedGameTime.TotalSeconds;
@@ -1189,7 +1196,7 @@ internal class CombatEngine
         {
             case DelayType.StartCombat:
                 // determine who goes first and start combat
-                var whoseTurn = Session.Random.Next(2);
+                var whoseTurn = Session.Session.Random.Next(2);
                 if (whoseTurn == 0)
                 {
                     BeginPlayersTurn();
@@ -1262,7 +1269,7 @@ internal class CombatEngine
                 if (fleeThreshold <= 0)
                 {
                     delayType = DelayType.EndCharacterTurn;
-                    Session.Hud.ActionText = "This Fight Cannot Be Escaped...";
+                    Session.Session.Hud.ActionText = "This Fight Cannot Be Escaped...";
                     if (highlightedCombatant != null)
                     {
                         highlightedCombatant.IsTurnTaken = true;
@@ -1271,12 +1278,12 @@ internal class CombatEngine
                 else if (CalculateFleeAttempt())
                 {
                     delayType = DelayType.FleeSuccessful;
-                    Session.Hud.ActionText = "Your Party Has Fled!";
+                    Session.Session.Hud.ActionText = "Your Party Has Fled!";
                 }
                 else
                 {
                     delayType = DelayType.EndCharacterTurn;
-                    Session.Hud.ActionText = "Your Party Failed to Escape!";
+                    Session.Session.Hud.ActionText = "Your Party Failed to Escape!";
                     if (highlightedCombatant != null)
                     {
                         highlightedCombatant.IsTurnTaken = true;
@@ -1304,7 +1311,7 @@ internal class CombatEngine
     {
         var generatedPlayers = new List<CombatantPlayer>();
 
-        foreach (var player in Session.Party.Players)
+        foreach (var player in Session.Session.Party.Players)
         {
             if (generatedPlayers.Count <= PlayerPositions.Length)
             {
@@ -1348,7 +1355,7 @@ internal class CombatEngine
         while (generatedMonsters.Count > 0 &&
                randomizedMonsters.Count <= MonsterPositions.Length)
         {
-            var index = Session.Random.Next(generatedMonsters.Count);
+            var index = Session.Session.Random.Next(generatedMonsters.Count);
             randomizedMonsters.Add(generatedMonsters[index]);
             generatedMonsters.RemoveAt(index);
         }
@@ -1372,7 +1379,7 @@ internal class CombatEngine
 
         // determine how many monsters will be in the combat
         var monsterCount =
-            randomCombat.MonsterCountRange.GenerateValue(Session.Random);
+            randomCombat.MonsterCountRange.GenerateValue(Session.Session.Random);
 
         // determine the total probability
         var totalWeight = 0;
@@ -1385,7 +1392,7 @@ internal class CombatEngine
         var generatedMonsters = new List<CombatantMonster>();
         for (var i = 0; i < monsterCount; i++)
         {
-            var monsterChoice = Session.Random.Next(totalWeight);
+            var monsterChoice = Session.Session.Random.Next(totalWeight);
             foreach (var entry in randomCombat.Entries)
             {
                 if (monsterChoice < entry.Weight)
@@ -1404,7 +1411,7 @@ internal class CombatEngine
         while (generatedMonsters.Count > 0 &&
                randomizedMonsters.Count <= MonsterPositions.Length)
         {
-            var index = Session.Random.Next(generatedMonsters.Count);
+            var index = Session.Session.Random.Next(generatedMonsters.Count);
             randomizedMonsters.Add(generatedMonsters[index]);
             generatedMonsters.RemoveAt(index);
         }
@@ -1508,7 +1515,7 @@ internal class CombatEngine
         delayType = DelayType.StartCombat;
 
         // start the combat music
-        AudioManager.PushMusic(TileEngine.Map.CombatMusicCueName);
+        AudioManager.PushMusic(TileEngine.TileEngine.Map.CombatMusicCueName);
     }
 
     #endregion
@@ -1527,7 +1534,7 @@ internal class CombatEngine
 
 
         singleton.delayType = DelayType.FleeAttempt;
-        Session.Hud.ActionText = "Attempting to Escape...";
+        Session.Session.Hud.ActionText = "Attempting to Escape...";
     }
 
 
@@ -1543,7 +1550,7 @@ internal class CombatEngine
     /// <returns>If true, the escape succeeds.</returns>
     private bool CalculateFleeAttempt()
     {
-        return Session.Random.Next(100) < fleeThreshold;
+        return Session.Session.Random.Next(100) < fleeThreshold;
     }
 
     #endregion
@@ -1571,22 +1578,22 @@ internal class CombatEngine
                 foreach (var combatantMonster in monsters)
                 {
                     var monster = combatantMonster.Monster;
-                    Session.Party.AddMonsterKill(monster);
+                    Session.Session.Party.AddMonsterKill(monster);
                     experienceReward +=
-                        monster.CalculateExperienceReward(Session.Random);
-                    goldReward += monster.CalculateGoldReward(Session.Random);
+                        monster.CalculateExperienceReward(Session.Session.Random);
+                    goldReward += monster.CalculateGoldReward(Session.Session.Random);
                     gearRewardNames.AddRange(
-                        monster.CalculateGearDrop(Session.Random));
+                        monster.CalculateGearDrop(Session.Session.Random));
                 }
 
                 foreach (var gearRewardName in gearRewardNames)
                 {
-                    gearRewards.Add(Session.ScreenManager.Game.Content.Load<Gear>(
+                    gearRewards.Add(Session.Session.ScreenManager.Game.Content.Load<Gear>(
                         Path.Combine(@"Gear", gearRewardName)));
                 }
 
                 // add the reward screen
-                Session.ScreenManager.AddScreen(new RewardsScreen(
+                Session.Session.ScreenManager.AddScreen(new RewardsScreen(
                     RewardsScreen.RewardScreenMode.Combat,
                     experienceReward,
                     goldReward,
@@ -1594,15 +1601,15 @@ internal class CombatEngine
                 // remove the fixed combat entry, if this wasn't a random fight
                 if (FixedCombatEntry != null)
                 {
-                    Session.RemoveFixedCombat(FixedCombatEntry);
+                    Session.Session.RemoveFixedCombat(FixedCombatEntry);
                 }
 
                 break;
 
             case CombatEndingState.Loss: // game over
-                var screenManager = Session.ScreenManager;
+                var screenManager = Session.Session.ScreenManager;
                 // end the session
-                Session.EndSession();
+                Session.Session.EndSession();
                 // add the game-over screen
                 screenManager.AddScreen(new GameOverScreen());
                 break;
@@ -1883,7 +1890,7 @@ internal class CombatEngine
                 return;
             }
 
-            Session.Hud.UpdateActionsMenu();
+            Session.Session.Hud.UpdateActionsMenu();
         }
     }
 

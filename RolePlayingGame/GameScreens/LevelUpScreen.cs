@@ -15,11 +15,13 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.ScreenManager;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays all the players that have leveled up
@@ -388,7 +390,7 @@ internal class LevelUpScreen : GameScreen
             player.CharacterClass.LevelingStatistics;
         var spriteBatch = ScreenManager.SpriteBatch;
 
-        // Draw the portrait            
+        // Draw the portrait
         spriteBatch.Draw(portraitBackTexture, backPosition, Color.White);
 
         spriteBatch.Draw(player.ActivePortraitTexture,

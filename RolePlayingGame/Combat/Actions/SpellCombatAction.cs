@@ -16,10 +16,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using RolePlayingGameData;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat.Actions;
 
 /// <summary>
 ///     A spell-casting combat action, including related data and calculations.
@@ -124,7 +125,7 @@ internal class SpellCombatAction : CombatAction
 
         // add the magical offense to the spell
         var damage =
-            spell.TargetEffectRange.GenerateValue(Session.Random);
+            spell.TargetEffectRange.GenerateValue(Session.Session.Random);
         damage.HealthPoints += damage.HealthPoints != 0 ? magicalOffense : 0;
         damage.MagicPoints += damage.MagicPoints != 0 ? magicalOffense : 0;
         damage.PhysicalOffense += damage.PhysicalOffense != 0 ? magicalOffense : 0;
@@ -191,7 +192,7 @@ internal class SpellCombatAction : CombatAction
             // calculate the defense
             var defenseRange = spellTarget.Character.MagicDefenseRange +
                                spellTarget.Statistics.MagicalDefense;
-            var defense = defenseRange.GenerateValue(Session.Random);
+            var defense = defenseRange.GenerateValue(Session.Session.Random);
             // subtract the defense
             effectStatistics -= new StatisticsValue(defense,
                 defense,

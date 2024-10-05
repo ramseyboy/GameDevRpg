@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 /// <summary>
 ///     The requirements and rewards for each level for a character class.

@@ -14,11 +14,13 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.GameScreens;
 using RolePlayingGameData;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.TileEngine;
 
 /// <summary>
 ///     Static class for a tileable map
@@ -35,7 +37,7 @@ internal static class TileEngine
     /// <summary>
     ///     The map being used by the tile engine.
     /// </summary>
-    public static Map Map => Map;
+    public static Map Map => map;
 
 
     /// <summary>
@@ -268,7 +270,7 @@ internal static class TileEngine
             return true;
         }
 
-        // if the player is at the outside left and right edges, 
+        // if the player is at the outside left and right edges,
         // then check the diagonal tiles
         if (PartyLeaderPosition.TileOffset.X < -movementCollisionTolerance)
         {
@@ -307,7 +309,7 @@ internal static class TileEngine
             return true;
         }
 
-        // if the player is at the outside left and right edges, 
+        // if the player is at the outside left and right edges,
         // then check the diagonal tiles
         if (PartyLeaderPosition.TileOffset.X < -movementCollisionTolerance)
         {
@@ -346,7 +348,7 @@ internal static class TileEngine
             return true;
         }
 
-        // if the player is at the outside left and right edges, 
+        // if the player is at the outside left and right edges,
         // then check the diagonal tiles
         if (PartyLeaderPosition.TileOffset.Y < -movementCollisionTolerance)
         {
@@ -385,7 +387,7 @@ internal static class TileEngine
             return true;
         }
 
-        // if the player is at the outside left and right edges, 
+        // if the player is at the outside left and right edges,
         // then check the diagonal tiles
         if (PartyLeaderPosition.TileOffset.Y < -movementCollisionTolerance)
         {
@@ -456,12 +458,12 @@ internal static class TileEngine
         if (autoMovement == Vector2.Zero &&
             PartyLeaderPosition.TilePosition != oldPartyLeaderTilePosition)
         {
-            Session.CheckForRandomCombat(Map.RandomCombat);
+            Session.Session.CheckForRandomCombat(Map.RandomCombat);
         }
 
         // adjust the map origin so that the party is at the center of the viewport
         mapOriginPosition += viewportCenter - (PartyLeaderPosition.ScreenPosition +
-                                               Session.Party.Players[0].MapSprite.SourceOffset);
+                                               Session.Session.Party.Players[0].MapSprite.SourceOffset);
 
         // make sure the boundaries of the map are never inside the viewport
         mapOriginPosition.X = MathHelper.Min(mapOriginPosition.X, viewport.X);
@@ -490,7 +492,7 @@ internal static class TileEngine
         }
 
         // check for anything that might be in the tile
-        if (Session.EncounterTile(mapPosition))
+        if (Session.Session.EncounterTile(mapPosition))
         {
             return false;
         }

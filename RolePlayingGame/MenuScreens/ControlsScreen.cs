@@ -14,10 +14,11 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.ScreenManager;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.MenuScreens;
 
 /// <summary>
 ///     Displays the in-game controls to the user.

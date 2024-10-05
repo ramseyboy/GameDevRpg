@@ -14,10 +14,13 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Data;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 /// <summary>
 ///     A character that engages in combat.
@@ -544,12 +547,12 @@ public abstract class FightingCharacter : Character
     /// <summary>
     ///     The gear in this character's inventory (and not equipped).
     /// </summary>
-    private readonly List<ContentEntry<Gear>> inventory = new();
+    private readonly List<ContentEntry<Gear.Gear>> inventory = new();
 
     /// <summary>
     ///     The gear in this character's inventory (and not equipped).
     /// </summary>
-    public List<ContentEntry<Gear>> Inventory => inventory;
+    public List<ContentEntry<Gear.Gear>> Inventory => inventory;
 
     #endregion
 
@@ -611,42 +614,42 @@ public abstract class FightingCharacter : Character
     {
         if (combatSprite != null)
         {
-            combatSprite.AddAnimation(new Animation("Idle",
+            combatSprite.AddAnimation(new Animation.Animation("Idle",
                 37,
                 42,
                 CombatAnimationInterval,
                 true));
-            combatSprite.AddAnimation(new Animation("Walk",
+            combatSprite.AddAnimation(new Animation.Animation("Walk",
                 25,
                 30,
                 CombatAnimationInterval,
                 true));
-            combatSprite.AddAnimation(new Animation("Attack",
+            combatSprite.AddAnimation(new Animation.Animation("Attack",
                 1,
                 6,
                 CombatAnimationInterval,
                 false));
-            combatSprite.AddAnimation(new Animation("SpellCast",
+            combatSprite.AddAnimation(new Animation.Animation("SpellCast",
                 31,
                 36,
                 CombatAnimationInterval,
                 false));
-            combatSprite.AddAnimation(new Animation("Defend",
+            combatSprite.AddAnimation(new Animation.Animation("Defend",
                 13,
                 18,
                 CombatAnimationInterval,
                 false));
-            combatSprite.AddAnimation(new Animation("Dodge",
+            combatSprite.AddAnimation(new Animation.Animation("Dodge",
                 13,
                 18,
                 CombatAnimationInterval,
                 false));
-            combatSprite.AddAnimation(new Animation("Hit",
+            combatSprite.AddAnimation(new Animation.Animation("Hit",
                 19,
                 24,
                 CombatAnimationInterval,
                 false));
-            combatSprite.AddAnimation(new Animation("Die",
+            combatSprite.AddAnimation(new Animation.Animation("Die",
                 7,
                 12,
                 CombatAnimationInterval,

@@ -18,10 +18,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Gear;
 
 /// <summary>
 ///     An inventory element - items, equipment, etc.

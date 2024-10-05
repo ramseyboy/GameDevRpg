@@ -14,10 +14,11 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 /// <summary>
 ///     An enemy NPC that fights you in combat.

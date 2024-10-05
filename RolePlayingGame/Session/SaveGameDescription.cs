@@ -13,7 +13,7 @@
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Session;
 
 /// <summary>
 ///     The description of a save game file.

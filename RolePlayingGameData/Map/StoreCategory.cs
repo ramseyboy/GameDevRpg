@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     A category of gear for sale in a store.
@@ -33,7 +33,7 @@ public class StoreCategory
     /// <summary>
     ///     The gear available in this category.
     /// </summary>
-    private List<Gear> availableGear = new();
+    private List<Gear.Gear> availableGear = new();
 
     /// <summary>
     ///     The display name of this store category.
@@ -62,7 +62,7 @@ public class StoreCategory
     ///     The gear available in this category.
     /// </summary>
     [ContentSerializerIgnore]
-    public List<Gear> AvailableGear
+    public List<Gear.Gear> AvailableGear
     {
         get => availableGear;
         set => availableGear = value;
@@ -95,7 +95,7 @@ public class StoreCategory
             // populate the gear list based on the content names
             foreach (var gearName in storeCategory.AvailableContentNames)
             {
-                storeCategory.AvailableGear.Add(input.ContentManager.Load<Gear>(
+                storeCategory.AvailableGear.Add(input.ContentManager.Load<Gear.Gear>(
                     Path.Combine("Gear", gearName)));
             }
 

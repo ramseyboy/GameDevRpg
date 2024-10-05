@@ -13,11 +13,11 @@
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using RolePlayingGameData;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlayingGameProcessors;
+namespace RolePlayingGameProcessors.Gear;
 
 /// <summary>
 ///     This class will be instantiated by the XNA Framework Content Pipeline
@@ -27,7 +27,7 @@ namespace RolePlayingGameProcessors;
 [ContentTypeWriter]
 public class ItemWriter : ContentTypeWriter<Item>
 {
-    private readonly IContentTypeWriterDelegate<Gear> gearWriter = new GearWriter();
+    private readonly IContentTypeWriterDelegate<RolePlayingGameData.Gear.Gear> gearWriter = new GearWriter();
 
     /// <inheritdoc />
     public override string GetRuntimeReader(TargetPlatform targetPlatform)

@@ -13,6 +13,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Animation;
 
 #endregion
 

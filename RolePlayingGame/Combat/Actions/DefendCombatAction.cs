@@ -11,11 +11,11 @@
 
 #region Using Statements
 
-using RolePlayingGameData;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat.Actions;
 
 /// <summary>
 ///     A melee-attack combat action, including related data and calculations.

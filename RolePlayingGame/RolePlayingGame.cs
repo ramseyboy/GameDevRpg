@@ -12,11 +12,12 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework;
+using RolePlayingGame.MenuScreens;
 using StorageReplacement;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame;
 
 /// <summary>
 ///     The Game object for the Role-Playing Game starter kit.
@@ -24,7 +25,7 @@ namespace RolePlaying;
 public class RolePlayingGame : Game
 {
     private readonly GraphicsDeviceManager graphics;
-    private readonly ScreenManager screenManager;
+    private readonly ScreenManager.ScreenManager screenManager;
 
     /// <summary>
     ///     Create a new RolePlayingGame object.
@@ -49,7 +50,7 @@ public class RolePlayingGame : Game
             @"Content\Audio\Sound Bank.xsb");
 
         // add the screen manager
-        screenManager = new ScreenManager(this);
+        screenManager = new ScreenManager.ScreenManager(this);
         Components.Add(screenManager);
     }
 
@@ -66,7 +67,7 @@ public class RolePlayingGame : Game
 
         base.Initialize();
 
-        TileEngine.Viewport = graphics.GraphicsDevice.Viewport;
+        TileEngine.TileEngine.Viewport = graphics.GraphicsDevice.Viewport;
 
         screenManager.AddScreen(new MainMenuScreen());
     }

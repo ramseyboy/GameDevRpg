@@ -15,11 +15,12 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGameData.Data;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat.Actions;
 
 /// <summary>
 ///     A item-casting combat action, including related data and calculations.
@@ -112,7 +113,7 @@ internal class ItemCombatAction : CombatAction
         }
 
         // generate a new effect value - no stats are involved for items
-        return item.TargetEffectRange.GenerateValue(Session.Random);
+        return item.TargetEffectRange.GenerateValue(Session.Session.Random);
     }
 
     #endregion
@@ -170,7 +171,7 @@ internal class ItemCombatAction : CombatAction
             // calculate the defense
             var defenseRange = itemTarget.Character.MagicDefenseRange +
                                itemTarget.Statistics.MagicalDefense;
-            var defense = defenseRange.GenerateValue(Session.Random);
+            var defense = defenseRange.GenerateValue(Session.Session.Random);
             // subtract the defense
             effectStatistics -= new StatisticsValue(defense,
                 defense,
@@ -253,7 +254,7 @@ internal class ItemCombatAction : CombatAction
                 combatant.CombatSprite.PlayAnimation("ItemCast");
                 itemSpritePosition = Combatant.Position;
                 item.SpellSprite.PlayAnimation("Creation");
-                Session.Party.RemoveFromInventory(item, 1);
+                Session.Session.Party.RemoveFromInventory(item, 1);
             }
                 break;
 

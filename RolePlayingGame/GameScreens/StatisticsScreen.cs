@@ -13,11 +13,15 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Draws the statistics for a particular Player.
@@ -59,7 +63,7 @@ internal class StatisticsScreen : GameScreen
             return;
         }
 
-        if (Session.Party.Players.Contains(player)) // player is in the party
+        if (Session.Session.Party.Players.Contains(player)) // player is in the party
         {
             // move to the previous screen
             if (InputManager.IsActionTriggered(InputManager.Action.PageLeft))
@@ -83,10 +87,10 @@ internal class StatisticsScreen : GameScreen
                 playerIndex--;
                 if (playerIndex < 0)
                 {
-                    playerIndex = Session.Party.Players.Count - 1;
+                    playerIndex = Session.Session.Party.Players.Count - 1;
                 }
 
-                var newPlayer = Session.Party.Players[playerIndex];
+                var newPlayer = Session.Session.Party.Players[playerIndex];
                 if (newPlayer != player)
                 {
                     player = newPlayer;
@@ -105,12 +109,12 @@ internal class StatisticsScreen : GameScreen
             else if (InputManager.IsActionTriggered(InputManager.Action.CursorDown))
             {
                 playerIndex++;
-                if (playerIndex >= Session.Party.Players.Count)
+                if (playerIndex >= Session.Session.Party.Players.Count)
                 {
                     playerIndex = 0;
                 }
 
-                var newPlayer = Session.Party.Players[playerIndex];
+                var newPlayer = Session.Session.Party.Players[playerIndex];
                 if (newPlayer != player)
                 {
                     player = newPlayer;
@@ -188,7 +192,7 @@ internal class StatisticsScreen : GameScreen
     /// <summary>
     ///     Creates a new StatisticsScreen object for the first party member.
     /// </summary>
-    public StatisticsScreen() : this(Session.Party.Players[0])
+    public StatisticsScreen() : this(Session.Session.Party.Players[0])
     {
     }
 
@@ -326,7 +330,7 @@ internal class StatisticsScreen : GameScreen
         var spriteBatch = ScreenManager.SpriteBatch;
         var position = new Vector2();
 
-        if (Session.Party.Players.Contains(player))
+        if (Session.Session.Party.Players.Contains(player))
         {
             // Left Trigger
             position = leftTriggerPosition;
@@ -376,7 +380,7 @@ internal class StatisticsScreen : GameScreen
             position,
             Color.White);
 
-        // Draw drop Button    
+        // Draw drop Button
         spriteBatch.Draw(dropButton, dropButtonPosition, Color.White);
         position = dropButtonPosition;
         position.X -= Fonts.MainFont.MeasureString("Equipment").X + 10;
@@ -459,9 +463,9 @@ internal class StatisticsScreen : GameScreen
             }
         }
 
-        // Draw Gold 
+        // Draw Gold
         spriteBatch.DrawString(Fonts.MainFont,
-            Fonts.GetGoldString(Session.Party.PartyGold),
+            Fonts.GetGoldString(Session.Session.Party.PartyGold),
             goldPosition,
             Color.White);
     }
@@ -491,12 +495,12 @@ internal class StatisticsScreen : GameScreen
             Fonts.CountColor);
 
         position.X = scoreBoardPosition.X - Fonts.GearInfoFont.MeasureString(
-            Session.Party.Players.Count.ToString()).X / 2;
+            Session.Session.Party.Players.Count.ToString()).X / 2;
         position.Y += 30;
 
         // Draw Total Player count
         spriteBatch.DrawString(Fonts.GearInfoFont,
-            Session.Party.Players.Count.ToString(),
+            Session.Session.Party.Players.Count.ToString(),
             position,
             Fonts.CountColor);
     }

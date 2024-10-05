@@ -17,10 +17,12 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     One section of the world, and all of the data in it.

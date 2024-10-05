@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <XnaContent>
-    <Asset Type="RolePlayingGameData.Chest">
+    <Asset Type="RolePlayingGameData.Map.Chest">
         <Name>Long Sword</Name>
         <Gold>0</Gold>
         <Entries>

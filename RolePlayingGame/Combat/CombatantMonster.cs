@@ -13,11 +13,15 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using RolePlayingGame.Combat.Actions;
 using RolePlayingGameData;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat;
 
 /// <summary>
 ///     Encapsulates all of the combat-runtime data for a particular monster combatant.
@@ -52,7 +56,7 @@ internal class CombatantMonster : Combatant
         this.monster = monster;
         statistics += monster.CharacterStatistics;
         combatSprite = monster.CombatSprite.Clone() as AnimatingSprite;
-        State = RolePlayingGameData.Character.CharacterState.Idle;
+        State = RolePlayingGameData.Characters.Character.CharacterState.Idle;
         CombatSprite.PlayAnimation("Idle");
 
         // create the AI data
@@ -116,15 +120,15 @@ internal class CombatantMonster : Combatant
             state = value;
             switch (state)
             {
-                case RolePlayingGameData.Character.CharacterState.Idle:
+                case RolePlayingGameData.Characters.Character.CharacterState.Idle:
                     CombatSprite.PlayAnimation("Idle");
                     break;
 
-                case RolePlayingGameData.Character.CharacterState.Hit:
+                case RolePlayingGameData.Characters.Character.CharacterState.Hit:
                     CombatSprite.PlayAnimation("Hit");
                     break;
 
-                case RolePlayingGameData.Character.CharacterState.Dying:
+                case RolePlayingGameData.Characters.Character.CharacterState.Dying:
                     statistics.HealthPoints = 0;
                     CombatSprite.PlayAnimation("Die");
                     break;

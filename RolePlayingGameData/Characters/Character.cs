@@ -15,10 +15,11 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGameData.Animation;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 /// <summary>
 ///     A character in the game world.
@@ -249,42 +250,42 @@ public abstract class Character : WorldObject
     {
         if (mapSprite != null)
         {
-            mapSprite.AddAnimation(new Animation("IdleSouth",
+            mapSprite.AddAnimation(new Animation.Animation("IdleSouth",
                 1,
                 6,
                 MapIdleAnimationInterval,
                 true));
-            mapSprite.AddAnimation(new Animation("IdleSouthwest",
+            mapSprite.AddAnimation(new Animation.Animation("IdleSouthwest",
                 7,
                 12,
                 MapIdleAnimationInterval,
                 true));
-            mapSprite.AddAnimation(new Animation("IdleWest",
+            mapSprite.AddAnimation(new Animation.Animation("IdleWest",
                 13,
                 18,
                 MapIdleAnimationInterval,
                 true));
-            mapSprite.AddAnimation(new Animation("IdleNorthwest",
+            mapSprite.AddAnimation(new Animation.Animation("IdleNorthwest",
                 19,
                 24,
                 MapIdleAnimationInterval,
                 true));
-            mapSprite.AddAnimation(new Animation("IdleNorth",
+            mapSprite.AddAnimation(new Animation.Animation("IdleNorth",
                 25,
                 30,
                 MapIdleAnimationInterval,
                 true));
-            mapSprite.AddAnimation(new Animation("IdleNortheast",
+            mapSprite.AddAnimation(new Animation.Animation("IdleNortheast",
                 31,
                 36,
                 MapIdleAnimationInterval,
                 true));
-            mapSprite.AddAnimation(new Animation("IdleEast",
+            mapSprite.AddAnimation(new Animation.Animation("IdleEast",
                 37,
                 42,
                 MapIdleAnimationInterval,
                 true));
-            mapSprite.AddAnimation(new Animation("IdleSoutheast",
+            mapSprite.AddAnimation(new Animation.Animation("IdleSoutheast",
                 43,
                 48,
                 MapIdleAnimationInterval,
@@ -317,42 +318,42 @@ public abstract class Character : WorldObject
         var sprite = walkingSprite == null ? mapSprite : walkingSprite;
         if (sprite != null)
         {
-            sprite.AddAnimation(new Animation("WalkSouth",
+            sprite.AddAnimation(new Animation.Animation("WalkSouth",
                 1,
                 6,
                 MapWalkingAnimationInterval,
                 true));
-            sprite.AddAnimation(new Animation("WalkSouthwest",
+            sprite.AddAnimation(new Animation.Animation("WalkSouthwest",
                 7,
                 12,
                 MapWalkingAnimationInterval,
                 true));
-            sprite.AddAnimation(new Animation("WalkWest",
+            sprite.AddAnimation(new Animation.Animation("WalkWest",
                 13,
                 18,
                 MapWalkingAnimationInterval,
                 true));
-            sprite.AddAnimation(new Animation("WalkNorthwest",
+            sprite.AddAnimation(new Animation.Animation("WalkNorthwest",
                 19,
                 24,
                 MapWalkingAnimationInterval,
                 true));
-            sprite.AddAnimation(new Animation("WalkNorth",
+            sprite.AddAnimation(new Animation.Animation("WalkNorth",
                 25,
                 30,
                 MapWalkingAnimationInterval,
                 true));
-            sprite.AddAnimation(new Animation("WalkNortheast",
+            sprite.AddAnimation(new Animation.Animation("WalkNortheast",
                 31,
                 36,
                 MapWalkingAnimationInterval,
                 true));
-            sprite.AddAnimation(new Animation("WalkEast",
+            sprite.AddAnimation(new Animation.Animation("WalkEast",
                 37,
                 42,
                 MapWalkingAnimationInterval,
                 true));
-            sprite.AddAnimation(new Animation("WalkSoutheast",
+            sprite.AddAnimation(new Animation.Animation("WalkSoutheast",
                 43,
                 48,
                 MapWalkingAnimationInterval,

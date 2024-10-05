@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Gear;
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharacter>
 {
@@ -24,7 +26,7 @@ public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharac
         fightingCharacter.InitialEquipmentContentNames.AddRange(
             input.ReadObject<List<string>>());
         fightingCharacter.Inventory.AddRange(
-            input.ReadObject<List<ContentEntry<Gear>>>());
+            input.ReadObject<List<ContentEntry<Gear.Gear>>>());
         fightingCharacter.CombatAnimationInterval = input.ReadInt32();
         fightingCharacter.CombatSprite = input.ReadObject<AnimatingSprite>();
         fightingCharacter.AddStandardCharacterCombatAnimations();
@@ -52,7 +54,7 @@ public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharac
         foreach (var inventoryEntry in
                  fightingCharacter.Inventory)
         {
-            inventoryEntry.Content = input.ContentManager.Load<Gear>(
+            inventoryEntry.Content = input.ContentManager.Load<Gear.Gear>(
                 Path.Combine("Gear", inventoryEntry.ContentName));
         }
     }

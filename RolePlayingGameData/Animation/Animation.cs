@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Animation;
 
 /// <summary>
 ///     An animation description for an AnimatingSprite object.

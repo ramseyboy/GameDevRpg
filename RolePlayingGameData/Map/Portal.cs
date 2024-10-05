@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     A transition point from one map to another.

@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.ScreenManager;
 
 /// <summary>
 ///     The screen manager is a component which manages one or more GameScreen

@@ -16,11 +16,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGame.GameScreens;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Session;
 
 /// <summary>
 ///     The group of players, under control of the user.

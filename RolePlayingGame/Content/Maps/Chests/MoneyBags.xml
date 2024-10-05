@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <XnaContent>
-    <Asset Type="RolePlayingGameData.Chest">
+    <Asset Type="RolePlayingGameData.Map.Chest">
         <Name>Money Bags</Name>
         <Gold>5000</Gold>
         <Entries>

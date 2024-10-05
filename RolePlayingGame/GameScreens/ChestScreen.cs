@@ -16,10 +16,12 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RolePlayingGameData;
+using RolePlayingGameData.Gear;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 internal class ChestScreen : InventoryScreen
 {
@@ -335,12 +337,12 @@ internal class ChestScreen : InventoryScreen
         // if the chestEntry.Content is empty, remove it from the game and exit
         if (chestEntry.Content.IsEmpty)
         {
-            Session.RemoveChest(chestEntry);
+            Session.Session.RemoveChest(chestEntry);
         }
         else
         {
             // otherwise, store the modified chestEntry.Content
-            Session.StoreModifiedChest(chestEntry);
+            Session.Session.StoreModifiedChest(chestEntry);
         }
 
         // exit the screen
@@ -365,7 +367,7 @@ internal class ChestScreen : InventoryScreen
             // play the "pick up gold" cue
             AudioManager.PlayCue("Money");
             // add the gold to the party
-            Session.Party.PartyGold += selectedQuantity;
+            Session.Session.Party.PartyGold += selectedQuantity;
             chestEntry.Content.Gold -= selectedQuantity;
             if (chestEntry.Content.Gold > 0)
             {
@@ -383,7 +385,7 @@ internal class ChestScreen : InventoryScreen
             var quantity = selectedQuantity;
             if (entry.Content != null && quantity > 0)
             {
-                Session.Party.AddToInventory(entry.Content, quantity);
+                Session.Session.Party.AddToInventory(entry.Content, quantity);
                 entry.Count -= quantity;
             }
 
@@ -410,7 +412,7 @@ internal class ChestScreen : InventoryScreen
         if (chestEntry.Content.Gold > 0)
         {
             AudioManager.PlayCue("Money");
-            Session.Party.PartyGold += chestEntry.Content.Gold;
+            Session.Session.Party.PartyGold += chestEntry.Content.Gold;
             chestEntry.Content.Gold = 0;
         }
 
@@ -419,7 +421,7 @@ internal class ChestScreen : InventoryScreen
         var entries = GetDataList();
         foreach (var gearEntry in entries)
         {
-            Session.Party.AddToInventory(gearEntry.Content, gearEntry.Count);
+            Session.Session.Party.AddToInventory(gearEntry.Content, gearEntry.Count);
         }
 
         // clear the entries, as they're all gone now

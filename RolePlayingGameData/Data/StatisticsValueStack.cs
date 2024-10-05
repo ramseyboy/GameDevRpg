@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Data;
 
 /// <summary>
 ///     A collection of statistics that expire over time.

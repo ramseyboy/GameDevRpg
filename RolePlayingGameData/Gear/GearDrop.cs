@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Gear;
 
 /// <summary>
 ///     Description of how often a particular gear drops, typically from a Monster.

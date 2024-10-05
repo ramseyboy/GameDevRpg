@@ -14,10 +14,11 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.ScreenManager;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.MenuScreens;
 
 /// <summary>
 ///     The loading screen coordinates transitions between the menu system and the
@@ -65,7 +66,7 @@ internal class LoadingScreen : GameScreen
     ///     The constructor is private: loading screens should
     ///     be activated via the static Load method instead.
     /// </summary>
-    private LoadingScreen(ScreenManager screenManager,
+    private LoadingScreen(ScreenManager.ScreenManager screenManager,
         bool loadingIsSlow,
         GameScreen[] screensToLoad)
     {
@@ -79,7 +80,7 @@ internal class LoadingScreen : GameScreen
     /// <summary>
     ///     Activates the loading screen.
     /// </summary>
-    public static void Load(ScreenManager screenManager,
+    public static void Load(ScreenManager.ScreenManager screenManager,
         bool loadingIsSlow,
         params GameScreen[] screensToLoad)
     {

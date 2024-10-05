@@ -4,7 +4,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Gear;
 
 public class GearReader : IContentTypeReaderDelegate<Gear>
 {

@@ -13,10 +13,12 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Gear;
 
 /// <summary>
 ///     A usable piece of gear that has a spell-like effect.

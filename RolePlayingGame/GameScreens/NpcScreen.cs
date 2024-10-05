@@ -13,10 +13,11 @@
 
 using System;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Display of conversation dialog between the player and the npc

@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     An inn in the game world, where the party can rest and restore themselves.

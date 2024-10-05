@@ -16,7 +16,7 @@ using RolePlayingGameData;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.TileEngine;
 
 /// <summary>
 ///     The position of a player in the tile engine.

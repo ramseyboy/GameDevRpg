@@ -13,11 +13,15 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using RolePlayingGame.Combat;
+using RolePlayingGame.MenuScreens;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGame.Session;
 using RolePlayingGameData;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     This screen implements the actual game logic. It is just a
@@ -70,9 +74,9 @@ internal class GameplayScreen : GameScreen
     private void GameplayScreen_Exiting(object sender, EventArgs e)
     {
         // make sure the session is ending
-        // -- EndSession must be re-entrant safe, as the EndSession may be 
+        // -- EndSession must be re-entrant safe, as the EndSession may be
         //    making this screen close itself
-        Session.EndSession();
+        Session.Session.EndSession();
     }
 
 
@@ -83,11 +87,11 @@ internal class GameplayScreen : GameScreen
     {
         if (gameStartDescription != null)
         {
-            Session.StartNewSession(gameStartDescription, ScreenManager, this);
+            Session.Session.StartNewSession(gameStartDescription, ScreenManager, this);
         }
         else if (saveGameDescription != null)
         {
-            Session.LoadSession(saveGameDescription, ScreenManager, this);
+            Session.Session.LoadSession(saveGameDescription, ScreenManager, this);
         }
 
         // once the load has finished, we use ResetElapsedTime to tell the game's
@@ -114,7 +118,7 @@ internal class GameplayScreen : GameScreen
 
         if (IsActive && !coveredByOtherScreen)
         {
-            Session.Update(gameTime);
+            Session.Session.Update(gameTime);
         }
     }
 
@@ -145,7 +149,7 @@ internal class GameplayScreen : GameScreen
         if (!CombatEngine.IsActive &&
             InputManager.IsActionTriggered(InputManager.Action.CharacterManagement))
         {
-            ScreenManager.AddScreen(new StatisticsScreen(Session.Party.Players[0]));
+            ScreenManager.AddScreen(new StatisticsScreen(Session.Session.Party.Players[0]));
         }
     }
 
@@ -165,7 +169,7 @@ internal class GameplayScreen : GameScreen
     /// </summary>
     public override void Draw(GameTime gameTime)
     {
-        Session.Draw(gameTime);
+        Session.Session.Draw(gameTime);
     }
 
     #endregion

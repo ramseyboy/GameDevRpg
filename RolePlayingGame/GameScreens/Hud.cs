@@ -14,11 +14,15 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.Combat;
+using RolePlayingGame.Combat.Actions;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays each player's basic statistics and the combat action menu.
@@ -26,7 +30,7 @@ namespace RolePlaying;
 internal class Hud
 {
     public const int HudHeight = 183;
-    private readonly ScreenManager screenManager;
+    private readonly ScreenManager.ScreenManager screenManager;
 
 
     #region Graphics Data
@@ -96,7 +100,7 @@ internal class Hud
     /// <summary>
     ///     Creates a new Hud object using the given ScreenManager.
     /// </summary>
-    public Hud(ScreenManager screenManager)
+    public Hud(ScreenManager.ScreenManager screenManager)
     {
         // check the parameter
         if (screenManager == null)
@@ -167,8 +171,8 @@ internal class Hud
 
         startingInfoPosition.X = 640f;
 
-        startingInfoPosition.X -= Session.Party.Players.Count / 2 * 200f;
-        if (Session.Party.Players.Count % 2 != 0)
+        startingInfoPosition.X -= Session.Session.Party.Players.Count / 2 * 200f;
+        if (Session.Session.Party.Players.Count % 2 != 0)
         {
             startingInfoPosition.X -= 100f;
         }
@@ -247,7 +251,7 @@ internal class Hud
 
         var position = startingInfoPosition;
 
-        foreach (var player in Session.Party.Players)
+        foreach (var player in Session.Session.Party.Players)
         {
             DrawNonCombatPlayerDetails(player, position);
 
@@ -596,7 +600,7 @@ internal class Hud
                         CombatEngine.HighlightedCombatant.Statistics);
                     spellbookScreen.SpellSelected +=
                         spellbookScreen_SpellSelected;
-                    Session.ScreenManager.AddScreen(spellbookScreen);
+                    Session.Session.ScreenManager.AddScreen(spellbookScreen);
                 }
                     break;
 
@@ -605,7 +609,7 @@ internal class Hud
                     var inventoryScreen = new InventoryScreen(true);
                     inventoryScreen.GearSelected +=
                         inventoryScreen_GearSelected;
-                    Session.ScreenManager.AddScreen(inventoryScreen);
+                    Session.Session.ScreenManager.AddScreen(inventoryScreen);
                 }
                     break;
 

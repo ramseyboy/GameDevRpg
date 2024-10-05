@@ -13,10 +13,11 @@
 
 using System;
 using System.Collections.Generic;
+using RolePlayingGame.Combat.Actions;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Combat;
 
 /// <summary>
 ///     Determines actions for a given monster in combat.
@@ -162,7 +163,7 @@ internal class ArtificialIntelligence
         // determine if the monster will use a defensive action
         if (monster.Monster.DefendPercentage > 0 &&
             defensiveActions.Count > 0 &&
-            Session.Random.Next(0, 100) < monster.Monster.DefendPercentage)
+            Session.Session.Random.Next(0, 100) < monster.Monster.DefendPercentage)
         {
             combatAction = ChooseDefensiveAction();
         }
@@ -195,12 +196,12 @@ internal class ArtificialIntelligence
         int targetIndex;
         do
         {
-            targetIndex = Session.Random.Next(players.Count);
+            targetIndex = Session.Session.Random.Next(players.Count);
         } while (players[targetIndex].IsDeadOrDying);
 
         var target = players[targetIndex];
 
-        // the action lists are sorted by descending potential, 
+        // the action lists are sorted by descending potential,
         // so find the first eligible action
         foreach (var action in offensiveActions)
         {
@@ -262,7 +263,7 @@ internal class ArtificialIntelligence
             return null;
         }
 
-        // the action lists are sorted by descending potential, 
+        // the action lists are sorted by descending potential,
         // so find the first eligible action
         foreach (var action in defensiveActions)
         {

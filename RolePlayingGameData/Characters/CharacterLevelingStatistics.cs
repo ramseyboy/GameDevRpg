@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 /// <summary>
 ///     Information about how to increment statistics with additional character levels.

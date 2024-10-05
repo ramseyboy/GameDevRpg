@@ -13,10 +13,12 @@
 
 using System.Collections.Generic;
 using RolePlayingGameData;
+using RolePlayingGameData.Gear;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.Session;
 
 /// <summary>
 ///     A serializable description of the modified contents of a chest in the world.

@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Data;
 
 /// <summary>
 ///     Defines a range of values, useful for generating values in that range.

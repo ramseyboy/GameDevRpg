@@ -13,10 +13,12 @@
 
 using System;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Quests;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 internal class QuestNpcScreen : NpcScreen<QuestNpc>
 {
@@ -36,17 +38,17 @@ internal class QuestNpcScreen : NpcScreen<QuestNpc>
         }
 
         // check to see if this is NPC is the current quest destination
-        if (Session.Quest != null &&
-            Session.Quest.Stage == Quest.QuestStage.RequirementsMet &&
-            TileEngine.Map.AssetName.EndsWith(
-                Session.Quest.DestinationMapContentName) &&
-            Session.Quest.DestinationNpcContentName == mapEntry.ContentName)
+        if (Session.Session.Quest != null &&
+            Session.Session.Quest.Stage == Quest.QuestStage.RequirementsMet &&
+            TileEngine.TileEngine.Map.AssetName.EndsWith(
+                Session.Session.Quest.DestinationMapContentName) &&
+            Session.Session.Quest.DestinationNpcContentName == mapEntry.ContentName)
         {
             // use the quest completion dialog
-            DialogueText = Session.Quest.CompletionMessage;
+            DialogueText = Session.Session.Quest.CompletionMessage;
             // mark the quest for completion
             // -- the session will not update until the pop-up screens are cleared
-            Session.Quest.Stage = Quest.QuestStage.Completed;
+            Session.Session.Quest.Stage = Quest.QuestStage.Completed;
         }
         else
         {

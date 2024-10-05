@@ -14,10 +14,11 @@
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using RolePlayingGameData;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlayingGameProcessors;
+namespace RolePlayingGameProcessors.Map;
 
 /// <summary>
 ///     This class will be instantiated by the XNA Framework Content Pipeline
@@ -36,7 +37,7 @@ public class ChestWriter : ContentTypeWriter<Chest>
     protected override void Write(ContentWriter output, Chest value)
     {
         // remove any entries that have zero quantity
-        value.Entries.RemoveAll(delegate(ContentEntry<Gear> contentEntry) { return contentEntry.Count <= 0; });
+        value.Entries.RemoveAll(delegate(ContentEntry<RolePlayingGameData.Gear.Gear> contentEntry) { return contentEntry.Count <= 0; });
 
         output.Write(value.Name);
         output.Write(value.Gold);

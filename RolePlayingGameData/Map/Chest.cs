@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     A treasure chest in the game world.
@@ -49,12 +49,12 @@ public class Chest : WorldObject
     /// <summary>
     ///     The gear in the chest, along with quantities.
     /// </summary>
-    private List<ContentEntry<Gear>> entries = new();
+    private List<ContentEntry<Gear.Gear>> entries = new();
 
     /// <summary>
     ///     The gear in the chest, along with quantities.
     /// </summary>
-    public List<ContentEntry<Gear>> Entries
+    public List<ContentEntry<Gear.Gear>> Entries
     {
         get => entries;
         set => entries = value;
@@ -64,7 +64,7 @@ public class Chest : WorldObject
     /// <summary>
     ///     Array accessor for the chest's contents.
     /// </summary>
-    public ContentEntry<Gear> this[int index] => entries[index];
+    public ContentEntry<Gear.Gear> this[int index] => entries[index];
 
 
     /// <summary>
@@ -130,10 +130,10 @@ public class Chest : WorldObject
             chest.Gold = input.ReadInt32();
 
             chest.Entries.AddRange(
-                input.ReadObject<List<ContentEntry<Gear>>>());
+                input.ReadObject<List<ContentEntry<Gear.Gear>>>());
             foreach (var contentEntry in chest.Entries)
             {
-                contentEntry.Content = input.ContentManager.Load<Gear>(
+                contentEntry.Content = input.ContentManager.Load<Gear.Gear>(
                     Path.Combine(@"Gear",
                         contentEntry.ContentName));
             }
@@ -170,10 +170,10 @@ public class Chest : WorldObject
         chest.TextureName = TextureName;
 
         // recreate the list and entries, as counts may have changed
-        chest.entries = new List<ContentEntry<Gear>>();
+        chest.entries = new List<ContentEntry<Gear.Gear>>();
         foreach (var originalEntry in Entries)
         {
-            var newEntry = new ContentEntry<Gear>();
+            var newEntry = new ContentEntry<Gear.Gear>();
             newEntry.Count = originalEntry.Count;
             newEntry.ContentName = originalEntry.ContentName;
             newEntry.Content = originalEntry.Content;

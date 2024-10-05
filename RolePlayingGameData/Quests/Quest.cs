@@ -15,10 +15,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Quests;
 
 /// <summary>
 ///     A quest that the party can embark on, with goals and rewards.
@@ -122,12 +125,12 @@ public class Quest : ContentObject
     /// <summary>
     ///     The gear that the player must have to finish the quest.
     /// </summary>
-    private List<QuestRequirement<Gear>> gearRequirements = new();
+    private List<QuestRequirement<Gear.Gear>> gearRequirements = new();
 
     /// <summary>
     ///     The gear that the player must have to finish the quest.
     /// </summary>
-    public List<QuestRequirement<Gear>> GearRequirements
+    public List<QuestRequirement<Gear.Gear>> GearRequirements
     {
         get => gearRequirements;
         set => gearRequirements = value;
@@ -319,13 +322,13 @@ public class Quest : ContentObject
     /// <summary>
     ///     The gear given to the party as a reward.
     /// </summary>
-    private List<Gear> gearRewards = new();
+    private List<Gear.Gear> gearRewards = new();
 
     /// <summary>
     ///     The gear given to the party as a reward.
     /// </summary>
     [ContentSerializerIgnore]
-    public List<Gear> GearRewards
+    public List<Gear.Gear> GearRewards
     {
         get => gearRewards;
         set => gearRewards = value;
@@ -360,7 +363,7 @@ public class Quest : ContentObject
             quest.CompletionMessage = input.ReadString();
 
             quest.GearRequirements.AddRange(
-                input.ReadObject<List<QuestRequirement<Gear>>>());
+                input.ReadObject<List<QuestRequirement<Gear.Gear>>>());
             quest.MonsterRequirements.AddRange(
                 input.ReadObject<List<QuestRequirement<Monster>>>());
 
@@ -408,7 +411,7 @@ public class Quest : ContentObject
                 input.ReadObject<List<string>>());
             foreach (var contentName in quest.GearRewardContentNames)
             {
-                quest.GearRewards.Add(input.ContentManager.Load<Gear>(
+                quest.GearRewards.Add(input.ContentManager.Load<Gear.Gear>(
                     Path.Combine("Gear", contentName)));
             }
 

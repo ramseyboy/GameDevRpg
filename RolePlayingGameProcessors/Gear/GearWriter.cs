@@ -12,15 +12,14 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using RolePlayingGameData;
 
 #endregion
 
-namespace RolePlayingGameProcessors;
+namespace RolePlayingGameProcessors.Gear;
 
-public class GearWriter : IContentTypeWriterDelegate<Gear>
+public class GearWriter : IContentTypeWriterDelegate<RolePlayingGameData.Gear.Gear>
 {
-    public void WriteContent(ContentWriter output, Gear value)
+    public void WriteContent(ContentWriter output, RolePlayingGameData.Gear.Gear value)
     {
         output.Write(value.Name);
         output.Write(value.Description);

@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Quests;
 
 /// <summary>
 ///     A line of quests, presented to the player in order.

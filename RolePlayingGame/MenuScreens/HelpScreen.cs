@@ -14,10 +14,11 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.ScreenManager;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.MenuScreens;
 
 /// <summary>
 ///     Shows the help screen, explaining the basic game idea to the user.

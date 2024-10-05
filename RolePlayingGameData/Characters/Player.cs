@@ -14,10 +14,12 @@
 using System.IO;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 /// <summary>
 ///     A member of the player's party, also represented in the world before joining.

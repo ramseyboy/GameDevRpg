@@ -15,11 +15,12 @@ using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGameData.Gear;
+using RolePlayingGameData.Map;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays the gear from a particular store and allows the user to purchase them.
@@ -117,7 +118,7 @@ internal class StoreBuyScreen : ListScreen<Gear>
         }
 
         selectedQuantity = 1;
-        maximumQuantity = (int) Math.Floor(Session.Party.PartyGold /
+        maximumQuantity = (int) Math.Floor(Session.Session.Party.PartyGold /
                                            (gear.GoldValue * store.BuyMultiplier));
     }
 
@@ -241,10 +242,10 @@ internal class StoreBuyScreen : ListScreen<Gear>
         // purchase the items if possible
         var totalPrice = (int) Math.Floor(entry.GoldValue * selectedQuantity *
                                           store.BuyMultiplier);
-        if (totalPrice <= Session.Party.PartyGold)
+        if (totalPrice <= Session.Session.Party.PartyGold)
         {
-            Session.Party.PartyGold -= totalPrice;
-            Session.Party.AddToInventory(entry, selectedQuantity);
+            Session.Session.Party.PartyGold -= totalPrice;
+            Session.Session.Party.AddToInventory(entry, selectedQuantity);
         }
 
         // reset the quantities - either gold has gone down or the total was bad
@@ -360,7 +361,7 @@ internal class StoreBuyScreen : ListScreen<Gear>
         var priceSingle = (int) Math.Floor(entry.GoldValue * store.BuyMultiplier);
         if (isSelected)
         {
-            if (priceSingle <= Session.Party.PartyGold)
+            if (priceSingle <= Session.Session.Party.PartyGold)
             {
                 var quantityPosition = drawPosition;
                 // draw the left selection arrow

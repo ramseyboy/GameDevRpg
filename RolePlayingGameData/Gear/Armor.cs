@@ -12,10 +12,11 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Gear;
 
 /// <summary>
 ///     Equipment that can be equipped on a FightingCharacter

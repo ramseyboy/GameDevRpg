@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Data;
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Gear;
 
 public class EquipmentReader : IContentTypeReaderDelegate<Equipment>
 {

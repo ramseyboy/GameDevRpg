@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Animation;
 
 /// <summary>
 ///     A sprite sheet with flipbook-style animations.

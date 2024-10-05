@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Content;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Data;
 
 /// <summary>
 ///     The set of relevant statistics for characters.

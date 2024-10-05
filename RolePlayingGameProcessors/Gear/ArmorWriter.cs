@@ -13,11 +13,11 @@
 
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using RolePlayingGameData;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlayingGameProcessors;
+namespace RolePlayingGameProcessors.Gear;
 
 /// <summary>
 ///     This class will be instantiated by the XNA Framework Content Pipeline

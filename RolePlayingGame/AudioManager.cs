@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Audio;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame;
 
 /// <summary>
 ///     Component that manages audio playback for all cues.

@@ -15,6 +15,8 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGameData.Animation;
+using RolePlayingGameData.Data;
 
 #endregion
 

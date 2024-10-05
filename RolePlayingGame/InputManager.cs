@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Input;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame;
 
 /// <summary>
 ///     This class handles all keyboard and gamepad actions in the game.

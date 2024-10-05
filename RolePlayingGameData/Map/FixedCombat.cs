@@ -14,10 +14,11 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     The description of a fixed combat encounter in the world.

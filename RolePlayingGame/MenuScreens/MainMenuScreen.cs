@@ -14,11 +14,15 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.Combat;
+using RolePlayingGame.GameScreens;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGame.Session;
 using RolePlayingGameData;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.MenuScreens;
 
 /// <summary>
 ///     The main menu screen is the first thing displayed when the game starts up.
@@ -77,7 +81,7 @@ internal class MainMenuScreen : MenuScreen
             Color.White);
 
         // if we are in-game, draw the back instruction
-        if (Session.IsActive)
+        if (Session.Session.IsActive)
         {
             spriteBatch.Draw(backTexture, backPosition, Color.White);
             spriteBatch.DrawString(Fonts.MainFont,
@@ -141,9 +145,9 @@ internal class MainMenuScreen : MenuScreen
         newGameMenuEntry.Selected += NewGameMenuEntrySelected;
         MenuEntries.Add(newGameMenuEntry);
 
-        // add the Save Game menu entry, 
+        // add the Save Game menu entry,
         // if the game has started but is not in combat
-        if (Session.IsActive && !CombatEngine.IsActive)
+        if (Session.Session.IsActive && !CombatEngine.IsActive)
         {
             saveGameMenuEntry = new MenuEntry("Save Game");
             saveGameMenuEntry.Description = "Save the Game";
@@ -260,7 +264,7 @@ internal class MainMenuScreen : MenuScreen
     public override void HandleInput()
     {
         if (InputManager.IsActionTriggered(InputManager.Action.Back) &&
-            Session.IsActive)
+            Session.Session.IsActive)
         {
             AudioManager.PopMusic();
             ExitScreen();
@@ -276,7 +280,7 @@ internal class MainMenuScreen : MenuScreen
     /// </summary>
     private void NewGameMenuEntrySelected(object sender, EventArgs e)
     {
-        if (Session.IsActive)
+        if (Session.Session.IsActive)
         {
             ExitScreen();
         }
@@ -316,7 +320,7 @@ internal class MainMenuScreen : MenuScreen
     /// </summary>
     private void loadGameScreen_LoadingSaveGame(SaveGameDescription saveGameDescription)
     {
-        if (Session.IsActive)
+        if (Session.Session.IsActive)
         {
             ExitScreen();
         }
@@ -353,7 +357,7 @@ internal class MainMenuScreen : MenuScreen
     {
         // add a confirmation message box
         var message = string.Empty;
-        if (Session.IsActive)
+        if (Session.Session.IsActive)
         {
             message =
                 "Are you sure you want to exit?  All unsaved progress will be lost.";

@@ -13,10 +13,11 @@
 
 using System;
 using RolePlayingGameData;
+using RolePlayingGameData.Characters;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays the Player NPC screen, shown when encountering a player on the map.
@@ -71,8 +72,8 @@ internal class PlayerNpcScreen : NpcScreen<Player>
             {
                 isIntroduction = false;
                 var player = character as Player;
-                Session.Party.JoinParty(player);
-                Session.RemovePlayerNpc(mapEntry);
+                Session.Session.Party.JoinParty(player);
+                Session.Session.RemovePlayerNpc(mapEntry);
                 DialogueText = player.JoinAcceptedDialogue;
                 BackText = "Back";
                 SelectText = "Back";

@@ -1,4 +1,2 @@
-﻿using RolePlaying;
-
-using var game = new RolePlayingGame();
+﻿using var game = new RolePlayingGame.RolePlayingGame();
 game.Run();

@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame;
 
 /// <summary>
 ///     Static storage of SpriteFont objects and colors for use throughout the game.

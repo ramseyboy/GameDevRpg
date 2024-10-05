@@ -15,10 +15,11 @@ using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RolePlayingGame.ScreenManager;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 internal abstract class ListScreen<T> : GameScreen
 {
@@ -557,7 +558,7 @@ internal abstract class ListScreen<T> : GameScreen
 
         spriteBatch.Draw(goldTexture, goldTexturePosition, Color.White);
         spriteBatch.DrawString(Fonts.MainFont,
-            Fonts.GetGoldString(Session.Party.PartyGold),
+            Fonts.GetGoldString(Session.Session.Party.PartyGold),
             goldTextPosition,
             Color.White);
     }

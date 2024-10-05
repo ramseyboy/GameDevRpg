@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.ScreenManager;
 
 /// <summary>
 ///     Base class for screens that contain a menu of options. The user can

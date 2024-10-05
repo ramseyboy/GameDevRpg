@@ -14,10 +14,11 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Characters;
 
 /// <summary>
 ///     The definition of a type of character.

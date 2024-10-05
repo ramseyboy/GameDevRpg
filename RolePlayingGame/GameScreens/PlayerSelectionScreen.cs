@@ -15,11 +15,15 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGame.Combat;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Shows a list of players and allows the user to equip or use items.
@@ -57,13 +61,13 @@ internal class PlayerSelectionScreen : GameScreen
             {
                 var equipment = usedGear as Equipment;
                 Equipment oldEquipment = null;
-                if (Session.Party.Players[selectionMark].Equip(equipment,
+                if (Session.Session.Party.Players[selectionMark].Equip(equipment,
                         out oldEquipment))
                 {
-                    Session.Party.RemoveFromInventory(usedGear, 1);
+                    Session.Session.Party.RemoveFromInventory(usedGear, 1);
                     if (oldEquipment != null)
                     {
-                        Session.Party.AddToInventory(oldEquipment, 1);
+                        Session.Session.Party.AddToInventory(oldEquipment, 1);
                     }
 
                     isGearUsed = true;
@@ -74,11 +78,11 @@ internal class PlayerSelectionScreen : GameScreen
                 var item = usedGear as Item;
                 if ((item.Usage & Item.ItemUsage.NonCombat) > 0)
                 {
-                    if (Session.Party.RemoveFromInventory(item, 1))
+                    if (Session.Session.Party.RemoveFromInventory(item, 1))
                     {
-                        Session.Party.Players[selectionMark].StatisticsModifiers +=
-                            item.TargetEffectRange.GenerateValue(Session.Random);
-                        Session.Party.Players[selectionMark].StatisticsModifiers.ApplyMaximum(new StatisticsValue());
+                        Session.Session.Party.Players[selectionMark].StatisticsModifiers +=
+                            item.TargetEffectRange.GenerateValue(Session.Session.Random);
+                        Session.Session.Party.Players[selectionMark].StatisticsModifiers.ApplyMaximum(new StatisticsValue());
                         isGearUsed = true;
                     }
                     else
@@ -111,7 +115,7 @@ internal class PlayerSelectionScreen : GameScreen
                 if (usedGear != null)
                 {
                     isUseAllowed = usedGear.CheckRestrictions(
-                        Session.Party.Players[selectionMark]);
+                        Session.Session.Party.Players[selectionMark]);
                 }
 
                 CalculateSelectedPlayers();
@@ -123,7 +127,7 @@ internal class PlayerSelectionScreen : GameScreen
                  InputManager.IsActionTriggered(InputManager.Action.CursorDown))
         {
             isGearUsed = false;
-            if (selectionMark < Session.Party.Players.Count - 1)
+            if (selectionMark < Session.Session.Party.Players.Count - 1)
             {
                 ResetFromPreview();
 
@@ -139,7 +143,7 @@ internal class PlayerSelectionScreen : GameScreen
                 if (usedGear != null)
                 {
                     isUseAllowed = usedGear.CheckRestrictions(
-                        Session.Party.Players[selectionMark]);
+                        Session.Session.Party.Players[selectionMark]);
                 }
 
                 CalculateSelectedPlayers();
@@ -273,7 +277,7 @@ internal class PlayerSelectionScreen : GameScreen
             if (usedGear != null)
             {
                 isUseAllowed = usedGear.CheckRestrictions(
-                    Session.Party.Players[selectionMark]);
+                    Session.Session.Party.Players[selectionMark]);
             }
 
             CalculateSelectedPlayers();
@@ -288,9 +292,9 @@ internal class PlayerSelectionScreen : GameScreen
     private void ResetValues()
     {
         startIndex = 0;
-        if (drawMaximum > Session.Party.Players.Count)
+        if (drawMaximum > Session.Session.Party.Players.Count)
         {
-            endIndex = Session.Party.Players.Count;
+            endIndex = Session.Session.Party.Players.Count;
         }
         else
         {
@@ -761,9 +765,9 @@ internal class PlayerSelectionScreen : GameScreen
         }
 
         // Compute EndIndex
-        if (endIndex > Session.Party.Players.Count)
+        if (endIndex > Session.Session.Party.Players.Count)
         {
-            endIndex = Session.Party.Players.Count;
+            endIndex = Session.Session.Party.Players.Count;
             selectionMark = endIndex - 1;
             CalculateSelectedPlayers();
         }
@@ -780,13 +784,13 @@ internal class PlayerSelectionScreen : GameScreen
                 }
             }
 
-            DrawPlayerDetails(Session.Party.Players[playerIndex], isSelectedPlayer);
+            DrawPlayerDetails(Session.Session.Party.Players[playerIndex], isSelectedPlayer);
         }
 
         // Draw the Scroll button only if player count exceed the Max items
         if (selectionMark != -1)
         {
-            if (Session.Party.Players.Count > drawMaximum)
+            if (Session.Session.Party.Players.Count > drawMaximum)
             {
                 DrawCharacterCount();
             }
@@ -818,7 +822,7 @@ internal class PlayerSelectionScreen : GameScreen
         position.Y += 30;
         // Display Total Players count
         spriteBatch.DrawString(Fonts.GearInfoFont,
-            Session.Party.Players.Count.ToString(),
+            Session.Session.Party.Players.Count.ToString(),
             position,
             Fonts.CountColor);
     }
@@ -959,13 +963,13 @@ internal class PlayerSelectionScreen : GameScreen
         for (var i = 1; i <= range; i++)
         {
             if (selMark >= i &&
-                !Session.Party.Players[selMark - i].IsDeadOrDying)
+                !Session.Session.Party.Players[selMark - i].IsDeadOrDying)
             {
                 selectedPlayers.Add(selMark - i);
             }
 
-            if (selMark < Session.Party.Players.Count - i &&
-                !Session.Party.Players[selMark + i].IsDeadOrDying)
+            if (selMark < Session.Session.Party.Players.Count - i &&
+                !Session.Session.Party.Players[selMark + i].IsDeadOrDying)
             {
                 selectedPlayers.Add(selMark + i);
             }

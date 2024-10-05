@@ -15,11 +15,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
+using RolePlayingGame.Combat;
+using RolePlayingGame.MenuScreens;
 using RolePlayingGameData;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays the inventory of the party, either showing items or equipment.
@@ -75,7 +78,7 @@ internal class InventoryScreen : ListScreen<ContentEntry<Gear>>
     public override ReadOnlyCollection<ContentEntry<Gear>> GetDataList()
     {
         var dataList = new List<ContentEntry<Gear>>();
-        var inventory = Session.Party.Inventory;
+        var inventory = Session.Session.Party.Inventory;
 
         // build a new list of only the desired gear
         foreach (var gearEntry in inventory)
@@ -185,7 +188,7 @@ internal class InventoryScreen : ListScreen<ContentEntry<Gear>>
             new MessageBoxScreen("Are you sure you want to drop the " +
                                  entry.Content.Name + "?");
         dropEquipmentConfirmationScreen.Accepted +=
-            delegate { Session.Party.RemoveFromInventory(entry.Content, 1); };
+            delegate { Session.Session.Party.RemoveFromInventory(entry.Content, 1); };
         ScreenManager.AddScreen(dropEquipmentConfirmationScreen);
     }
 
@@ -203,7 +206,7 @@ internal class InventoryScreen : ListScreen<ContentEntry<Gear>>
         if (isItems)
         {
             ExitScreen();
-            ScreenManager.AddScreen(new StatisticsScreen(Session.Party.Players[0]));
+            ScreenManager.AddScreen(new StatisticsScreen(Session.Session.Party.Players[0]));
         }
         else
         {

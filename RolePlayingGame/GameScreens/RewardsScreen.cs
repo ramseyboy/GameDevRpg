@@ -15,11 +15,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RolePlayingGameData;
+using RolePlayingGame.ScreenManager;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Displays the rewards earned by the party, from a quest or combat.
@@ -51,13 +52,13 @@ internal class RewardsScreen : GameScreen
         {
             ExitScreen();
             // give the rewards to the party
-            Session.Party.PartyGold += goldReward;
+            Session.Session.Party.PartyGold += goldReward;
             foreach (var gear in gearReward)
             {
-                Session.Party.AddToInventory(gear, 1);
+                Session.Session.Party.AddToInventory(gear, 1);
             }
 
-            Session.Party.GiveExperience(experienceReward);
+            Session.Session.Party.GiveExperience(experienceReward);
         }
         // Scroll up
         else if (InputManager.IsActionTriggered(InputManager.Action.CursorUp))

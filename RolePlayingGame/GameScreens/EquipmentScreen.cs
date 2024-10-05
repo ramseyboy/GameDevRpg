@@ -14,11 +14,12 @@
 using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
-using RolePlayingGameData;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Gear;
 
 #endregion
 
-namespace RolePlaying;
+namespace RolePlayingGame.GameScreens;
 
 /// <summary>
 ///     Lists the player's equipped gear, and allows the user to unequip them.
@@ -101,7 +102,7 @@ internal class EquipmentScreen : ListScreen<Equipment>
         fightingCharacter.Unequip(entry);
 
         // add the equipment back to the party's inventory
-        Session.Party.AddToInventory(entry, 1);
+        Session.Session.Party.AddToInventory(entry, 1);
     }
 
     #endregion

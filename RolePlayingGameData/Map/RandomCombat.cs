@@ -14,10 +14,12 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using RolePlayingGameData.Characters;
+using RolePlayingGameData.Data;
 
 #endregion
 
-namespace RolePlayingGameData;
+namespace RolePlayingGameData.Map;
 
 /// <summary>
 ///     Description of possible random combats in a particular map.

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
-    <Asset Type="RolePlayingGameData.Quest">
+    <Asset Type="RolePlayingGameData.Quests.Quest">
         <Name>Save Mercadia</Name>
         <Description>The evil Tamar has stolen the sacred amulet which binds the world of Mercadia together. Without it, Mercadia is doomed... despair shall
             overwhelm the populace as volcanoes erupt, earthquakes devour villages, tornadoes engulf the landscape, and hurricanes destroy the harvest fields.
