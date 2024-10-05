@@ -119,39 +119,5 @@ namespace RolePlayingGameData
 
 
         #endregion
-
-
-        #region Content Type Reader
-
-
-        /// <summary>
-        /// Read a MapEntry object from the content pipeline.
-        /// </summary>
-        public class MapEntryReader : ContentTypeReader<MapEntry<T>>
-        {
-            private readonly IContentTypeReaderDelegate<ContentEntry<T>> reader = new ContentEntryReader<T>();
-
-            /// <summary>
-            /// Read a MapEntry object from the content pipeline.
-            /// </summary>
-            protected override MapEntry<T> Read(ContentReader input,
-                MapEntry<T> existingInstance)
-            {
-                MapEntry<T> desc = existingInstance;
-                if (desc == null)
-                {
-                    desc = new MapEntry<T>();
-                }
-
-                reader.ReadContent(input, desc);
-                desc.MapPosition = input.ReadObject<Point>();
-                desc.Direction = (Direction)input.ReadInt32();
-
-                return desc;
-            }
-        }
-
-
-        #endregion
     }
 }

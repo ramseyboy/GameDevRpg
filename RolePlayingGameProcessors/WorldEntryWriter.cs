@@ -31,25 +31,15 @@ namespace RolePlayingGameProcessors
     public class WorldEntryWriter<T> : ContentTypeWriter<WorldEntry<T>>
         where T : ContentObject
     {
-        MapEntryWriter<T> mapEntryWriter = null;
+        private readonly IContentTypeWriterDelegate<MapEntry<T>> mapEntryWriter = new MapEntryWriter<T>();
 
         /// <inheritdoc />
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
             => typeof(WorldEntry<T>.WorldEntryReader).AssemblyQualifiedName ?? string.Empty;
 
-        protected override void Initialize(ContentCompiler compiler)
-        {
-            mapEntryWriter = compiler.GetTypeWriter(typeof(MapEntry<T>))
-                as MapEntryWriter<T>;
-
-            base.Initialize(compiler);
-        }
-
         protected override void Write(ContentWriter output, WorldEntry<T> value)
         {
-            output.WriteRawObject<MapEntry<T>>(value as MapEntry<T>,
-                mapEntryWriter);
-
+            mapEntryWriter.WriteContent(output, value);
             output.Write(value.MapContentName);
         }
     }

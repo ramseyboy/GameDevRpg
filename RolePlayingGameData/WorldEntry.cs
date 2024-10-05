@@ -43,6 +43,8 @@ namespace RolePlayingGameData
         /// </summary>
         public class WorldEntryReader : ContentTypeReader<WorldEntry<T>>
         {
+            private readonly IContentTypeReaderDelegate<MapEntry<T>> mapEntryReader = new MapEntryReader<T>();
+
             /// <summary>
             /// Reads a WorldEntry object from the content pipeline.
             /// </summary>
@@ -55,7 +57,7 @@ namespace RolePlayingGameData
                     desc = new WorldEntry<T>();
                 }
 
-                input.ReadRawObject<MapEntry<T>>(desc as MapEntry<T>);
+                mapEntryReader.ReadContent(input, existingInstance);
                 desc.MapContentName = input.ReadString();
 
                 return desc;
