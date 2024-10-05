@@ -11,31 +11,31 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Icon.ico" />
-    <None Remove="Icon.bmp" />
+    <None Remove="Icon.ico"/>
+    <None Remove="Icon.bmp"/>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Icon.ico" />
-    <EmbeddedResource Include="Icon.bmp" />
+    <EmbeddedResource Include="Icon.ico"/>
+    <EmbeddedResource Include="Icon.bmp"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Contentless" Version="4.0.0" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
+    <PackageReference Include="Contentless" Version="4.0.0"/>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105"/>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RolePlayingGameData\RolePlayingGameData.csproj" />
-    <ProjectReference Include="..\RolePlayingGameProcessors\RolePlayingGameProcessors.csproj" />
-    <ProjectReference Include="..\StorageReplacement\StorageReplacement.csproj" />
+    <ProjectReference Include="..\RolePlayingGameData\RolePlayingGameData.csproj"/>
+    <ProjectReference Include="..\RolePlayingGameProcessors\RolePlayingGameProcessors.csproj"/>
+    <ProjectReference Include="..\StorageReplacement\StorageReplacement.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <Content Include=".config\dotnet-tools.json" />
+    <Content Include=".config\dotnet-tools.json"/>
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb"/>
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
-    <Message Text="Restoring dotnet tools" Importance="High" />
-    <Exec Command="dotnet tool restore" />
+    <Message Text="Restoring dotnet tools" Importance="High"/>
+    <Exec Command="dotnet tool restore"/>
   </Target>
 </Project>

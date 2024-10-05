@@ -10,7 +10,7 @@ public class CharacterReader : IContentTypeReaderDelegate<Character>
     public void ReadContent(ContentReader input,
         Character existingInstance)
     {
-        Character character = existingInstance;
+        var character = existingInstance;
         if (character == null)
         {
             throw new ArgumentNullException("existingInstance");
@@ -26,6 +26,7 @@ public class CharacterReader : IContentTypeReaderDelegate<Character>
                     character.MapSprite.SourceOffset.X - 32,
                     character.MapSprite.SourceOffset.Y - 32);
         }
+
         character.AddStandardCharacterIdleAnimations();
 
         character.MapWalkingAnimationInterval = input.ReadInt32();
@@ -37,6 +38,7 @@ public class CharacterReader : IContentTypeReaderDelegate<Character>
                     character.WalkingSprite.SourceOffset.X - 32,
                     character.WalkingSprite.SourceOffset.Y - 32);
         }
+
         character.AddStandardCharacterWalkingAnimations();
 
         character.ResetAnimation(false);

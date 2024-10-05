@@ -17,7 +17,7 @@
             <HealthPoints>15</HealthPoints>
         </LevelingProgression>
         <CreatingCueName>HealCreate</CreatingCueName>
-        <TravelingCueName />
+        <TravelingCueName/>
         <ImpactCueName>HealImpact</ImpactCueName>
         <BlockCueName>HealImpact</BlockCueName>
         <IconTextureName>HealLargeIcon</IconTextureName>

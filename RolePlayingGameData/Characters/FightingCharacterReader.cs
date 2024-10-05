@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 
 namespace RolePlayingGameData;
 
 public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharacter>
 {
-    private IContentTypeReaderDelegate<Character> characterReader = new CharacterReader();
+    private readonly IContentTypeReaderDelegate<Character> characterReader = new CharacterReader();
 
     public void ReadContent(ContentReader input,
         FightingCharacter existingInstance)
     {
-        FightingCharacter fightingCharacter = existingInstance;
+        var fightingCharacter = existingInstance;
         if (fightingCharacter == null)
         {
             throw new ArgumentNullException("existingInstance");
@@ -32,15 +33,15 @@ public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharac
         // load the character class
         fightingCharacter.CharacterClass =
             input.ContentManager.Load<CharacterClass>(
-                System.IO.Path.Combine("CharacterClasses",
+                Path.Combine("CharacterClasses",
                     fightingCharacter.CharacterClassContentName));
 
         // populate the equipment list
-        foreach (string gearName in
+        foreach (var gearName in
                  fightingCharacter.InitialEquipmentContentNames)
         {
             fightingCharacter.Equip(input.ContentManager.Load<Equipment>(
-                System.IO.Path.Combine("Gear", gearName)));
+                Path.Combine("Gear", gearName)));
         }
 
         fightingCharacter.RecalculateEquipmentStatistics();
@@ -48,11 +49,11 @@ public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharac
         fightingCharacter.RecalculateTotalDefenseRanges();
 
         // populate the inventory based on the content names
-        foreach (ContentEntry<Gear> inventoryEntry in
+        foreach (var inventoryEntry in
                  fightingCharacter.Inventory)
         {
             inventoryEntry.Content = input.ContentManager.Load<Gear>(
-                System.IO.Path.Combine("Gear", inventoryEntry.ContentName));
+                Path.Combine("Gear", inventoryEntry.ContentName));
         }
     }
 }

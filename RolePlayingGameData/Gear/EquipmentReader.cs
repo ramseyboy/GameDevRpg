@@ -10,7 +10,7 @@ public class EquipmentReader : IContentTypeReaderDelegate<Equipment>
     public void ReadContent(ContentReader input,
         Equipment existingInstance)
     {
-        Equipment equipment = existingInstance;
+        var equipment = existingInstance;
 
         if (equipment == null)
         {

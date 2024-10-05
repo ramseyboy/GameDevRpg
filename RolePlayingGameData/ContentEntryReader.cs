@@ -2,13 +2,13 @@ using Microsoft.Xna.Framework.Content;
 
 namespace RolePlayingGameData;
 
-public class ContentEntryReader<T>: IContentTypeReaderDelegate<ContentEntry<T>>
+public class ContentEntryReader<T> : IContentTypeReaderDelegate<ContentEntry<T>>
     where T : ContentObject
 {
     public void ReadContent(ContentReader input,
         ContentEntry<T> existingInstance)
     {
-        ContentEntry<T> member = existingInstance;
+        var member = existingInstance;
         if (member == null)
         {
             member = new ContentEntry<T>();

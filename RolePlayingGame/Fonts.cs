@@ -1,385 +1,365 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // Fonts.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
-namespace RolePlaying
+namespace RolePlaying;
+
+/// <summary>
+///     Static storage of SpriteFont objects and colors for use throughout the game.
+/// </summary>
+internal static class Fonts
 {
+    #region Drawing Helper Methods
+
     /// <summary>
-    /// Static storage of SpriteFont objects and colors for use throughout the game.
+    ///     Draws text centered at particular position.
     /// </summary>
-    static class Fonts
+    /// <param name="spriteBatch">The SpriteBatch object used to draw.</param>
+    /// <param name="font">The font used to draw the text.</param>
+    /// <param name="text">The text to be drawn</param>
+    /// <param name="position">The center position of the text.</param>
+    /// <param name="color">The color of the text.</param>
+    public static void DrawCenteredText(SpriteBatch spriteBatch,
+        SpriteFont font,
+        string text,
+        Vector2 position,
+        Color color)
     {
-        #region Fonts
-
-        private static SpriteFont mainFont;
-        public static SpriteFont MainFont
+        // check the parameters
+        if (spriteBatch == null)
         {
-            get { return mainFont; }
-        }
-        
-        public static SpriteFont HeaderFont
-        {
-            get { return mainFont; }
+            throw new ArgumentNullException("spriteBatch");
         }
 
-
-        public static SpriteFont PlayerNameFont
+        if (font == null)
         {
-            get { return mainFont; }
+            throw new ArgumentNullException("font");
         }
 
-
-        public static SpriteFont DebugFont
+        // check for trivial text
+        if (string.IsNullOrEmpty(text))
         {
-            get { return mainFont; }
+            return;
         }
 
+        // calculate the centered position
+        var textSize = font.MeasureString(text);
+        var centeredPosition = new Vector2(
+            position.X - (int) textSize.X / 2,
+            position.Y - (int) textSize.Y / 2);
 
-        public static SpriteFont ButtonNamesFont
+        // draw the string
+        spriteBatch.DrawString(font,
+            text,
+            centeredPosition,
+            color,
+            0f,
+            Vector2.Zero,
+            1f,
+            SpriteEffects.None,
+            1f - position.Y / 720f);
+    }
+
+    #endregion
+
+    #region Fonts
+
+    public static SpriteFont MainFont { get; private set; }
+
+    public static SpriteFont HeaderFont => MainFont;
+
+
+    public static SpriteFont PlayerNameFont => MainFont;
+
+
+    public static SpriteFont DebugFont => MainFont;
+
+
+    public static SpriteFont ButtonNamesFont => MainFont;
+
+
+    public static SpriteFont DescriptionFont => MainFont;
+
+
+    public static SpriteFont GearInfoFont => MainFont;
+
+
+    public static SpriteFont DamageFont => MainFont;
+
+
+    public static SpriteFont PlayerStatisticsFont => MainFont;
+
+
+    public static SpriteFont HudDetailFont => MainFont;
+
+
+    public static SpriteFont CaptionFont => MainFont;
+
+    #endregion
+
+
+    #region Font Colors
+
+    public static readonly Color CountColor = new(79, 24, 44);
+    public static readonly Color TitleColor = new(59, 18, 6);
+    public static readonly Color CaptionColor = new(228, 168, 57);
+    public static readonly Color HighlightColor = new(223, 206, 148);
+    public static readonly Color DisplayColor = new(68, 32, 19);
+    public static readonly Color DescriptionColor = new(0, 0, 0);
+    public static readonly Color RestrictionColor = new(0, 0, 0);
+    public static readonly Color ModifierColor = new(0, 0, 0);
+    public static readonly Color MenuSelectedColor = new(248, 218, 127);
+
+    #endregion
+
+
+    #region Initialization
+
+    /// <summary>
+    ///     Load the fonts from the content pipeline.
+    /// </summary>
+    public static void LoadContent(ContentManager contentManager)
+    {
+        // check the parameters
+        if (contentManager == null)
         {
-            get { return mainFont; }
+            throw new ArgumentNullException("contentManager");
         }
 
+        // load each font from the content pipeline
+        MainFont = contentManager.Load<SpriteFont>("Fonts/MainFont");
+    }
 
-        public static SpriteFont DescriptionFont
+
+    /// <summary>
+    ///     Release all references to the fonts.
+    /// </summary>
+    public static void UnloadContent()
+    {
+        MainFont = null;
+    }
+
+    #endregion
+
+
+    #region Text Helper Methods
+
+    /// <summary>
+    ///     Adds newline characters to a string so that it fits within a certain size.
+    /// </summary>
+    /// <param name="text">The text to be modified.</param>
+    /// <param name="maximumCharactersPerLine">
+    ///     The maximum length of a single line of text.
+    /// </param>
+    /// <param name="maximumLines">The maximum number of lines to draw.</param>
+    /// <returns>The new string, with newline characters if needed.</returns>
+    public static string BreakTextIntoLines(string text,
+        int maximumCharactersPerLine,
+        int maximumLines)
+    {
+        if (maximumLines <= 0)
         {
-            get { return mainFont; }
+            throw new ArgumentOutOfRangeException("maximumLines");
         }
 
-
-        public static SpriteFont GearInfoFont
+        if (maximumCharactersPerLine <= 0)
         {
-            get { return mainFont; }
+            throw new ArgumentOutOfRangeException("maximumCharactersPerLine");
         }
 
-
-        public static SpriteFont DamageFont
+        // if the string is trivial, then this is really easy
+        if (string.IsNullOrEmpty(text))
         {
-            get { return mainFont; }
+            return string.Empty;
         }
 
-
-        public static SpriteFont PlayerStatisticsFont
+        // if the text is short enough to fit on one line, then this is still easy
+        if (text.Length < maximumCharactersPerLine)
         {
-            get { return mainFont; }
+            return text;
         }
 
-
-        public static SpriteFont HudDetailFont
+        // construct a new string with carriage returns
+        var stringBuilder = new StringBuilder(text);
+        var currentLine = 0;
+        var newLineIndex = 0;
+        while (text.Length - newLineIndex > maximumCharactersPerLine &&
+               currentLine < maximumLines)
         {
-            get { return mainFont; }
+            text.IndexOf(' ', 0);
+            var nextIndex = newLineIndex;
+            while (nextIndex >= 0 && nextIndex < maximumCharactersPerLine)
+            {
+                newLineIndex = nextIndex;
+                nextIndex = text.IndexOf(' ', newLineIndex + 1);
+            }
+
+            stringBuilder.Replace(' ', '\n', newLineIndex, 1);
+            currentLine++;
         }
 
+        return stringBuilder.ToString();
+    }
 
-        public static SpriteFont CaptionFont
+
+    /// <summary>
+    ///     Adds new-line characters to a string to make it fit.
+    /// </summary>
+    /// <param name="text">The text to be drawn.</param>
+    /// <param name="maximumCharactersPerLine">
+    ///     The maximum length of a single line of text.
+    /// </param>
+    public static string BreakTextIntoLines(string text,
+        int maximumCharactersPerLine)
+    {
+        // check the parameters
+        if (maximumCharactersPerLine <= 0)
         {
-            get { return mainFont; }
+            throw new ArgumentOutOfRangeException("maximumCharactersPerLine");
         }
 
-
-        #endregion
-
-
-        #region Font Colors
-
-
-        public static readonly Color CountColor = new Color(79, 24, 44);
-        public static readonly Color TitleColor = new Color(59, 18, 6);
-        public static readonly Color CaptionColor = new Color(228, 168, 57);
-        public static readonly Color HighlightColor = new Color(223, 206, 148);
-        public static readonly Color DisplayColor = new Color(68, 32, 19);
-        public static readonly Color DescriptionColor = new Color(0, 0, 0);
-        public static readonly Color RestrictionColor = new Color(0, 0, 0);
-        public static readonly Color ModifierColor = new Color(0, 0, 0);
-        public static readonly Color MenuSelectedColor = new Color(248, 218, 127);
-
-
-        #endregion
-
-
-        #region Initialization
-
-
-        /// <summary>
-        /// Load the fonts from the content pipeline.
-        /// </summary>
-        public static void LoadContent(ContentManager contentManager)
+        // if the string is trivial, then this is really easy
+        if (string.IsNullOrEmpty(text))
         {
-            // check the parameters
-            if (contentManager == null)
-            {
-                throw new ArgumentNullException("contentManager");
-            }
-
-            // load each font from the content pipeline
-            mainFont = contentManager.Load<SpriteFont>("Fonts/MainFont");
+            return string.Empty;
         }
 
-
-        /// <summary>
-        /// Release all references to the fonts.
-        /// </summary>
-        public static void UnloadContent()
+        // if the text is short enough to fit on one line, then this is still easy
+        if (text.Length < maximumCharactersPerLine)
         {
-            mainFont = null;
+            return text;
         }
 
-
-        #endregion
-
-
-        #region Text Helper Methods
-
-
-        /// <summary>
-        /// Adds newline characters to a string so that it fits within a certain size.
-        /// </summary>
-        /// <param name="text">The text to be modified.</param>
-        /// <param name="maximumCharactersPerLine">
-        /// The maximum length of a single line of text.
-        /// </param>
-        /// <param name="maximumLines">The maximum number of lines to draw.</param>
-        /// <returns>The new string, with newline characters if needed.</returns>
-        public static string BreakTextIntoLines(string text, 
-            int maximumCharactersPerLine, int maximumLines)
+        // construct a new string with carriage returns
+        var stringBuilder = new StringBuilder(text);
+        var currentLine = 0;
+        var newLineIndex = 0;
+        while (text.Length - newLineIndex > maximumCharactersPerLine)
         {
-            if (maximumLines <= 0)
+            text.IndexOf(' ', 0);
+            var nextIndex = newLineIndex;
+            while (nextIndex >= 0 && nextIndex < maximumCharactersPerLine)
             {
-                throw new ArgumentOutOfRangeException("maximumLines");
-            }
-            if (maximumCharactersPerLine <= 0)
-            {
-                throw new ArgumentOutOfRangeException("maximumCharactersPerLine");
-            }
-
-            // if the string is trivial, then this is really easy
-            if (String.IsNullOrEmpty(text))
-            {
-                return String.Empty;
+                newLineIndex = nextIndex;
+                nextIndex = text.IndexOf(' ', newLineIndex + 1);
             }
 
-            // if the text is short enough to fit on one line, then this is still easy
-            if (text.Length < maximumCharactersPerLine)
-            {
-                return text;
-            }
-
-            // construct a new string with carriage returns
-            StringBuilder stringBuilder = new StringBuilder(text);
-            int currentLine = 0;
-            int newLineIndex = 0;
-            while (((text.Length - newLineIndex) > maximumCharactersPerLine) &&
-                (currentLine < maximumLines))
-            {
-                text.IndexOf(' ', 0);
-                int nextIndex = newLineIndex;
-                while ((nextIndex >= 0) && (nextIndex < maximumCharactersPerLine))
-                {
-                    newLineIndex = nextIndex;
-                    nextIndex = text.IndexOf(' ', newLineIndex + 1);
-                }
-                stringBuilder.Replace(' ', '\n', newLineIndex, 1);
-                currentLine++;
-            }
-
-            return stringBuilder.ToString();
+            stringBuilder.Replace(' ', '\n', newLineIndex, 1);
+            currentLine++;
         }
 
+        return stringBuilder.ToString();
+    }
 
-        /// <summary>
-        /// Adds new-line characters to a string to make it fit.
-        /// </summary>
-        /// <param name="text">The text to be drawn.</param>
-        /// <param name="maximumCharactersPerLine">
-        /// The maximum length of a single line of text.
-        /// </param>
-        public static string BreakTextIntoLines(string text, 
-            int maximumCharactersPerLine)
+
+    /// <summary>
+    ///     Break text up into separate lines to make it fit.
+    /// </summary>
+    /// <param name="text">The text to be broken up.</param>
+    /// <param name="font">The font used ot measure the width of the text.</param>
+    /// <param name="rowWidth">The maximum width of each line, in pixels.</param>
+    public static List<string> BreakTextIntoList(string text,
+        SpriteFont font,
+        int rowWidth)
+    {
+        // check parameters
+        if (font == null)
         {
-            // check the parameters
-            if (maximumCharactersPerLine <= 0)
-            {
-                throw new ArgumentOutOfRangeException("maximumCharactersPerLine");
-            }
-
-            // if the string is trivial, then this is really easy
-            if (String.IsNullOrEmpty(text))
-            {
-                return String.Empty;
-            }
-
-            // if the text is short enough to fit on one line, then this is still easy
-            if (text.Length < maximumCharactersPerLine)
-            {
-                return text;
-            }
-
-            // construct a new string with carriage returns
-            StringBuilder stringBuilder = new StringBuilder(text);
-            int currentLine = 0;
-            int newLineIndex = 0;
-            while (((text.Length - newLineIndex) > maximumCharactersPerLine))
-            {
-                text.IndexOf(' ', 0);
-                int nextIndex = newLineIndex;
-                while ((nextIndex >= 0) && (nextIndex < maximumCharactersPerLine))
-                {
-                    newLineIndex = nextIndex;
-                    nextIndex = text.IndexOf(' ', newLineIndex + 1);
-                }
-                stringBuilder.Replace(' ', '\n', newLineIndex, 1);
-                currentLine++;
-            }
-
-            return stringBuilder.ToString();
+            throw new ArgumentNullException("font");
         }
 
-
-        /// <summary>
-        /// Break text up into separate lines to make it fit.
-        /// </summary>
-        /// <param name="text">The text to be broken up.</param>
-        /// <param name="font">The font used ot measure the width of the text.</param>
-        /// <param name="rowWidth">The maximum width of each line, in pixels.</param>
-        public static List<string> BreakTextIntoList(string text, SpriteFont font, 
-            int rowWidth)
+        if (rowWidth <= 0)
         {
-            // check parameters
-            if (font == null)
-            {
-                throw new ArgumentNullException("font");
-            }
-            if (rowWidth <= 0)
-            {
-                throw new ArgumentOutOfRangeException("rowWidth");
-            }
+            throw new ArgumentOutOfRangeException("rowWidth");
+        }
 
-            // create the list
-            List<string> lines = new List<string>();
+        // create the list
+        var lines = new List<string>();
 
-            // check for trivial text
-            if (String.IsNullOrEmpty("text"))
-            {
-                lines.Add(String.Empty);
-                return lines;
-            }
-
-            // check for text that fits on a single line
-            if (font.MeasureString(text).X <= rowWidth)
-            {
-                lines.Add(text);
-                return lines;
-            }
-
-            // break the text up into words
-            string[] words = text.Split(' ');
-
-            // add words until they go over the length
-            int currentWord = 0;
-            while (currentWord < words.Length)
-            {
-                int wordsThisLine = 0;
-                string line = String.Empty;
-                while (currentWord < words.Length)
-                {
-                    string testLine = line;
-                    if (testLine.Length < 1)
-                    {
-                        testLine += words[currentWord];
-                    }
-                    else if ((testLine[testLine.Length - 1] == '.') ||
-                        (testLine[testLine.Length - 1] == '?') ||
-                        (testLine[testLine.Length - 1] == '!'))
-                    {
-                        testLine += "  " + words[currentWord];
-                    }
-                    else
-                    {
-                        testLine += " " + words[currentWord];
-                    }
-                    if ((wordsThisLine > 0) &&
-                        (font.MeasureString(testLine).X > rowWidth))
-                    {
-                        break;
-                    }
-                    line = testLine;
-                    wordsThisLine++;
-                    currentWord++;
-                }
-                lines.Add(line);
-            }
+        // check for trivial text
+        if (string.IsNullOrEmpty("text"))
+        {
+            lines.Add(string.Empty);
             return lines;
         }
 
-
-        /// <summary>
-        /// Returns a properly-formatted gold-quantity string.
-        /// </summary>
-        public static string GetGoldString(int gold)
+        // check for text that fits on a single line
+        if (font.MeasureString(text).X <= rowWidth)
         {
-            return String.Format("{0:n0}", gold);
+            lines.Add(text);
+            return lines;
         }
 
+        // break the text up into words
+        var words = text.Split(' ');
 
-        #endregion
-
-
-        #region Drawing Helper Methods
-
-
-        /// <summary>
-        /// Draws text centered at particular position.
-        /// </summary>
-        /// <param name="spriteBatch">The SpriteBatch object used to draw.</param>
-        /// <param name="font">The font used to draw the text.</param>
-        /// <param name="text">The text to be drawn</param>
-        /// <param name="position">The center position of the text.</param>
-        /// <param name="color">The color of the text.</param>
-        public static void DrawCenteredText(SpriteBatch spriteBatch, SpriteFont font, 
-            string text, Vector2 position, Color color)
+        // add words until they go over the length
+        var currentWord = 0;
+        while (currentWord < words.Length)
         {
-            // check the parameters
-            if (spriteBatch == null)
+            var wordsThisLine = 0;
+            var line = string.Empty;
+            while (currentWord < words.Length)
             {
-                throw new ArgumentNullException("spriteBatch");
-            }
-            if (font == null)
-            {
-                throw new ArgumentNullException("font");
+                var testLine = line;
+                if (testLine.Length < 1)
+                {
+                    testLine += words[currentWord];
+                }
+                else if (testLine[testLine.Length - 1] == '.' ||
+                         testLine[testLine.Length - 1] == '?' ||
+                         testLine[testLine.Length - 1] == '!')
+                {
+                    testLine += "  " + words[currentWord];
+                }
+                else
+                {
+                    testLine += " " + words[currentWord];
+                }
+
+                if (wordsThisLine > 0 &&
+                    font.MeasureString(testLine).X > rowWidth)
+                {
+                    break;
+                }
+
+                line = testLine;
+                wordsThisLine++;
+                currentWord++;
             }
 
-            // check for trivial text
-            if (String.IsNullOrEmpty(text))
-            {
-                return;
-            }
-
-            // calculate the centered position
-            Vector2 textSize = font.MeasureString(text);
-            Vector2 centeredPosition = new Vector2(
-                position.X - (int)textSize.X / 2,
-                position.Y - (int)textSize.Y / 2);
-
-            // draw the string
-            spriteBatch.DrawString(font, text, centeredPosition, color, 0f, 
-                Vector2.Zero, 1f, SpriteEffects.None, 1f - position.Y / 720f);
+            lines.Add(line);
         }
 
-
-        #endregion
+        return lines;
     }
+
+
+    /// <summary>
+    ///     Returns a properly-formatted gold-quantity string.
+    /// </summary>
+    public static string GetGoldString(int gold)
+    {
+        return string.Format("{0:n0}", gold);
+    }
+
+    #endregion
 }

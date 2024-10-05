@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +10,7 @@ public class GearReader : IContentTypeReaderDelegate<Gear>
 {
     public void ReadContent(ContentReader input, Gear existingInstance)
     {
-        Gear gear = existingInstance;
+        var gear = existingInstance;
         if (gear == null)
         {
             throw new ArgumentException("Unable to create new Gear objects.");
@@ -26,6 +27,6 @@ public class GearReader : IContentTypeReaderDelegate<Gear>
         gear.SupportedClasses.AddRange(input.ReadObject<List<string>>());
         gear.IconTextureName = input.ReadString();
         gear.IconTexture = input.ContentManager.Load<Texture2D>(
-            System.IO.Path.Combine(@"Textures\Gear", gear.IconTextureName));
+            Path.Combine(@"Textures\Gear", gear.IconTextureName));
     }
 }

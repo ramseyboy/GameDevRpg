@@ -17,7 +17,7 @@
             <HealthPoints>10</HealthPoints>
         </LevelingProgression>
         <CreatingCueName>SpellCreate</CreatingCueName>
-        <TravelingCueName />
+        <TravelingCueName/>
         <ImpactCueName>FireballHit</ImpactCueName>
         <BlockCueName>SpellBlock</BlockCueName>
         <IconTextureName>IceSmall</IconTextureName>
