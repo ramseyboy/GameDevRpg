@@ -59,7 +59,7 @@ namespace RolePlayingGameData
                     questNpc = new QuestNpc();
                 }
 
-                characterReader.Read(input, questNpc);
+                characterReader.ReadContent(input, questNpc);
                 questNpc.IntroductionDialogue = input.ReadString();
 
                 return questNpc;

@@ -22,9 +22,9 @@ public class EquipmentWriter : IContentTypeWriterDelegate<Equipment>
 {
     private readonly IContentTypeWriterDelegate<Gear> gearWriter = new GearWriter();
 
-    public void Write(ContentWriter output, Equipment value)
+    public void WriteContent(ContentWriter output, Equipment value)
     {
-        gearWriter.Write(output, value);
+        gearWriter.WriteContent(output, value);
         output.WriteObject(value.OwnerBuffStatistics);
     }
 }

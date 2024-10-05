@@ -38,7 +38,7 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, Player value)
         {
-            fightingCharacterWriter.Write(output, value);
+            fightingCharacterWriter.WriteContent(output, value);
             output.Write(value.Gold);
             output.Write(value.IntroductionDialogue);
             output.Write(value.JoinAcceptedDialogue);

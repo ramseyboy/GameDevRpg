@@ -38,7 +38,7 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, Item value)
         {
-            gearWriter.Write(output, value);
+            gearWriter.WriteContent(output, value);
             output.Write((Int32)value.Usage);
             output.Write(value.IsOffensive);
             output.Write(value.TargetDuration);

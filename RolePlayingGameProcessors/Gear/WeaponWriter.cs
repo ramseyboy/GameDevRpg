@@ -39,7 +39,7 @@ namespace RolePlayingGameProcessors
         protected override void Write(ContentWriter output, Weapon value)
         {
             // write out equipment values
-            equipmentWriter.Write(output, value);
+            equipmentWriter.WriteContent(output, value);
 
             output.WriteObject(value.TargetDamageRange);
             output.Write(value.SwingCueName);

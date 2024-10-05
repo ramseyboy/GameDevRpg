@@ -7,7 +7,7 @@ namespace RolePlayingGameData;
 
 public class CharacterReader : IContentTypeReaderDelegate<Character>
 {
-    public Character Read(ContentReader input,
+    public void ReadContent(ContentReader input,
         Character existingInstance)
     {
         Character character = existingInstance;
@@ -43,7 +43,5 @@ public class CharacterReader : IContentTypeReaderDelegate<Character>
 
         character.ShadowTexture = input.ContentManager.Load<Texture2D>(
             @"Textures\Characters\CharacterShadow");
-
-        return character;
     }
 }

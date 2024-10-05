@@ -7,7 +7,7 @@ namespace RolePlayingGameData;
 
 public class GearReader : IContentTypeReaderDelegate<Gear>
 {
-    public Gear Read(ContentReader input, Gear existingInstance)
+    public void ReadContent(ContentReader input, Gear existingInstance)
     {
         Gear gear = existingInstance;
         if (gear == null)
@@ -27,7 +27,5 @@ public class GearReader : IContentTypeReaderDelegate<Gear>
         gear.IconTextureName = input.ReadString();
         gear.IconTexture = input.ContentManager.Load<Texture2D>(
             System.IO.Path.Combine(@"Textures\Gear", gear.IconTextureName));
-
-        return gear;
     }
 }

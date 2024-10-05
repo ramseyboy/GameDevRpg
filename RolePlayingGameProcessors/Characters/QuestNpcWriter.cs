@@ -38,7 +38,7 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, QuestNpc value)
         {
-            characterWriter.Write(output, value);
+            characterWriter.WriteContent(output, value);
             output.Write(value.IntroductionDialogue);
         }
     }

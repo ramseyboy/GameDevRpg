@@ -5,7 +5,7 @@ namespace RolePlayingGameData;
 public class ContentEntryReader<T>: IContentTypeReaderDelegate<ContentEntry<T>>
     where T : ContentObject
 {
-    public ContentEntry<T> Read(ContentReader input,
+    public void ReadContent(ContentReader input,
         ContentEntry<T> existingInstance)
     {
         ContentEntry<T> member = existingInstance;
@@ -16,7 +16,5 @@ public class ContentEntryReader<T>: IContentTypeReaderDelegate<ContentEntry<T>>
 
         member.ContentName = input.ReadString();
         member.Count = input.ReadInt32();
-
-        return member;
     }
 }

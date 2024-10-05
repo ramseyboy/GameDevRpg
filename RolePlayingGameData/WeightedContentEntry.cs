@@ -40,9 +40,11 @@ namespace RolePlayingGameData
         /// <summary>
         /// Reads a WeightedContentEntry object from the content pipeline.
         /// </summary>
-        public class WeightedContentEntryReader : 
+        public class WeightedContentEntryReader :
             ContentTypeReader<WeightedContentEntry<T>>
         {
+            private readonly IContentTypeReaderDelegate<ContentEntry<T>> reader = new ContentEntryReader<T>();
+
             /// <summary>
             /// Reads a WeightedContentEntry object from the content pipeline.
             /// </summary>
@@ -55,7 +57,7 @@ namespace RolePlayingGameData
                     entry = new WeightedContentEntry<T>();
                 }
 
-                input.ReadRawObject<ContentEntry<T>>(entry as ContentEntry<T>);
+                reader.ReadContent(input, entry);
 
                 entry.Weight = input.ReadInt32();
 

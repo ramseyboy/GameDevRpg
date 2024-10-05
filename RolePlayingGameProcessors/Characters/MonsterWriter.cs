@@ -38,7 +38,7 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, Monster value)
         {
-            fightingCharacterWriter.Write(output, value);
+            fightingCharacterWriter.WriteContent(output, value);
             output.Write(value.DefendPercentage);
             output.WriteObject(value.GearDrops);
         }

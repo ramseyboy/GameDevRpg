@@ -25,9 +25,9 @@ namespace RolePlayingGameProcessors
     {
         private readonly IContentTypeWriterDelegate<Character> characterWriter = new CharacterWriter();
 
-        public void Write(ContentWriter output, FightingCharacter value)
+        public void WriteContent(ContentWriter output, FightingCharacter value)
         {
-            characterWriter.Write(output, value);
+            characterWriter.WriteContent(output, value);
             output.Write(value.CharacterClassContentName);
             output.Write(value.CharacterLevel);
             output.WriteObject(value.InitialEquipmentContentNames);

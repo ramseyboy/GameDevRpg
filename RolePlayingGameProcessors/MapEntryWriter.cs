@@ -39,7 +39,7 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, MapEntry<T> value)
         {
-            contentEntryWriter.Write(output, value);
+            contentEntryWriter.WriteContent(output, value);
             output.WriteObject(value.MapPosition);
             output.Write((Int32)value.Direction);
         }

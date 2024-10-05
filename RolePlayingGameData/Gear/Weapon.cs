@@ -155,7 +155,7 @@ namespace RolePlayingGameData
                 }
 
                 // read the gear settings
-                equipmentReader.Read(input, weapon);
+                equipmentReader.ReadContent(input, weapon);
 
                 // read the weapon settings
                 weapon.TargetDamageRange = input.ReadObject<Int32Range>();

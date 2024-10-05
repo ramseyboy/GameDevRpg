@@ -39,7 +39,7 @@ namespace RolePlayingGameProcessors
         protected override void Write(ContentWriter output, Armor value)
         {
             // write out equipment values
-            equipmentWriter.Write(output, value);
+            equipmentWriter.WriteContent(output, value);
 
             // write out armor values
             output.Write((Int32)value.Slot);

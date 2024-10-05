@@ -41,7 +41,7 @@ namespace RolePlayingGameProcessors
         protected override void Write(ContentWriter output,
             WeightedContentEntry<T> value)
         {
-            contentEntryWriter.Write(output, value);
+            contentEntryWriter.WriteContent(output, value);
             output.Write(value.Weight);
         }
     }

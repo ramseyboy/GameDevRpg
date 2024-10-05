@@ -8,7 +8,7 @@ public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharac
 {
     private IContentTypeReaderDelegate<Character> characterReader = new CharacterReader();
 
-    public FightingCharacter Read(ContentReader input,
+    public void ReadContent(ContentReader input,
         FightingCharacter existingInstance)
     {
         FightingCharacter fightingCharacter = existingInstance;
@@ -17,7 +17,7 @@ public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharac
             throw new ArgumentNullException("existingInstance");
         }
 
-        characterReader.Read(input, fightingCharacter);
+        characterReader.ReadContent(input, fightingCharacter);
         fightingCharacter.CharacterClassContentName = input.ReadString();
         fightingCharacter.CharacterLevel = input.ReadInt32();
         fightingCharacter.InitialEquipmentContentNames.AddRange(
@@ -54,7 +54,5 @@ public class FightingCharacterReader : IContentTypeReaderDelegate<FightingCharac
             inventoryEntry.Content = input.ContentManager.Load<Gear>(
                 System.IO.Path.Combine("Gear", inventoryEntry.ContentName));
         }
-
-        return fightingCharacter;
     }
 }

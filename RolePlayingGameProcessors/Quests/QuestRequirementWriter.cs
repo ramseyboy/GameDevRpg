@@ -39,7 +39,7 @@ namespace RolePlayingGameProcessors
 
         protected override void Write(ContentWriter output, QuestRequirement<T> value)
         {
-            contentEntryWriter.Write(output, value);
+            contentEntryWriter.WriteContent(output, value);
         }
     }
 }

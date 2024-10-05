@@ -23,7 +23,7 @@ namespace RolePlayingGameProcessors
 {
     public class GearWriter : IContentTypeWriterDelegate<Gear>
     {
-        public void Write(ContentWriter output, Gear value)
+        public void WriteContent(ContentWriter output, Gear value)
         {
             output.Write(value.Name);
             output.Write(value.Description);

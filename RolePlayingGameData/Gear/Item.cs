@@ -296,7 +296,7 @@ namespace RolePlayingGameData
                 }
 
                 // read gear settings
-                gearReader.Read(input, item);
+                gearReader.ReadContent(input, item);
 
                 // read item settings
                 item.Usage = (ItemUsage)input.ReadInt32();

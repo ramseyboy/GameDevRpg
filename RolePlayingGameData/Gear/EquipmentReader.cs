@@ -7,7 +7,7 @@ public class EquipmentReader : IContentTypeReaderDelegate<Equipment>
 {
     private readonly IContentTypeReaderDelegate<Gear> gearReader = new GearReader();
 
-    public Equipment Read(ContentReader input,
+    public void ReadContent(ContentReader input,
         Equipment existingInstance)
     {
         Equipment equipment = existingInstance;
@@ -19,11 +19,9 @@ public class EquipmentReader : IContentTypeReaderDelegate<Equipment>
         }
 
         // read the gear settings
-        gearReader.Read(input, equipment);
+        gearReader.ReadContent(input, equipment);
 
         // read the equipment settings
         equipment.OwnerBuffStatistics = input.ReadObject<StatisticsValue>();
-
-        return equipment;
     }
 }

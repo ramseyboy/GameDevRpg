@@ -237,7 +237,7 @@ namespace RolePlayingGameData
                     player = new Player();
                 }
 
-                fightingCharacterReader.Read(input, player);
+                fightingCharacterReader.ReadContent(input, player);
                 player.Gold = input.ReadInt32();
                 player.IntroductionDialogue = input.ReadString();
                 player.JoinAcceptedDialogue = input.ReadString();

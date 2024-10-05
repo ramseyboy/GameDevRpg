@@ -24,7 +24,7 @@ namespace RolePlayingGameProcessors
     public class ContentEntryWriter<T> : IContentTypeWriterDelegate<ContentEntry<T>>
         where T : ContentObject
     {
-        public void Write(ContentWriter output, ContentEntry<T> value)
+        public void WriteContent(ContentWriter output, ContentEntry<T> value)
         {
             output.Write(value.ContentName == null ? String.Empty : value.ContentName);
             output.Write(value.Count);

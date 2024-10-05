@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace RolePlayingGameData;
 
-public interface IContentTypeReaderDelegate<TContent>
+public interface IContentTypeReaderDelegate<in TContent>
 {
-    public TContent Read(ContentReader input, TContent existingInstance);
+    public void ReadContent(ContentReader input, TContent existingInstance);
 }

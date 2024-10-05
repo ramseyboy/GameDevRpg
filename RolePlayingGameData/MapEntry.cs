@@ -143,7 +143,7 @@ namespace RolePlayingGameData
                     desc = new MapEntry<T>();
                 }
 
-                reader.Read(input, desc);
+                reader.ReadContent(input, desc);
                 desc.MapPosition = input.ReadObject<Point>();
                 desc.Direction = (Direction)input.ReadInt32();
 

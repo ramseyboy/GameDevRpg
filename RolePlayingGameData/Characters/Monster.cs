@@ -120,7 +120,7 @@ namespace RolePlayingGameData
                     monster = new Monster();
                 }
 
-                fightingCharacterReader.Read(input, monster);
+                fightingCharacterReader.ReadContent(input, monster);
                 monster.DefendPercentage = input.ReadInt32();
                 monster.GearDrops.AddRange(input.ReadObject<List<GearDrop>>());
 

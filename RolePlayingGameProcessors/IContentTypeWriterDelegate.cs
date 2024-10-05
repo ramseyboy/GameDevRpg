@@ -4,5 +4,5 @@ namespace RolePlayingGameProcessors;
 
 public interface IContentTypeWriterDelegate<TContent>
 {
-    public void Write(ContentWriter output, TContent value);
+    public void WriteContent(ContentWriter output, TContent value);
 }

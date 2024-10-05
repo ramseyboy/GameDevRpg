@@ -20,7 +20,7 @@ namespace RolePlayingGameProcessors;
 
 public class CharacterWriter : IContentTypeWriterDelegate<Character>
 {
-    public void Write(ContentWriter output, Character value)
+    public void WriteContent(ContentWriter output, Character value)
     {
         output.Write(value.Name);
         output.Write(value.MapIdleAnimationInterval);

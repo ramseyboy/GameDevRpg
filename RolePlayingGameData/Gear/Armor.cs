@@ -127,7 +127,7 @@ namespace RolePlayingGameData
                 }
 
                 // read the gear settings
-                equipmentReader.Read(input, armor);
+                equipmentReader.ReadContent(input, armor);
 
                 // read armor settings
                 armor.Slot = (ArmorSlot)input.ReadInt32();

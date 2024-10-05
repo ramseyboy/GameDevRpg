@@ -58,7 +58,7 @@ namespace RolePlayingGameData
                     requirement = new QuestRequirement<T>();
                 }
 
-                reader.Read(input, requirement);
+                reader.ReadContent(input, requirement);
                 if (typeof(T) == typeof(Gear))
                 {
                     requirement.Content = input.ContentManager.Load<T>(
